@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Lobby Selection</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+
+    <ion-row>
+      <ion-col>
+        <ion-card *ngFor="let lobby of loadedLobbies">
+          <ion-card-header>
+            <ion-card-title>{{ lobby.name}}</ion-card-title>
+            <ion-card-subtitle>{{ lobby.allowedUsers}}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content><p>{{ lobby.description }}</p></ion-card-content>
+          <ion-button fill="solid" name ="View Lobby" [routerLink]="['/', 'post-log', 'tabs', 'viewLobby', lobby.id]">View Lobby</ion-button>
+          <ion-button fill="solid" name ="Quick Join">Join Lobby</ion-button>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+
+  </ion-grid>
+
+</ion-content>
