@@ -13,6 +13,7 @@ const routes: Routes = [
   { path: 'lobby', loadChildren: './lobby/lobby.module#LobbyPageModule' },
   { path: 'create-lobby', loadChildren: './lobby/create-lobby/create-lobby.module#CreateLobbyPageModule' },
   { path: 'join-lobby', loadChildren: './lobby/join-lobby/join-lobby.module#JoinLobbyPageModule' },
+  { path: 'join-lobby/:id', loadChildren: './lobby/join-lobby/join-lobby.module#JoinLobbyPageModule' },
   { path: 'edit-lobby', loadChildren: './lobby/edit-lobby/edit-lobby.module#EditLobbyPageModule' },
   { path: 'service', loadChildren: './lobby/service/service.module#ServicePageModule' },
 ];

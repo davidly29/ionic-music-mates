@@ -26,6 +26,12 @@ const routes: Routes = [
                         loadChildren: './lobby.module#LobbyPageModule'
                     }
                 ]},
+            {path: 'createLobby', children: [
+                    {
+                        path: '',
+                        loadChildren: './create-lobby/create-lobby.module#CreateLobbyPageModule'
+                    }
+                ]},
             {
                 path: '',
                 redirectTo: '/post-log/tabs',

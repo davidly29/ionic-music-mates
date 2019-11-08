@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ServicePage} from '../service/service.page';
 import {LobbyModel} from '../lobby.model';
+import {FirebaseServiceService} from '../../firebase-service.service';
 
 @Component({
   selector: 'app-join-lobby',
@@ -9,10 +10,13 @@ import {LobbyModel} from '../lobby.model';
 })
 export class JoinLobbyPage implements OnInit {
   loadedLobbies: LobbyModel[];
-  constructor(private lobbyService: ServicePage) { }
+  constructor(private lobbyService: ServicePage, private firebaseService: FirebaseServiceService) { }
 
   ngOnInit() {
-  this.loadedLobbies = this.lobbyService.lobbies;
+  // this.loadedLobbies = this.lobbyService.lobbies;
+    this.firebaseService.getLobbies().subscribe(res => {
+    this.loadedLobbies = res;
+  });
   }
 
 }
