@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import {AngularFireModule} from '@angular/fire';
+import {AngularFirestoreModule, FirestoreSettingsToken} from '@angular/fire/firestore';
+import { environment} from '../environment';
 
 const routes: Routes = [
   { path: '', redirectTo: 'post-log', pathMatch: 'full' },
@@ -13,14 +16,21 @@ const routes: Routes = [
   { path: 'lobby', loadChildren: './lobby/lobby.module#LobbyPageModule' },
   { path: 'create-lobby', loadChildren: './lobby/create-lobby/create-lobby.module#CreateLobbyPageModule' },
   { path: 'join-lobby', loadChildren: './lobby/join-lobby/join-lobby.module#JoinLobbyPageModule' },
-  { path: 'join-lobby/:id', loadChildren: './lobby/join-lobby/join-lobby.module#JoinLobbyPageModule' },
+  { path: 'join-lobby/:id', loadChildren: './lobby/view-lobby/view-lobby.module#ViewLobbyPageModule' },
   { path: 'edit-lobby', loadChildren: './lobby/edit-lobby/edit-lobby.module#EditLobbyPageModule' },
   { path: 'service', loadChildren: './lobby/service/service.module#ServicePageModule' },
+  { path: 'view-lobby', loadChildren: './lobby/view-lobby/view-lobby.module#ViewLobbyPageModule' },
+
 ];
 
 @NgModule({
   imports: [
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+  ],
+  providers: [
+    {provide: FirestoreSettingsToken, useValue: {} } // timestamp date issue ( open on github )
   ],
   exports: [RouterModule]
 })

@@ -15,7 +15,7 @@ export class JoinLobbyPage implements OnInit {
   ngOnInit() {
   // this.loadedLobbies = this.lobbyService.lobbies;
     this.firebaseService.getLobbies().subscribe(res => {
-    this.loadedLobbies = res;
+        this.loadedLobbies = res;
   });
   }
 

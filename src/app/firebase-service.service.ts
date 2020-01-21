@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import {LobbyModel} from './lobby/lobby.model';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -25,8 +25,14 @@ export class FirebaseServiceService {
   getLobbies() {
     return this.lobby;
   }
-  getLobby(lobbyId) {
-    return this.lobbyCollection.doc<LobbyModel>(lobbyId).valueChanges();
+  getLobby(id: string): Observable<LobbyModel> {
+    return this.lobbyCollection.doc<LobbyModel>(id).valueChanges().pipe(
+        take(1),
+        map(lb => {
+            lb.id = id;
+            return lb;
+        })
+    );
   }
   updateLobby(lobby: LobbyModel, lobbyId: string) {
     return this.lobbyCollection.doc(lobbyId).update(lobby);
