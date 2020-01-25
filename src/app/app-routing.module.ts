@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFirestoreModule, FirestoreSettingsToken} from '@angular/fire/firestore';
 import { environment} from '../environment';
+import {GuardGuard} from './auth/guard.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'post-log', pathMatch: 'full' },
@@ -14,12 +15,12 @@ const routes: Routes = [
   { path: 'create-playlist', loadChildren: './playlist/create-playlist/create-playlist.module#CreatePlaylistPageModule' },
   { path: 'post-log', loadChildren: './lobby/post-log/post-log.module#PostLogPageModule' },
   { path: 'lobby', loadChildren: './lobby/lobby.module#LobbyPageModule' },
-  { path: 'create-lobby', loadChildren: './lobby/create-lobby/create-lobby.module#CreateLobbyPageModule' },
-  { path: 'join-lobby', loadChildren: './lobby/join-lobby/join-lobby.module#JoinLobbyPageModule' },
-  { path: 'join-lobby/:id', loadChildren: './lobby/view-lobby/view-lobby.module#ViewLobbyPageModule' },
+  { path: 'create-lobby', loadChildren: './lobby/create-lobby/create-lobby.module#CreateLobbyPageModule', canLoad: [GuardGuard]},
+  { path: 'join-lobby', loadChildren: './lobby/join-lobby/join-lobby.module#JoinLobbyPageModule', canLoad: [GuardGuard]},
+  { path: 'join-lobby/:id', loadChildren: './lobby/view-lobby/view-lobby.module#ViewLobbyPageModule', canLoad: [GuardGuard]},
   { path: 'edit-lobby', loadChildren: './lobby/edit-lobby/edit-lobby.module#EditLobbyPageModule' },
   { path: 'service', loadChildren: './lobby/service/service.module#ServicePageModule' },
-  { path: 'view-lobby', loadChildren: './lobby/view-lobby/view-lobby.module#ViewLobbyPageModule' },
+  { path: 'view-lobby', loadChildren: './lobby/view-lobby/view-lobby.module#ViewLobbyPageModule', canLoad: [GuardGuard]},
 
 ];
 

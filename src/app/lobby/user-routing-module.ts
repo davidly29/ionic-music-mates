@@ -2,6 +2,7 @@ import {NgModel} from '@angular/forms';
 import {NgModule} from '@angular/core';
 import {Route, RouterModule, Routes} from '@angular/router';
 import {PostLogPage} from './post-log/post-log.page';
+import {GuardGuard} from '../auth/guard.guard';
 
 const routes: Routes = [
     {
@@ -11,7 +12,7 @@ const routes: Routes = [
             {path: 'joinLobby', children: [
                     {
                         path: '',
-                        loadChildren: './join-lobby/join-lobby.module#JoinLobbyPageModule'
+                        loadChildren: './join-lobby/join-lobby.module#JoinLobbyPageModule', canLoad: [GuardGuard]
                     }
                 ]},
             {path: 'edit:lobbyId', children: [
@@ -23,13 +24,19 @@ const routes: Routes = [
             {path: 'viewLobby', children: [
                     {
                         path: ':lobbyId',
-                        loadChildren: './lobby.module#LobbyPageModule'
+                        loadChildren: './lobby.module#LobbyPageModule', canLoad: [GuardGuard]
                     }
                 ]},
             {path: 'createLobby', children: [
                     {
                         path: '',
-                        loadChildren: './create-lobby/create-lobby.module#CreateLobbyPageModule'
+                        loadChildren: './create-lobby/create-lobby.module#CreateLobbyPageModule', canLoad: [GuardGuard]
+                    }
+                ]},
+            {path: 'song', children: [
+                    {
+                        path: '',
+                        loadChildren: './song/song.module#SongPageModule',
                     }
                 ]},
             {

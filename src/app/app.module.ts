@@ -13,6 +13,9 @@ import { AngularFireModule } from 'angularfire2';
 import {HttpClientModule} from '@angular/common/http';
 import {environment} from '../environment';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { YtServiceService } from './yt-service.service';
+import { HttpClient } from '@angular/common/http';
+import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +26,9 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    YtServiceService,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    YoutubeVideoPlayer
   ],
   bootstrap: [AppComponent]
 })

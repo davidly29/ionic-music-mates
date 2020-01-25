@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {YtServiceService} from '../yt-service.service';
 
 @Component({
   selector: 'app-song',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SongPage implements OnInit {
 
-  constructor() { }
+  constructor(private ytService: YtServiceService) { }
 
   ngOnInit() {
   }
 
+  getVideo(id) {
+    this.ytService.openVideo(id);
+  }
 }
