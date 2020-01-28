@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',

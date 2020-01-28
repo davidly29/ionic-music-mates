@@ -36,7 +36,7 @@ const routes: Routes = [
             {path: 'song', children: [
                     {
                         path: '',
-                        loadChildren: './song/song.module#SongPageModule',
+                        loadChildren: './play-song/play-song.module#PlaySongPageModule',
                     }
                 ]},
             {
