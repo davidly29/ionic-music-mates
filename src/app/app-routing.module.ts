@@ -21,6 +21,7 @@ const routes: Routes = [
   { path: 'edit-lobby', loadChildren: './lobby/edit-lobby/edit-lobby.module#EditLobbyPageModule' },
   { path: 'service', loadChildren: './lobby/service/service.module#ServicePageModule' },
   { path: 'view-lobby', loadChildren: './lobby/view-lobby/view-lobby.module#ViewLobbyPageModule', canLoad: [GuardGuard]},  { path: 'play-song', loadChildren: './lobby/play-song/play-song.module#PlaySongPageModule' },
+  { path: 'lobby-joined', loadChildren: './lobby/lobby-joined/lobby-joined.module#LobbyJoinedPageModule' },
 
 
 ];

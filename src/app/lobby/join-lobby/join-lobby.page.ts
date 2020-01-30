@@ -19,4 +19,8 @@ export class JoinLobbyPage implements OnInit {
   });
   }
 
+  joinLobby(user) {
+
+  }
+
 }
