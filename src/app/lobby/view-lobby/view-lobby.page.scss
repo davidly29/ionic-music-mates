@@ -1,0 +1,39 @@
+.message {
+  padding: 10px;
+  border-radius: 10px;
+  border-color: #1e2023;
+  margin-bottom: 4px;
+  white-space: pre-wrap;
+}
+
+.other-user {
+  backround: var(--ion-color-tertiary);
+  background-color: #7e57ff;
+  color: #fff;
+}
+
+.my-message {
+  backround: var(--ion-color-secondary);
+  background-color: #0cd1e8;
+  color: #fff;
+}
+
+.time {
+  color: #989aa2;
+  font-size: small;
+}
+
+.msg-btn {
+  --padding-start: 0.5em;
+  --padding-end: 1em;
+}
+
+.message-input {
+  width: 100%;
+  border: 1px solid var(--ion-color-medium);
+  border-radius: 10px;
+  background: #f4f5f8;
+  resize: none;
+  padding-left: 10px;
+  padding-right: 10px;
+}

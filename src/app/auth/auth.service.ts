@@ -30,6 +30,12 @@ export class AuthService {
       })); // possible change to other token var
   }
 
+  get UserDetails() {
+      return this.user.asObservable().pipe(map(user => {
+          return user;
+      }));
+  }
+
   get userId() { // dynamic for accessing user at any time
     return this.user.asObservable().pipe(map(userobj => {
       if (userobj) {

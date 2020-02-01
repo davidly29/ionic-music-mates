@@ -27,6 +27,7 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic-native/youtube-video-player": "^5.20.0",
     "@ionic/angular": "^4.6.1",
+    "@ionic/lab": "^3.0.0",
     "angularfire2": "^5.2.1",
     "capacitor-youtube-player": "^1.0.0-alpha.1-48",
     "cordova-android": "^8.1.0",
@@ -34,6 +35,7 @@
     "cordova-plugin-youtube-video-player": "^2.4.0",
     "core-js": "^2.5.4",
     "firebase": "^7.6.1",
+    "ngx-autosize": "^1.7.2",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
