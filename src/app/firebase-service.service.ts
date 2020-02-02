@@ -55,6 +55,7 @@ export class FirebaseServiceService {
           })
       );
   }
+
   getLobbies() {
     return this.lobby;
   }
@@ -72,6 +73,7 @@ export class FirebaseServiceService {
           })
       );
   }
+
 
   getLobby(id: string): Observable<LobbyModel> {
     return this.lobbyCollection.doc<LobbyModel>(id).valueChanges().pipe(
@@ -96,6 +98,10 @@ export class FirebaseServiceService {
 
   getUsers() {
       return this.user;
+  }
+
+  deleteUserFromLobby(users) {
+      return this.userCollection.doc(users).delete();
   }
 
   addUser(user: LobbyUserModel) {

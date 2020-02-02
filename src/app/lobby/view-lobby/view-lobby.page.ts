@@ -12,6 +12,7 @@ import {LobbyUserModel} from '../join-lobby/lobbyUserModel';
 import {checkAvailability} from '@ionic-native/core';
 import { AutosizeModule} from 'ngx-autosize';
 import {MessageModel} from './messageModel';
+import {isBoolean} from 'util';
 
 @Component({
   selector: 'app-view-lobby',
@@ -37,6 +38,13 @@ export class ViewLobbyPage implements OnInit {
   };
 
   tempUser: LobbyUserModel = {
+    name: 'test',
+    lobbyId: 'test',
+    email: 'test',
+    users: 'test'
+  };
+
+  currentUserTest: LobbyUserModel = {
     name: 'test',
     lobbyId: 'test',
     email: 'test',
@@ -89,7 +97,9 @@ export class ViewLobbyPage implements OnInit {
     this.firebaseService.getAllMessages().subscribe(res => {
       this.allMessages = res;
     });
+
     const id = this.activatedRoute.snapshot.paramMap.get('id');
+
     this.allMessages.find(item => {
       if (item.lobbyId === id) {
         this.currentLobbyMessages.push(item);
@@ -101,11 +111,10 @@ export class ViewLobbyPage implements OnInit {
         // redirect
         return;
       }
-      // this.loadedLobby = this.allLobbies.find(i => i.id === id);
-      // this.loadedLobby = this.allLobbies[0];
     });
-
+    // this.currentUserTest.email = this.currentUser.getValue().email;
     this.joined = false;
+    // this.checkUserJoined();
     this.currentUser = this.authService.user;
 
   }
@@ -130,12 +139,16 @@ export class ViewLobbyPage implements OnInit {
     this.userToCheck.name = 'test';
     const id = this.userToCheck.users;
 
-    const match = this.lobbyUsers.find(item => {
-      if (item.users === id) { return true; }
+    this.lobbyUsers.find(item => {
+      if (item.users === this.activatedRoute.snapshot.paramMap.get('id')) {
+        this.joined = true;
+        return true; }
     });
-    if (match) {
-      this.joined = true;
-    }
+  }
+
+  leaveCurrentLobby() {
+    this.joined = false;
+    this.firebaseService.deleteUserFromLobby(this.currentUser.getValue().id);
   }
 
   sendMessage() {
