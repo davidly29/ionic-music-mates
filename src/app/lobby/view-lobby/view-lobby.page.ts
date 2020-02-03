@@ -1,11 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ServicePageModule} from '../service/service.module';
 import {LobbyModel} from '../lobby.model';
 import {FirebaseServiceService} from '../../firebase-service.service';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {LobbyServiceService} from '../lobby-service.service';
-import {IonContent, ToastController} from '@ionic/angular';
+import {IonContent, ModalController, ToastController} from '@ionic/angular';
 import {User} from '../../auth/user.model';
 import {AuthService} from '../../auth/auth.service';
 import {LobbyUserModel} from '../join-lobby/lobbyUserModel';
@@ -13,6 +13,7 @@ import {checkAvailability} from '@ionic-native/core';
 import { AutosizeModule} from 'ngx-autosize';
 import {MessageModel} from './messageModel';
 import {isBoolean} from 'util';
+import {ViewUserModalComponent} from './view-user-modal/view-user-modal.component';
 
 @Component({
   selector: 'app-view-lobby',
@@ -82,7 +83,8 @@ export class ViewLobbyPage implements OnInit {
   };
   constructor(private activatedRoute: ActivatedRoute, private lobbyService: LobbyServiceService,
               private firebaseService: FirebaseServiceService, private toastCtrl: ToastController
-  ,           private authService: AuthService, private toastController: ToastController) { }
+  ,           private authService: AuthService, private toastController: ToastController,
+              private modalCtrl: ModalController) { }
 
   ngOnInit() {
     this.firebaseService.getLobbies().subscribe(res => {
@@ -159,6 +161,13 @@ export class ViewLobbyPage implements OnInit {
 
     this.newMsg = '';
     this.firebaseService.addLobbyMessage(this.messageTemp);
+  }
+
+  viewLobbyUsers() {
+    // tslint:disable-next-line:max-line-length
+    this.modalCtrl.create({component: ViewUserModalComponent, componentProps: {lobbyUsers: this.lobbyUsers, lobbyId: this.activatedRoute.snapshot.paramMap.get('id')}}).then(modelEl => {
+      modelEl.present();
+    });
   }
 
   showToast(msg) {

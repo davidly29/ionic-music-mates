@@ -11,7 +11,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 })
 export class PlaySongPage implements OnInit {
   songs: SongModel[];
-  vid = 'https://www.youtube.com/embed/zIE8aSw40eY';
+  vid = '';
   constructor(private youtube: YoutubeVideoPlayer, private dom: DomSanitizer) { }
 
   ngOnInit() {
@@ -25,6 +25,7 @@ export class PlaySongPage implements OnInit {
   addSong(id) {
     // this.songs.push(new SongModel('song1', id));
   }
+
   onSubmit(form: NgForm) {
     const name = form.value.name;
 

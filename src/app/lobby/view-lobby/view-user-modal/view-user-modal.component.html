@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Users Currently In Lobby</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="onCancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-list>
+  <ion-row *ngFor="let item of lobbyUsers">
+    <ion-col *ngIf="this.lobbyId === item.lobbyId">
+      <ion-label>
+        {{item.email}}
+      </ion-label>
+    </ion-col>
+  </ion-row>
+</ion-list>
+</ion-content>

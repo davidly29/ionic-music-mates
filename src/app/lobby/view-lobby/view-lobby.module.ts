@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ViewLobbyPage } from './view-lobby.page';
 import { AutosizeModule} from 'ngx-autosize';
+import {ViewUserModalComponent} from './view-user-modal/view-user-modal.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     AutosizeModule
   ],
-  declarations: [ViewLobbyPage]
+  declarations: [ViewLobbyPage, ViewUserModalComponent],
+  entryComponents: [ViewUserModalComponent]
 })
 export class ViewLobbyPageModule {}

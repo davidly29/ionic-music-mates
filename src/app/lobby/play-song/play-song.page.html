@@ -9,10 +9,10 @@
   <p>Search for a song you want to add</p>
     <ion-item>
       <ion-label position="floating">Name</ion-label>
-      <ion-input ngModel id="id_name" name="name" required #nameCtrl="ngModel"></ion-input>
+      <ion-input ngModel id="id_name" name="name" required [(ngModel)]="vid"></ion-input>
     </ion-item>
 
-  <ion-button type="submit" (click)="playVideo('ZFfVMBhJzVU')">Play</ion-button>
+  <ion-button type="submit" (click)="sanitizeVid(vid)">Play</ion-button>
   </form>
   <iframe width="100%" height="50%" [src]="sanitizeVid(vid)" frameborder="0" allowfullscreen></iframe>
 </ion-content>

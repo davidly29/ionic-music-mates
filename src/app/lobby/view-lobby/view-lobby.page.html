@@ -20,18 +20,9 @@
   </ion-item>
 <!--  <ion-button type="round" (click)="checkUserJoined()">Check</ion-button>-->
   <ion-button type="round" (click)="leaveCurrentLobby()">Leave Lobby</ion-button>
+  <ion-button type="round" (click)="viewLobbyUsers()">View Lobby Users</ion-button>
   <ion-icon name="checkmark-circle">{{ joined ? 'Joined' : 'Not Joined'}}</ion-icon>
-  <p>Users In Lobby</p>
-  <ion-list>
-    <ion-item-sliding *ngFor="let item of lobbyUsers">
-      <ion-col *ngIf="this.activatedRoute.snapshot.paramMap.get('id') === item.lobbyId">
-        <ion-label>
-        {{item.email}}
-      </ion-label>
-      </ion-col>
 
-    </ion-item-sliding>
-  </ion-list>
   <ion-grid>
     <ion-row *ngFor="let message of allMessages">
       <ion-col size="9" *ngIf="currentUser.getValue().email !== message.sentBy && this.activatedRoute.snapshot.paramMap.get('id') === message.lobbyId" text-wrap class="message other-user">
@@ -56,9 +47,13 @@
         <textarea autosize maxRows="3" [(ngModel)]="newMsg" class="message-input"></textarea>
       </ion-col>
       <ion-col size="2"></ion-col>
-      <ion-button expand="block" fill="clear" color="primary" [disabled]="newMsg === ''" class="msg-btn" (click)="sendMessage()">
-        <ion-icon name="send" slot="icon-only"></ion-icon>
-      </ion-button>
+      <div class="ion-text-end">
+        <ion-buttons>
+          <ion-button expand="block"  fill="clear" color="primary" [disabled]="newMsg === ''" class="msg-btn" (click)="sendMessage()">
+            <ion-icon name="send" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </div>
     </ion-row>
   </ion-toolbar>
 </ion-footer>
