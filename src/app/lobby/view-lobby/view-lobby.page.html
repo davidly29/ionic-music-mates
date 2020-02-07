@@ -23,6 +23,13 @@
   <ion-button type="round" (click)="viewLobbyUsers()">View Lobby Users</ion-button>
   <ion-icon name="checkmark-circle">{{ joined ? 'Joined' : 'Not Joined'}}</ion-icon>
 
+
+  <ion-buttons>
+    <ion-button expand="block"  fill="clear" color="primary" (click)="authWithSpotify()">
+      <ion-icon name="send" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+
   <ion-grid>
     <ion-row *ngFor="let message of allMessages">
       <ion-col size="9" *ngIf="currentUser.getValue().email !== message.sentBy && this.activatedRoute.snapshot.paramMap.get('id') === message.lobbyId" text-wrap class="message other-user">

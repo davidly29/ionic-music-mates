@@ -14,7 +14,7 @@ import { AutosizeModule} from 'ngx-autosize';
 import {MessageModel} from './messageModel';
 import {isBoolean} from 'util';
 import {ViewUserModalComponent} from './view-user-modal/view-user-modal.component';
-
+declare var cordova: any;
 @Component({
   selector: 'app-view-lobby',
   templateUrl: './view-lobby.page.html',
@@ -22,7 +22,7 @@ import {ViewUserModalComponent} from './view-user-modal/view-user-modal.componen
 })
 export class ViewLobbyPage implements OnInit {
   joined: boolean;
-
+  result = {};
   lobbyUsers: LobbyUserModel[];
   currentUser: BehaviorSubject<User>;
 
@@ -147,7 +147,20 @@ export class ViewLobbyPage implements OnInit {
         return true; }
     });
   }
+  authWithSpotify() {
+    const config = {
+      clientId: '4671fcc7c9564f94b408922a06f54835',
+      redirectUrl: 'ionicfyp://callback',
+      scopes: ['streaming', 'playlist-read-private', 'user-read-email', 'user-read-private'],
+      tokenExchangeUrl: 'https://ionicfypserver.herokuapp.com/exchange',
+      tokenRefreshUrl: 'https://ionicfypserver.herokuapp.com/refresh',
+    };
 
+    cordova.plugins.spotifyAuth.authorize(config)
+        .then(({ accessToken, encryptedRefreshToken, expiresAt }) => {
+          this.result = { access_token: accessToken, expires_in: expiresAt, ref: encryptedRefreshToken };
+        });
+  }
   leaveCurrentLobby() {
     this.joined = false;
     this.firebaseService.deleteUserFromLobby(this.currentUser.getValue().id);

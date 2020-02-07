@@ -2,17 +2,50 @@
   <ion-toolbar>
     <ion-title>play-song</ion-title>
   </ion-toolbar>
+  <ion-searchbar color='danger' [(ngModel)]="searchKey" (keyup.enter)="getSongBySearch()" placeholder="Search..." class="form-control">
+  </ion-searchbar>
 </ion-header>
 
 <ion-content>
-  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
-  <p>Search for a song you want to add</p>
-    <ion-item>
-      <ion-label position="floating">Name</ion-label>
-      <ion-input ngModel id="id_name" name="name" required [(ngModel)]="vid"></ion-input>
-    </ion-item>
+<!--  <form #f="ngForm" (ngSubmit)="onSubmit(f)">-->
+<!--  <p>Search for a song you want to add</p>-->
+<!--    <ion-item>-->
+<!--      <ion-label position="floating">Name</ion-label>-->
+<!--      <ion-input ngModel id="id_name" name="name" required [(ngModel)]="vid"></ion-input>-->
+<!--    </ion-item>-->
 
-  <ion-button type="submit" (click)="sanitizeVid(vid)">Play</ion-button>
-  </form>
-  <iframe width="100%" height="50%" [src]="sanitizeVid(vid)" frameborder="0" allowfullscreen></iframe>
+<!--&lt;!&ndash;    <ion-button (click)="authWithSpotify()">Login with Spotify</ion-button>&ndash;&gt;-->
+
+<!--  <ion-button type="submit" (click)="sanitizeVid(vid)">Play</ion-button>-->
+<!--  </form>-->
+<!--  <iframe width="100%" height="50%" [src]="sanitizeVid(yt)" frameborder="0"></iframe>-->
+<!--  <ion-card>-->
+<!--    <ion-card-header>-->
+<!--      <ion-card-title>-->
+<!--      </ion-card-title>-->
+<!--    </ion-card-header>-->
+<!--    <ion-card-content>-->
+<!--      <iframe src="https://www.youtube.com/embed" style="width: 100%; height: 70vh;"></iframe>-->
+<!--    </ion-card-content>-->
+<!--  </ion-card>-->
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let video of response.items">
+      <ion-item>
+        <img [src]="video.snippet.thumbnails.default.url" alt="">
+        <ion-col >{{ video.snippet.description}}</ion-col>
+      </ion-item>
+
+      <ion-item-options>
+        <ion-item-option color="primary">
+          <ion-icon slot="bottom" name="add-circle-outline"></ion-icon>
+          Add
+        </ion-item-option>
+        <ion-item-option color="secondary">
+          <ion-icon slot="bottom" name="play-outline"> </ion-icon>
+          Play
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>
