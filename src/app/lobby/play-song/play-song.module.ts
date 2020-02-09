@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { PlaySongPage } from './play-song.page';
+import {ModalPlayComponent} from './modal-play/modal-play.component';
 
 const routes: Routes = [
   {

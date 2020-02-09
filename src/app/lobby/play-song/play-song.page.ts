@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
 import {SongModel} from '../song.model';
 import {NgForm} from '@angular/forms';
-import {DomSanitizer} from '@angular/platform-browser';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {SpotifyAuth} from '@ionic-native/spotify-auth/ngx';
 import {YtServiceService} from '../../yt-service.service';
 import { LoadingService } from '../../loading.service';
 import {AlertController, LoadingController, ModalController, Platform} from '@ionic/angular';
+import {ModalPlayComponent} from './modal-play/modal-play.component';
 
 declare var cordova: any;
 
@@ -18,6 +19,7 @@ declare var cordova: any;
 export class PlaySongPage implements OnInit {
   result = {};
   songs: SongModel[];
+  embedUrl: SafeResourceUrl = '';
 
   searchKey = '';
   response: any;
@@ -27,6 +29,8 @@ export class PlaySongPage implements OnInit {
   private video;
   loading: LoadingService;
 
+
+  videoKey = '';
   vid = '';
   yt = 'https://www.youtube.com/';
   category: any;
@@ -71,11 +75,15 @@ export class PlaySongPage implements OnInit {
   //       });
   // }
 
-  sanitizeVid(vid) {
-    return this.dom.bypassSecurityTrustResourceUrl(vid);
+  sanitizeVid() {
+    return this.dom.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.videoKey);
   }
-  playVideo(watch) {
-    this.youtube.openVideo('https://www.youtube.com/embed/' + watch);
+  playVideo(video) {
+    this.modalCtrl.create({
+      component: ModalPlayComponent, componentProps: {title: video.snippet.title, currentVidId: video.id.videoId}
+    }).then(modalEl => {
+      modalEl.present();
+    });
 }
   addSong(id) {
     // this.songs.push(new SongModel('song1', id));
@@ -138,9 +146,13 @@ export class PlaySongPage implements OnInit {
     );
   }
 
-  onClick(header: string, key: string) {
+  onClick(key: string) {
       // modalRef.componentInstance.header = header;
-      // modalRef.componentInstance.url = 'https://www.youtube.com/embed/' + key;
+       this.embedUrl = 'https://www.youtube.com/embed/' + key;
+       this.videoKey = key;
+       this.response = '';
+       this.searchKey = '';
+      // this.response = null;
 
   }
 

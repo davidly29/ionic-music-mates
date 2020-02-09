@@ -31,7 +31,7 @@
 
   <ion-list>
     <ion-item-sliding *ngFor="let video of response.items">
-      <ion-item>
+      <ion-item (click)="playVideo(video)">
         <img [src]="video.snippet.thumbnails.default.url" alt="">
         <ion-col >{{ video.snippet.description}}</ion-col>
       </ion-item>
@@ -48,4 +48,5 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+  <iframe height="115" src=""></iframe>
 </ion-content>

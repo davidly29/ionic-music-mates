@@ -15,12 +15,14 @@ import {environment} from '../environment';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { YtServiceService } from './yt-service.service';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
+import {ModalPlayComponent} from './lobby/play-song/modal-play/modal-play.component';
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, ModalPlayComponent],
+  entryComponents: [ModalPlayComponent],
   // tslint:disable-next-line:max-line-length
-  imports: [BrowserModule, HttpClientModule, AngularFireModule.initializeApp(environment.firebase), AngularFirestoreModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule, HttpClientModule, AngularFireModule.initializeApp(environment.firebase), AngularFirestoreModule,
+    IonicModule.forRoot(), AppRoutingModule],
 
   providers: [
     StatusBar,
