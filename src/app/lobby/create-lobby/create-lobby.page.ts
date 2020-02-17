@@ -13,7 +13,8 @@ import {take} from 'rxjs/operators';
 })
 export class CreateLobbyPage implements OnInit {
   lobby: LobbyModel = {
-    id: 'one',
+    id: '',
+    userId: 'one',
     name: 'test',
     password: 'pass',
     description: 'desc',
@@ -26,7 +27,7 @@ export class CreateLobbyPage implements OnInit {
 
   saveLobby() {
     this.authService.userId.pipe(take(1)).subscribe(currentUserid => {
-      this.lobby.id = currentUserid;
+      this.lobby.userId = currentUserid;
       this.dbService.addLobby(this.lobby).then(r => this.toastController.dismiss());
     });
   }

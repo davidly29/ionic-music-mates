@@ -6,8 +6,14 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {SpotifyAuth} from '@ionic-native/spotify-auth/ngx';
 import {YtServiceService} from '../../yt-service.service';
 import { LoadingService } from '../../loading.service';
-import {AlertController, LoadingController, ModalController, Platform} from '@ionic/angular';
+import {AlertController, LoadingController, ModalController, Platform, ToastController} from '@ionic/angular';
 import {ModalPlayComponent} from './modal-play/modal-play.component';
+import {FirebaseServiceService} from '../../firebase-service.service';
+import {PlaylistModel} from '../../playlist/playlist-model';
+import {ActivatedRoute} from '@angular/router';
+import {AuthService} from '../../auth/auth.service';
+import {BehaviorSubject} from 'rxjs';
+import {User} from '../../auth/user.model';
 
 declare var cordova: any;
 
@@ -21,14 +27,24 @@ export class PlaySongPage implements OnInit {
   songs: SongModel[];
   embedUrl: SafeResourceUrl = '';
 
+  playlist: PlaylistModel = {
+    videoId: 'test',
+    userId: 'test',
+    name: 'test',
+    id: 'test',
+    songs: [],
+  };
+
+  allPlaylists: PlaylistModel[];
+
   searchKey = '';
-  response: any;
+  response: any = {};
 
   private categoryArray;
   private videos = [];
   private video;
   loading: LoadingService;
-
+  currentUser: BehaviorSubject<User>;
 
   videoKey = '';
   vid = '';
@@ -36,11 +52,18 @@ export class PlaySongPage implements OnInit {
   category: any;
   constructor(private youtube: YoutubeVideoPlayer, private dom: DomSanitizer,
               private ytProvider: YtServiceService, private alertCtrl: AlertController, public modalCtrl: ModalController,
-              public plt: Platform) {
+              // tslint:disable-next-line:max-line-length
+              public plt: Platform, private firebaseService: FirebaseServiceService, private activatedRoute: ActivatedRoute,
+              private authService: AuthService, private toastController: ToastController) {
     this.getCategory();
   }
 
   ngOnInit() {
+
+    this.firebaseService.getPlaylists().subscribe(res => {
+      this.allPlaylists = res;
+      }
+    );
     // const config = {
     //   clientId: '<SPOTIFY CLIENT ID>',
     //   redirectUrl: '<REDIRECT URL, MUST MATCH WITH AUTH ENDPOINT AND SPOTIFY DEV CONSOLE>',
@@ -57,7 +80,7 @@ export class PlaySongPage implements OnInit {
 
 
    // this.spotifyAuth.forget().then(() => console.log("We're logged out!"));
-
+    this.currentUser = this.authService.user;
   }
 
   // authWithSpotify() {
@@ -75,18 +98,31 @@ export class PlaySongPage implements OnInit {
   //       });
   // }
 
-  sanitizeVid() {
-    return this.dom.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.videoKey);
+  sanitizeVid(url) {
+    return this.dom.bypassSecurityTrustResourceUrl(url);
   }
-  playVideo(video) {
+  playVideo(titleName: string, id: string, channelID: string) {
     this.modalCtrl.create({
-      component: ModalPlayComponent, componentProps: {title: video.snippet.title, currentVidId: video.id.videoId}
+      component: ModalPlayComponent, componentProps: {title: titleName, currentId: id, channelId: channelID}
     }).then(modalEl => {
       modalEl.present();
     });
 }
+
+
   addSong(id) {
     // this.songs.push(new SongModel('song1', id));
+    if (this.allPlaylists.find(x => x.userId === this.currentUser.getValue().id) != null) {
+      this.playlist = this.allPlaylists.find(x => x.userId === this.currentUser.getValue().id);
+      this.playlist.songs.push(id);
+      this.firebaseService.updatePlaylist(this.playlist, this.playlist.id);
+    } else {
+      this.playlist.userId = this.currentUser.getValue().id;
+      this.playlist.videoId = id;
+      this.playlist.songs.push(id);
+      this.firebaseService.addPlaylist(this.playlist);
+    }
+
   }
 
   onSubmit(form: NgForm) {
@@ -149,9 +185,8 @@ export class PlaySongPage implements OnInit {
   onClick(key: string) {
       // modalRef.componentInstance.header = header;
        this.embedUrl = 'https://www.youtube.com/embed/' + key;
-       this.videoKey = key;
-       this.response = '';
        this.searchKey = '';
+       return this.dom.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + key);
       // this.response = null;
 
   }

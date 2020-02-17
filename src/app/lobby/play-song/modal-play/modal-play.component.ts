@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {ModalController} from '@ionic/angular';
 
 @Component({
   selector: 'app-modal-play',
@@ -9,13 +10,24 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 export class ModalPlayComponent implements OnInit {
 
   @Input() title: string;
-  @Input() currentVidID: string;
-  url: SafeResourceUrl = ''
-  constructor(private dom: DomSanitizer) { }
+  @Input() currentId: string;
+  @Input() channelId: string;
+  id = '';
+  unsafeUrl = '';
+  url: SafeResourceUrl = '';
+  constructor(private dom: DomSanitizer, public modalCtrl: ModalController) { }
 
-  ngOnInit() {}
-    sanitizeVid(vidId) {
-      return this.dom.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + vidId);
+  ngOnInit() {
+    this.id = this.currentId;
+    this.url = this.dom.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.currentId);
+  }
+
+  closeModal() {
+    this.modalCtrl.dismiss();
+  }
+
+  sanitizeVid() {
+      return this.dom.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + this.id);
     }
 
 

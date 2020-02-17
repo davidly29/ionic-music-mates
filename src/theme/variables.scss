@@ -2,6 +2,14 @@
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
+$colors: (
+primary: #3880ff,
+secondary: #0cd1e8,
+light_background: #a9c2eb,
+dark_background: #8494ad,
+warm: #ffd31a,
+auth_pic: ('../../assets/img/back.jpg')
+);
 :root {
   /** primary **/
   --ion-color-primary: #3880ff;
@@ -18,6 +26,8 @@
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
   --ion-color-secondary-shade: #0bb8cc;
   --ion-color-secondary-tint: #24d6ea;
+  --ion-color-secondary-background: rgba(85, 80, 76, 1);
+  --ion-color-secondary-toolbar: rgb(70, 87, 114);
 
   /** tertiary **/
   --ion-color-tertiary: #7044ff;

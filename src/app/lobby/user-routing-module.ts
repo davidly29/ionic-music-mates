@@ -12,7 +12,7 @@ const routes: Routes = [
             {path: 'joinLobby', children: [
                     {
                         path: '',
-                        loadChildren: './join-lobby/join-lobby.module#JoinLobbyPageModule', canLoad: [GuardGuard]
+                        loadChildren: './join-lobby/join-lobby.module#JoinLobbyPageModule', // canLoad: [GuardGuard]
                     }
                 ]},
             {path: 'edit:lobbyId', children: [
@@ -24,7 +24,7 @@ const routes: Routes = [
             {path: 'viewLobby', children: [
                     {
                         path: ':lobbyId',
-                        loadChildren: './lobby.module#LobbyPageModule', canLoad: [GuardGuard]
+                        loadChildren: './lobby.module#LobbyPageModule', // canLoad: [GuardGuard]
                     }
                 ]},
             {path: 'createLobby', children: [
@@ -36,7 +36,7 @@ const routes: Routes = [
             {path: 'song', children: [
                     {
                         path: '',
-                        loadChildren: './play-song/play-song.module#PlaySongPageModule',
+                        loadChildren: './play-song/play-song.module#PlaySongPageModule', canLoad: [GuardGuard]
                     }
                 ]},
             {

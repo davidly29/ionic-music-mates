@@ -10,6 +10,12 @@ import {FirebaseServiceService} from '../../firebase-service.service';
 })
 export class JoinLobbyPage implements OnInit {
   loadedLobbies: LobbyModel[];
+
+  sliderConfig = {
+    spaceBetween: 10,
+    centeredSlides: true,
+    slidesPerView: 1.6,
+  };
   constructor(private lobbyService: ServicePage, private firebaseService: FirebaseServiceService) { }
 
   ngOnInit() {
@@ -17,6 +23,12 @@ export class JoinLobbyPage implements OnInit {
     this.firebaseService.getLobbies().subscribe(res => {
         this.loadedLobbies = res;
   });
+  }
+
+  removeLobby(id) {
+    this.firebaseService.removeLobby(id).then(obj => {
+      console.log(obj);
+    });
   }
 
   joinLobby(user) {

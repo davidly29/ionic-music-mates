@@ -1,5 +1,6 @@
 export class LobbyModel {
-    constructor(public name: string, public password: string, public description: string, public allowedUsers: number, public id?: string) {
+    // tslint:disable-next-line:max-line-length
+    constructor(public name: string, public password: string, public description: string, public allowedUsers: number, public userId?: string, public id?: string) {
 
     }
 

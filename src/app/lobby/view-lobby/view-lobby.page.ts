@@ -30,10 +30,14 @@ export class ViewLobbyPage implements OnInit {
   allMessages: MessageModel[] = [];
 
   currentLobbyMessages: MessageModel[];
+
+  loadedLobby: LobbyModel;
+
   tempLobby: LobbyModel = {
+    id: '',
     name: '',
     description: '',
-    id: '',
+    userId: '',
     password: '',
     allowedUsers: 0
   };
@@ -118,7 +122,10 @@ export class ViewLobbyPage implements OnInit {
     this.joined = false;
     // this.checkUserJoined();
     this.currentUser = this.authService.user;
-
+    this.loadedLobby = this.lobbyService.getLobby(this.activatedRoute.snapshot.paramMap.get('id'));
+    this.firebaseService.getLobby(this.activatedRoute.snapshot.paramMap.get('id')).subscribe(temp => {
+      this.tempLobby = temp;
+    });
   }
 
   joinLobby() {

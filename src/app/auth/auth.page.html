@@ -1,10 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{ isLogin ? 'Login' : 'Signup' }}</ion-title>
+    <ion-title size="large" align="center">Welcome to MusicMates</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding class="login-style">
   <form #f="ngForm" (ngSubmit)="onSubmit(f)">
   <ion-grid>
     <ion-row>
