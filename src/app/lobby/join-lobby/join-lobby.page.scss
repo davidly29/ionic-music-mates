@@ -1,10 +1,11 @@
 ion-content {
   text-align: center;
-  --background: url('../img/musiclobby.png');
-  //--ion-background-color: #a8c0ff;
+  //--background: url('../img/musiclobby.png');
+  --ion-background-color: #7C7287;
 }
 ion-toolbar{
-  --background: #a290ff
+  --background: #9DC0BC;
+  --font-color: #B2EDC5;
 }
 ion-item {
   opacity: 0.6;
@@ -21,21 +22,40 @@ ion-col {
 }
 .font {
   font-size: 2em;
-  --font-color: #000000;
+  color: #B2EDC5;
 }
 .fontSecond {
-  font-size: 1em;
+  font-size: 1.5em;
   --font-color: #000000;
+  font-weight: bold;
+  opacity: 1;
 }
 ion-slides {
   margin-top: 30%;
 }
 ion-card {
+  //opacity: 0.7;
   width: 80%;
   height: 60%;
-  background: #ada9a4;
+  background: #B2EDC5;
 }
 ion-note {
   alignment: left;
   --font-color: #f80a14
+}
+.ion-button {
+  opacity: 1.0;
+  background-color: #C1FFF2;
+}
+ion-searchbar {
+  background: #FFF;
+  border-radius: 30px;
+  height: 40px;
+  margin: 0 auto;
+  max-width: 400px;
+  font-size: 1.25em;
+  border: 1px solid;
+}
+.ion-card-content {
+
 }

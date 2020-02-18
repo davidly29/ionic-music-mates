@@ -30,7 +30,7 @@ const routes: Routes = [
             {path: 'createLobby', children: [
                     {
                         path: '',
-                        loadChildren: './create-lobby/create-lobby.module#CreateLobbyPageModule', canLoad: [GuardGuard]
+                        loadChildren: './create-lobby/create-lobby.module#CreateLobbyPageModule',
                     }
                 ]},
             {path: 'song', children: [

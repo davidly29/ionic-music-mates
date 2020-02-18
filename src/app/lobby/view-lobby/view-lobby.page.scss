@@ -6,6 +6,20 @@
   white-space: pre-wrap;
 }
 
+ion-content {
+  //--background: url('../img/musiclobby.png');
+  --ion-background-color: #7C7287;
+}
+
+ion-toolbar{
+  --background: #9DC0BC;
+  --font-color: #B2EDC5;
+}
+
+ion-footer {
+  --ion-background-color: #BAFFDF;
+}
+
 .other-user {
   backround: var(--ion-color-tertiary);
   background-color: #7e57ff;

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Lobby Selection</ion-title>
+    <ion-title align="center" color="">Lobby Selection</ion-title>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -10,7 +10,51 @@
 <ion-content>
   <br>
   <br>
-  <ion-title align="center" color="primary">Please select a lobby to start !</ion-title>
+  <ion-title align="center" class="font">Please select a lobby to start !</ion-title>
+  <ion-searchbar align="center"></ion-searchbar>
+<!--    <ion-grid>-->
+<!--      <ion-row>-->
+<!--        <ion-col>-->
+<!--          <ion-card align="left">-->
+<!--            <ion-card-header>-->
+<!--              <ion-card-title>-->
+<!--                View Friend's Lobby-->
+<!--              </ion-card-title>-->
+<!--            </ion-card-header>-->
+<!--            <ion-card-content>-->
+<!--              <ion-icon name="people-circle-outline"></ion-icon>-->
+<!--            </ion-card-content>-->
+<!--          </ion-card>-->
+<!--        </ion-col>-->
+
+<!--        <ion-col>-->
+<!--          <ion-card align="center">-->
+<!--            <ion-card-header>-->
+<!--              <ion-card-title>-->
+<!--                Search Lobby-->
+<!--              </ion-card-title>-->
+<!--            </ion-card-header>-->
+<!--            <ion-card-content>-->
+<!--              <ion-icon name="search-circle-outline"></ion-icon>-->
+<!--            </ion-card-content>-->
+<!--          </ion-card>-->
+<!--        </ion-col>-->
+
+<!--        <ion-col>-->
+<!--          <ion-card align="right">-->
+<!--            <ion-card-header>-->
+<!--              <ion-card-title>-->
+<!--                Browse Lobbies-->
+<!--              </ion-card-title>-->
+<!--            </ion-card-header>-->
+<!--            <ion-card-content>-->
+<!--              <ion-icon name="eye-outline"></ion-icon>-->
+<!--            </ion-card-content>-->
+<!--          </ion-card>-->
+<!--        </ion-col>-->
+<!--      </ion-row>-->
+
+<!--    </ion-grid>-->
     <ion-slides [options]="sliderConfig">
       <ion-slide *ngFor="let item of loadedLobbies">
       <ion-card>
@@ -23,7 +67,7 @@
         <ion-card-content>
           <div class="fontSecond">{{item.description}}</div>
           <ion-note color="danger" slot="end">Max Users: {{item.allowedUsers}} </ion-note>
-          <ion-button expand="full" [routerLink]="['/join-lobby', item.id]">
+          <ion-button class="ion-button" expand="full" [routerLink]="['/join-lobby', item.id]">
           Join Lobby
           </ion-button>
         </ion-card-content>
