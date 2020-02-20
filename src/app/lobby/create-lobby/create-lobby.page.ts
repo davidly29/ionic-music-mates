@@ -13,12 +13,12 @@ import {take} from 'rxjs/operators';
 })
 export class CreateLobbyPage implements OnInit {
   lobby: LobbyModel = {
-    id: '',
-    userId: 'one',
-    name: 'test',
-    password: 'pass',
-    description: 'desc',
-    allowedUsers: 2
+    userId: '',
+    name: '',
+    password: '',
+    description: '',
+    allowedUsers: null,
+    joinedUsers: []
   };
   lobbyId = null;
   constructor(private dbService: FirebaseServiceService, public toastController: ToastController, private route: ActivatedRoute,

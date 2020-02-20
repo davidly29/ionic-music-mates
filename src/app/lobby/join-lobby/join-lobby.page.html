@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title align="center" color="">Lobby Selection</ion-title>
+    <ion-title align="center">Lobby Selection</ion-title>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -70,6 +70,8 @@
           <ion-button class="ion-button" expand="full" [routerLink]="['/join-lobby', item.id]">
           Join Lobby
           </ion-button>
+          <ion-icon name="lock-closed-outline" *ngIf="item.password != ''"></ion-icon>
+          <ion-icon name="lock-open-outline" *ngIf="item.password === ''"></ion-icon>
         </ion-card-content>
       </ion-card>
       </ion-slide>

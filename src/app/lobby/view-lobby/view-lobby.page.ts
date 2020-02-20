@@ -26,6 +26,8 @@ export class ViewLobbyPage implements OnInit {
   lobbyUsers: LobbyUserModel[];
   currentUser: BehaviorSubject<User>;
 
+  currentUserName = '';
+
   allLobbies: LobbyModel[];
   allMessages: MessageModel[] = [];
 
@@ -39,7 +41,8 @@ export class ViewLobbyPage implements OnInit {
     description: '',
     userId: '',
     password: '',
-    allowedUsers: 0
+    allowedUsers: 0,
+    joinedUsers: []
   };
 
   tempUser: LobbyUserModel = {
@@ -126,6 +129,7 @@ export class ViewLobbyPage implements OnInit {
     this.firebaseService.getLobby(this.activatedRoute.snapshot.paramMap.get('id')).subscribe(temp => {
       this.tempLobby = temp;
     });
+    this.currentUserName = this.currentUser.getValue().email;
   }
 
   joinLobby() {
@@ -138,7 +142,11 @@ export class ViewLobbyPage implements OnInit {
 
     this.tempUser.lobbyId = this.activatedRoute.snapshot.paramMap.get('id');
     this.tempUser.users = this.authService.user.getValue().id;
-    this.firebaseService.addUser(this.tempUser).then(r => this.toastController.dismiss());
+
+    this.tempLobby.joinedUsers.push(this.currentUserName);
+    this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
+
+    // this.firebaseService.addUser(this.tempUser).then(r => this.toastController.dismiss());
   }
 
   checkUserJoined() {
