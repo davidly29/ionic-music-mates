@@ -29,6 +29,9 @@ export class ViewLobbyPage implements OnInit {
   currentUser: BehaviorSubject<User>;
 
   currentUserName = '';
+  isJoined = false;
+  isJoinedMsg = '';
+
   playlist: PlaylistModel = {
     videoId: 'test',
     userId: 'test',
@@ -56,20 +59,6 @@ export class ViewLobbyPage implements OnInit {
   };
 
   tempUser: LobbyUserModel = {
-    name: 'test',
-    lobbyId: 'test',
-    email: 'test',
-    users: 'test'
-  };
-
-  currentUserTest: LobbyUserModel = {
-    name: 'test',
-    lobbyId: 'test',
-    email: 'test',
-    users: 'test'
-  };
-
-  userToCheck: LobbyUserModel = {
     name: 'test',
     lobbyId: 'test',
     email: 'test',
@@ -150,39 +139,59 @@ export class ViewLobbyPage implements OnInit {
     });
     this.currentUserName = this.currentUser.getValue().email;
     this.currentId = this.currentUser.getValue().id;
-
+    this.checkUserJoined();
   }
 
   joinLobby() {
-    this.currentUser = this.authService.user;
-    this.tempUser.email = this.authService.user.getValue().email;
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.firebaseService.getLobby(id).subscribe(tempLobby => {
-      this.tempLobby = tempLobby;
-    });
+    this.checkUserJoined();
+    if (this.isJoined) {
+      this.toastController.create({
+        message: 'Already Joined',
+        duration: 3000,
+        showCloseButton: true,
+        closeButtonText: 'OK',
+        animated: true
+      }).then((obj) => {
+        obj.present();
+      });
+    } else {
+      this.currentUser = this.authService.user;
+      this.tempUser.email = this.authService.user.getValue().email;
+      const id = this.activatedRoute.snapshot.paramMap.get('id');
+      this.firebaseService.getLobby(id).subscribe(tempLobby => {
+        this.tempLobby = tempLobby;
+      });
 
-    this.tempUser.lobbyId = this.activatedRoute.snapshot.paramMap.get('id');
-    this.tempUser.users = this.authService.user.getValue().id;
+      this.tempUser.lobbyId = this.activatedRoute.snapshot.paramMap.get('id');
+      this.tempUser.users = this.authService.user.getValue().id;
 
-    this.tempLobby.joinedUsers.push(this.currentUserName);
-    this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
+      this.tempLobby.joinedUsers.push(this.currentUserName);
+      this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
 
-    // this.firebaseService.addUser(this.tempUser).then(r => this.toastController.dismiss());
+      // this.firebaseService.addUser(this.tempUser).then(r => this.toastController.dismiss());
+    }
   }
 
   checkUserJoined() {
-    this.userToCheck.email = this.authService.user.getValue().email;
-    this.userToCheck.users = this.authService.user.getValue().id;
-    this.userToCheck.lobbyId = this.activatedRoute.snapshot.paramMap.get('id');
-    this.userToCheck.name = 'test';
-    const id = this.userToCheck.users;
+    // this.userToCheck.email = this.authService.user.getValue().email;
+    // this.userToCheck.users = this.authService.user.getValue().id;
+    // this.userToCheck.lobbyId = this.activatedRoute.snapshot.paramMap.get('id');
+    // this.userToCheck.name = 'test';
+    // const id = this.userToCheck.users;
 
-    this.lobbyUsers.find(item => {
-      if (item.users === this.activatedRoute.snapshot.paramMap.get('id')) {
-        this.joined = true;
+    this.tempLobby.joinedUsers.find(item => {
+      if (item === this.currentUser.getValue().email) {
+        this.isJoined = true;
+        this.isJoinedMsg = 'You have Joined !';
         return true; }
     });
+    // this.tempLobby.joinedUsers.find(value => {
+    //   if (value === this.currentUser.getValue().email) {
+    //     this.isJoined === true;
+    //   }
+    // });
   }
+
   authWithSpotify() {
     const config = {
       clientId: '4671fcc7c9564f94b408922a06f54835',
@@ -233,7 +242,7 @@ export class ViewLobbyPage implements OnInit {
 
   viewLobbyUsers() {
     // tslint:disable-next-line:max-line-length
-    this.modalCtrl.create({component: ViewUserModalComponent, componentProps: {lobbyUsers: this.lobbyUsers, lobbyId: this.activatedRoute.snapshot.paramMap.get('id')}}).then(modelEl => {
+    this.modalCtrl.create({component: ViewUserModalComponent, componentProps: {joinedUsers: this.tempLobby.joinedUsers, lobbyId: this.activatedRoute.snapshot.paramMap.get('id')}}).then(modelEl => {
       modelEl.present();
     });
   }

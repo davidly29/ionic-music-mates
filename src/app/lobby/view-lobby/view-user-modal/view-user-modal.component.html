@@ -11,10 +11,10 @@
 
 <ion-content>
 <ion-list>
-  <ion-row *ngFor="let item of lobbyUsers">
-    <ion-col *ngIf="this.lobbyId === item.lobbyId">
+  <ion-row *ngFor="let item of joinedUsers">
+    <ion-col>
       <ion-label>
-        {{item.email}}
+        {{item}}
       </ion-label>
     </ion-col>
   </ion-row>

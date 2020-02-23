@@ -27,7 +27,7 @@
       </ion-item>
       </ion-menu-toggle>
 
-      <ion-menu-toggle>
+      <ion-menu-toggle *ngIf="authService.user != null">
       <ion-item (click)="onLogout()" button routerLink="/auth">
         <ion-label>Logout</ion-label>
       </ion-item>

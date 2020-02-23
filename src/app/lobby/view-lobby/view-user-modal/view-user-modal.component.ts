@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LobbyUserModel} from '../../join-lobby/lobbyUserModel';
 import {ModalController} from '@ionic/angular';
+import {LobbyModel} from '../../lobby.model';
 
 @Component({
   selector: 'app-view-user-modal',
@@ -8,7 +9,7 @@ import {ModalController} from '@ionic/angular';
   styleUrls: ['./view-user-modal.component.scss'],
 })
 export class ViewUserModalComponent implements OnInit {
-  @Input() lobbyUsers: LobbyUserModel[];
+  @Input() joinedUsers: string[];
   @Input() lobbyId: string;
   constructor(private  modalCtrl: ModalController) { }
 

@@ -30,7 +30,7 @@ export class AuthPage implements OnInit {
   authenticate(email: string, password: string) {
     this.isLoading = true;
     this.loadingCtrl
-        .create({ keyboardClose: true, message: 'Going in...'})
+        .create({ keyboardClose: true, message: 'Logging in...'})
         .then(loadingEl => {
           // tslint:disable-next-line:prefer-const
           let authOb: Observable<AuthResponseData>; // login or signup obj
@@ -53,6 +53,9 @@ export class AuthPage implements OnInit {
                   } else if (code === 'EMAIL_NOT_FOUND') {
                     message = 'Email not found';
                     this.showAlert(message);
+                  } else if (code === 'INVALID_PASSWORD') {
+                        message = 'Password is invalid';
+                        this.showAlert(message);
                   }
 
               });
