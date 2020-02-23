@@ -14,6 +14,8 @@ import { AutosizeModule} from 'ngx-autosize';
 import {MessageModel} from './messageModel';
 import {isBoolean} from 'util';
 import {ViewUserModalComponent} from './view-user-modal/view-user-modal.component';
+import {PlaylistModel} from '../../playlist/playlist-model';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 declare var cordova: any;
 @Component({
   selector: 'app-view-lobby',
@@ -27,7 +29,15 @@ export class ViewLobbyPage implements OnInit {
   currentUser: BehaviorSubject<User>;
 
   currentUserName = '';
+  playlist: PlaylistModel = {
+    videoId: 'test',
+    userId: 'test',
+    name: 'test',
+    id: 'test',
+    songs: [],
+  };
 
+  allPlaylists: PlaylistModel[];
   allLobbies: LobbyModel[];
   allMessages: MessageModel[] = [];
 
@@ -88,16 +98,24 @@ export class ViewLobbyPage implements OnInit {
     sentBy: '',
     time: ''
   };
+  currentId = '';
+  url: SafeResourceUrl = '';
   constructor(private activatedRoute: ActivatedRoute, private lobbyService: LobbyServiceService,
               private firebaseService: FirebaseServiceService, private toastCtrl: ToastController
   ,           private authService: AuthService, private toastController: ToastController,
-              private modalCtrl: ModalController) { }
+              private modalCtrl: ModalController, private dom: DomSanitizer) { }
 
   ngOnInit() {
+    this.playlist.songs = [];
     this.firebaseService.getLobbies().subscribe(res => {
       this.allLobbies = res;
       console.log(this.allLobbies);
     });
+
+    this.firebaseService.getPlaylists().subscribe(res => {
+          this.allPlaylists = res;
+        }
+    );
 
     this.firebaseService.getUsers().subscribe(res => {
       this.lobbyUsers = res;
@@ -125,11 +143,14 @@ export class ViewLobbyPage implements OnInit {
     this.joined = false;
     // this.checkUserJoined();
     this.currentUser = this.authService.user;
+
     this.loadedLobby = this.lobbyService.getLobby(this.activatedRoute.snapshot.paramMap.get('id'));
     this.firebaseService.getLobby(this.activatedRoute.snapshot.paramMap.get('id')).subscribe(temp => {
       this.tempLobby = temp;
     });
     this.currentUserName = this.currentUser.getValue().email;
+    this.currentId = this.currentUser.getValue().id;
+
   }
 
   joinLobby() {
@@ -179,6 +200,25 @@ export class ViewLobbyPage implements OnInit {
   leaveCurrentLobby() {
     this.joined = false;
     this.firebaseService.deleteUserFromLobby(this.currentUser.getValue().id);
+  }
+  viewSongs() {
+    const temp = this.authService.user.getValue().id;
+    if (this.allPlaylists.find(x => x.userId === temp) != null) {
+      this.playlist = this.allPlaylists.find(x => x.userId === temp);
+    } else {
+      this.presentToast();
+    }
+    // this.playlist.songs.push(id);
+    const currentSong = this.playlist.songs[0];
+    return this.dom.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + currentSong);
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'No Playlist found :(',
+      duration: 2000
+    });
+    toast.present();
   }
 
   sendMessage() {
