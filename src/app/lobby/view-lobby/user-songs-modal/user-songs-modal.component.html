@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar color="dark_background">
+    <ion-title>
+      playing...
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content color="light_background">
+  <!--  <p>vid id: {{currentId}}</p>-->
+  <iframe width="100%" height="350px" [src]="sanitizeVid()"></iframe>
+  <ion-grid align="center">
+    <ion-button shape="round" align="center" (click)="closeModal()">Return</ion-button>
+  </ion-grid>
+</ion-content>

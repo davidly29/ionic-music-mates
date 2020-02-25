@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Lobby: {{tempLobby?.name}}</ion-title>
-
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -14,25 +16,13 @@
 <!--    <ion-label>Description {{tempLobby?.description}}</ion-label>-->
 <!--  </ion-item>-->
 <!--  <ion-button type="round" (click)="checkUserJoined()">Check</ion-button>-->
-  <ion-grid align="center">
-  <ion-button type="round" align="left" (click)="joinLobby()">Join Lobby</ion-button>
-  <ion-button type="round"  align="right"(click)="viewLobbyUsers()">Lobby Users<br><ion-badge id="cart-badge">{{tempLobby.joinedUsers.length}}</ion-badge></ion-button>
-  <ion-button type="round"  align="center">View Your Songs</ion-button>
-<!--  <ion-button  align="right"(click)="checkUserJoined()">Check</ion-button>-->
-  </ion-grid>
-<!-- <ion-icon name="checkmark-circle">{{ joined ? 'Joined' : 'Not Joined'}}</ion-icon>-->
-<!--  <ion-buttons>-->
-<!--    <ion-button expand="block"  fill="clear" color="primary" (click)="authWithSpotify()">-->
-<!--      <ion-icon name="send" slot="icon-only"></ion-icon>-->
-<!--    </ion-button>-->
-<!--  </ion-buttons>-->
-
-  <ion-grid>
+  <iframe align="left" width="40%" height="80%" [src]="sanitizeVidId(playlist.songs[0])"></iframe>
+  <ion-grid align="right">
     <ion-row *ngFor="let message of allMessages">
       <ion-col size="9" *ngIf="currentUser.getValue().email !== message.sentBy && this.activatedRoute.snapshot.paramMap.get('id') === message.lobbyId" text-wrap class="message other-user">
         <b>{{ message.sentBy }}</b>
-      <span> {{message.msgContent }}</span>
-      <div class="time" text-right> {{ message.time | date:'short' }} </div>
+        <span> {{message.msgContent }}</span>
+        <div class="time" text-right> {{ message.time | date:'short' }} </div>
       </ion-col>
 
       <ion-col size="9" offset="3" *ngIf="currentUser.getValue().email === message.sentBy && this.activatedRoute.snapshot.paramMap.get('id') === message.lobbyId" class="message my-message">
@@ -42,7 +32,37 @@
       </ion-col>
     </ion-row>
 
+    <ion-grid no-padding align="left">
+      <ion-button type="round" align="left" (click)="joinLobby()">Join Lobby</ion-button>
+      <ion-button type="round"  align="right"(click)="viewLobbyUsers()">Lobby Users<br><ion-badge id="cart-badge">{{tempLobby.joinedUsers.length}}</ion-badge></ion-button>
+      <ion-button type="round"  align="center" (click)="viewSongs()">View Your Songs</ion-button>
+      <ion-button type="round"  align="center" (click)="addSongsUser()">Add Specific Song</ion-button>
+      <!--  <ion-button  align="right"(click)="checkUserJoined()">Check</ion-button>-->
+    </ion-grid>
   </ion-grid>
+
+  <ion-list>
+    <ion-item *ngFor="let item of playlist.songs">
+      <ion-col (click)="playUserSongs(item)">
+        <ion-label>
+          Label: {{item}}
+        </ion-label>
+      </ion-col>
+    </ion-item>
+  </ion-list>
+  <ion-item >
+    <ion-label>
+      Play your Video !
+    </ion-label>
+  </ion-item>
+<!-- <ion-icon name="checkmark-circle">{{ joined ? 'Joined' : 'Not Joined'}}</ion-icon>-->
+<!--  <ion-buttons>-->
+<!--    <ion-button expand="block"  fill="clear" color="primary" (click)="authWithSpotify()">-->
+<!--      <ion-icon name="send" slot="icon-only"></ion-icon>-->
+<!--    </ion-button>-->
+<!--  </ion-buttons>-->
+
+
 </ion-content>
 <ion-footer>
   <ion-toolbar>

@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar color="dark_background">
+    <ion-title>
+      Select Songs To Add
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <!--  <p>vid id: {{currentId}}</p>-->
+  <ion-list>
+    <ion-row *ngFor="let item of song">
+      <ion-item (click)="addToPlaylist(lobbyPlaylist, item)">
+        {{item}} <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-item>
+    </ion-row>
+  </ion-list>
+</ion-content>

@@ -16,10 +16,12 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { YtServiceService } from './yt-service.service';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
 import {ModalPlayComponent} from './lobby/play-song/modal-play/modal-play.component';
+import {UserSongsModalComponent} from './lobby/view-lobby/user-songs-modal/user-songs-modal.component';
+import {UserAddSongsComponent} from './lobby/view-lobby/user-add-songs/user-add-songs.component';
 
 @NgModule({
-  declarations: [AppComponent, ModalPlayComponent],
-  entryComponents: [ModalPlayComponent],
+  declarations: [AppComponent, ModalPlayComponent, UserSongsModalComponent, UserAddSongsComponent],
+  entryComponents: [ModalPlayComponent, UserSongsModalComponent, UserAddSongsComponent],
   // tslint:disable-next-line:max-line-length
   imports: [BrowserModule, HttpClientModule, AngularFireModule.initializeApp(environment.firebase), AngularFirestoreModule,
     IonicModule.forRoot(), AppRoutingModule],

@@ -16,6 +16,9 @@ import {isBoolean} from 'util';
 import {ViewUserModalComponent} from './view-user-modal/view-user-modal.component';
 import {PlaylistModel} from '../../playlist/playlist-model';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {SongModel} from '../song.model';
+import {UserSongsModalComponent} from './user-songs-modal/user-songs-modal.component';
+import {UserAddSongsComponent} from './user-add-songs/user-add-songs.component';
 declare var cordova: any;
 @Component({
   selector: 'app-view-lobby',
@@ -80,6 +83,7 @@ export class ViewLobbyPage implements OnInit {
     }
   ];
   newMsg = '';
+  lobbyPlaylist = [];
 
   messageTemp: MessageModel = {
     lobbyId: '',
@@ -89,6 +93,7 @@ export class ViewLobbyPage implements OnInit {
   };
   currentId = '';
   url: SafeResourceUrl = '';
+  songs = [];
   constructor(private activatedRoute: ActivatedRoute, private lobbyService: LobbyServiceService,
               private firebaseService: FirebaseServiceService, private toastCtrl: ToastController
   ,           private authService: AuthService, private toastController: ToastController,
@@ -140,6 +145,7 @@ export class ViewLobbyPage implements OnInit {
     this.currentUserName = this.currentUser.getValue().email;
     this.currentId = this.currentUser.getValue().id;
     this.checkUserJoined();
+    this.songs = this.playlist.songs;
   }
 
   joinLobby() {
@@ -168,28 +174,27 @@ export class ViewLobbyPage implements OnInit {
       this.tempLobby.joinedUsers.push(this.currentUserName);
       this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
 
-      // this.firebaseService.addUser(this.tempUser).then(r => this.toastController.dismiss());
     }
   }
 
-  checkUserJoined() {
-    // this.userToCheck.email = this.authService.user.getValue().email;
-    // this.userToCheck.users = this.authService.user.getValue().id;
-    // this.userToCheck.lobbyId = this.activatedRoute.snapshot.paramMap.get('id');
-    // this.userToCheck.name = 'test';
-    // const id = this.userToCheck.users;
+  playUserSongs(songId) {
+    this.modalCtrl.create({
+      component: UserSongsModalComponent, componentProps: {song: songId}
+    }).then(modalEl => {
+      modalEl.present();
+    });
+  }
 
+  sanitizeVidId(id) {
+    return this.dom.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + id);
+  }
+  checkUserJoined() {
     this.tempLobby.joinedUsers.find(item => {
       if (item === this.currentUser.getValue().email) {
         this.isJoined = true;
         this.isJoinedMsg = 'You have Joined !';
         return true; }
     });
-    // this.tempLobby.joinedUsers.find(value => {
-    //   if (value === this.currentUser.getValue().email) {
-    //     this.isJoined === true;
-    //   }
-    // });
   }
 
   authWithSpotify() {
@@ -214,12 +219,7 @@ export class ViewLobbyPage implements OnInit {
     const temp = this.authService.user.getValue().id;
     if (this.allPlaylists.find(x => x.userId === temp) != null) {
       this.playlist = this.allPlaylists.find(x => x.userId === temp);
-    } else {
-      this.presentToast();
     }
-    // this.playlist.songs.push(id);
-    const currentSong = this.playlist.songs[0];
-    return this.dom.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + currentSong);
   }
 
   async presentToast() {
@@ -243,6 +243,13 @@ export class ViewLobbyPage implements OnInit {
   viewLobbyUsers() {
     // tslint:disable-next-line:max-line-length
     this.modalCtrl.create({component: ViewUserModalComponent, componentProps: {joinedUsers: this.tempLobby.joinedUsers, lobbyId: this.activatedRoute.snapshot.paramMap.get('id')}}).then(modelEl => {
+      modelEl.present();
+    });
+  }
+
+  addSongsUser() {
+    // tslint:disable-next-line:max-line-length
+    this.modalCtrl.create({component: UserAddSongsComponent, componentProps: {song: this.playlist.songs, lobbyList: this.lobbyPlaylist}}).then(modelEl => {
       modelEl.present();
     });
   }
