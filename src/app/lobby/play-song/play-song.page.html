@@ -1,12 +1,12 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
     <ion-title>Play a Song</ion-title>
   </ion-toolbar>
-  <ion-searchbar color='danger' [(ngModel)]="searchKey" (keyup.enter)="getSongBySearch()" placeholder="Search..." class="form-control">
+  <ion-searchbar no-padding color='danger' [(ngModel)]="searchKey" (keyup.enter)="getSongBySearch()" placeholder="Search..." class="form-control">
   </ion-searchbar>
 </ion-header>
 
-<ion-content>
+<ion-content color="primary">
 <!--  <form #f="ngForm" (ngSubmit)="onSubmit(f)">-->
 <!--  <p>Search for a song you want to add</p>-->
 <!--    <ion-item>-->
@@ -31,14 +31,14 @@
 
   <ion-list>
     <ion-item-sliding *ngFor="let video of response.items">
-      <ion-item (click)="playVideo(video.snippet.title, video.id.videoId, video.id.channelId)">
+      <ion-item (click)="playVideo(video.snippet.title, video.id.videoId, video.id.channelId)" class="text">
         <img [src]="video.snippet.thumbnails.default.url" alt="">
         <ion-col >{{ video.snippet.description}}</ion-col>
       </ion-item>
 
       <ion-item-options>
-        <ion-item-option color="primary" (click)="addSong(video.id.videoId)">
-          <ion-icon slot="bottom" name="add-circle-outline"></ion-icon>
+        <ion-item-option color="secondary" (click)="addSong(video.id.videoId)">
+          <ion-icon slot="bottom" name="add-outline"> </ion-icon>
           Add
         </ion-item-option>
         <ion-item-option color="secondary">

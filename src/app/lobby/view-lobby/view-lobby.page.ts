@@ -19,6 +19,7 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {SongModel} from '../song.model';
 import {UserSongsModalComponent} from './user-songs-modal/user-songs-modal.component';
 import {UserAddSongsComponent} from './user-add-songs/user-add-songs.component';
+import index from '@ionic/angular-toolkit/schematics/page';
 declare var cordova: any;
 @Component({
   selector: 'app-view-lobby',
@@ -94,6 +95,8 @@ export class ViewLobbyPage implements OnInit {
   currentId = '';
   url: SafeResourceUrl = '';
   songs = [];
+  currentVideo = '';
+  currentSongIndex = 0;
   constructor(private activatedRoute: ActivatedRoute, private lobbyService: LobbyServiceService,
               private firebaseService: FirebaseServiceService, private toastCtrl: ToastController
   ,           private authService: AuthService, private toastController: ToastController,
@@ -146,6 +149,21 @@ export class ViewLobbyPage implements OnInit {
     this.currentId = this.currentUser.getValue().id;
     this.checkUserJoined();
     this.songs = this.playlist.songs;
+    this.currentVideo = this.playlist.songs[1];
+  }
+
+  goToNextVideo() {
+    // let temps = this.playlist.songs.indexOf(currentId);
+    // temps = temps + 1;
+    this.currentSongIndex = this.currentSongIndex + 1;
+    this.currentVideo = this.playlist.songs[this.currentSongIndex];
+    return this.currentVideo;
+  }
+
+  goToPrevVideo() {
+    this.currentSongIndex = this.currentSongIndex - 1;
+    this.currentVideo = this.playlist.songs[this.currentSongIndex];
+    return this.currentVideo;
   }
 
   joinLobby() {

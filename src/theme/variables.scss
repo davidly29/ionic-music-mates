@@ -3,8 +3,8 @@
 
 /** Ionic CSS Variables **/
 $colors: (
-primary: #3880ff,
-secondary: #0cd1e8,
+primary: rgba(0, 0, 0, 0.85),
+secondary: #EC14BE,
 light_background: #a9c2eb,
 dark_background: #8494ad,
 warm: #ffd31a,
@@ -12,7 +12,7 @@ auth_pic: ('../../assets/img/back.jpg')
 );
 :root {
   /** primary **/
-  --ion-color-primary: #3880ff;
+  --ion-color-primary: rgba(0, 0, 0, 0.85);
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
@@ -20,9 +20,9 @@ auth_pic: ('../../assets/img/back.jpg')
   --ion-color-primary-tint: #4c8dff;
 
   /** secondary **/
-  --ion-color-secondary: #C1FFF2;
+  --ion-color-secondary: #EC14BE;
   --ion-color-secondary-rgb: #C1FFF2;
-  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast: #000000;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
   --ion-color-secondary-shade: #0bb8cc;
   --ion-color-secondary-tint: #24d6ea;
@@ -30,7 +30,7 @@ auth_pic: ('../../assets/img/back.jpg')
   --ion-color-secondary-toolbar: rgb(70, 87, 114);
 
   /** tertiary **/
-  --ion-color-tertiary: #B2EDC5;
+  --ion-color-tertiary: #fff7f4;
   --ion-color-tertiary-rgb: #6fff3e;
   --ion-color-tertiary-contrast: #4c8dff;
   --ion-color-tertiary-contrast-rgb: 255, 255, 255;
@@ -85,3 +85,4 @@ auth_pic: ('../../assets/img/back.jpg')
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 }
+
