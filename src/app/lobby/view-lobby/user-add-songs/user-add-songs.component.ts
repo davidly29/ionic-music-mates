@@ -19,9 +19,9 @@ export class UserAddSongsComponent implements OnInit {
   addToPlaylist(lobbyPlaylist, idToAdd: string) {
     this.newLobbyPlaylist = lobbyPlaylist;
     const temp = idToAdd;
-    this.newLobbyPlaylist.push(temp);
+    this.lobbyPlaylist.push(temp);
     // lobbyPlaylist.push(idToAdd);
-    return this.newLobbyPlaylist;
+    return this.lobbyPlaylist;
   }
 
 }

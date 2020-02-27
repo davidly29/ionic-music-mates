@@ -1,17 +1,17 @@
 ion-content {
   //--background: url('../img/musiclobby.png');
-  --ion-background-color: #7C7287;
+  --ion-background-color: var(--ion-color-primary);
 }
 ion-toolbar{
-  --background: #9DC0BC;
-  --font-color: #B2EDC5;
+  --background: var(--ion-color-secondary);
+  --font-color: var(--ion-color-tertiary);
 }
 
 ion-item{
-  color:#C1FFF2
+  color: var(--ion-color-tertiary);
 }
 .text {
-  color: #C1FFF2
+  color: var(--ion-color-tertiary);
 }
 
 .ion-fancy-button {

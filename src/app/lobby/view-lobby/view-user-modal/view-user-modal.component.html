@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
     <ion-title>Users Currently In Lobby</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="onCancel()">
@@ -9,11 +9,11 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content color="primary">
 <ion-list>
   <ion-row *ngFor="let item of joinedUsers">
     <ion-col>
-      <ion-label>
+      <ion-label class="text">
         {{item}}
       </ion-label>
     </ion-col>

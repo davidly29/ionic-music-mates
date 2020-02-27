@@ -46,24 +46,22 @@
 <!--      </ion-col>-->
 <!--    </ion-item>-->
 <!--  </ion-list>-->
-  <ion-grid no-padding align="left">
+  <ion-footer no-shadow class="footer">
+    <ion-toolbar position="bottom">
     <ion-button type="round" align="left" (click)="joinLobby()">Join Lobby</ion-button>
     <ion-button type="round"  align="right"(click)="viewLobbyUsers()">Lobby Users<br><ion-badge id="cart-badge">{{tempLobby.joinedUsers.length}}</ion-badge></ion-button>
     <ion-button type="round"  align="center" (click)="viewSongs()">View Your Songs</ion-button>
     <ion-button type="round"  align="center" (click)="addSongsUser()">Add Specific Song</ion-button>
 
-    <ion-button type="round"  align="left" (click)="goToPrevVideo()">Prev<ion-icon name="chevron-back-outline"color="tertiary"></ion-icon></ion-button>
-    <ion-button type="round"  align="left" (click)="goToNextVideo()">Next<ion-icon name="chevron-forward-outline" color="tertiary"></ion-icon></ion-button>
+    </ion-toolbar>
+  </ion-footer>
     <!--  <ion-button  align="right"(click)="checkUserJoined()">Check</ion-button>-->
-  </ion-grid>
 <!-- <ion-icon name="checkmark-circle">{{ joined ? 'Joined' : 'Not Joined'}}</ion-icon>-->
 <!--  <ion-buttons>-->
 <!--    <ion-button expand="block"  fill="clear" color="primary" (click)="authWithSpotify()">-->
 <!--      <ion-icon name="send" slot="icon-only"></ion-icon>-->
 <!--    </ion-button>-->
 <!--  </ion-buttons>-->
-
-
 </ion-content>
 <ion-footer>
   <ion-toolbar>
@@ -73,6 +71,8 @@
       </ion-col>
       <ion-col size="2"></ion-col>
       <div class="ion-text-end">
+        <ion-col style="text-align: right"><ion-button padding type="round"  align="right" (click)="goToPrevVideo()">Prev</ion-button></ion-col>
+        <ion-col style="text-align: right"><ion-button padding type="round"  align="right" (click)="goToNextVideo()">Next</ion-button></ion-col>
         <ion-buttons>
           <ion-button expand="block"  fill="clear" color="primary" [disabled]="newMsg === ''" class="msg-btn" (click)="sendMessage()">
             <ion-icon name="send" slot="icon-only" align="right" l></ion-icon>
