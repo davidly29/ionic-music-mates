@@ -10,8 +10,7 @@
 <ion-content color="primary">
   <br>
   <br>
-  <ion-title align="center" class="font"></ion-title>
-  <ion-searchbar align="center"></ion-searchbar>
+
 <!--    <ion-grid>-->
 <!--      <ion-row>-->
 <!--        <ion-col>-->
@@ -58,8 +57,12 @@
     <ion-slides [options]="sliderConfig">
       <ion-slide *ngFor="let item of loadedLobbies">
       <ion-card color="secondary">
+        <div>
+
+<!--        <ion-icon float-right name="close-circle" (click)="removeLobby(item.id)" class="xicon"></ion-icon>-->
+        </div>
         <ion-card-header>
-          <ion-card-title>
+          <ion-card-title align="center">
             {{item.name}}
           </ion-card-title>
         </ion-card-header>
@@ -67,9 +70,11 @@
         <ion-card-content>
           <div class="fontSecond">{{item.description}}</div>
           <ion-note color="danger" slot="end">Max Users: {{item.allowedUsers}} </ion-note>
-          <ion-button class="ion-button" expand="full" [routerLink]="['/join-lobby', item.id]">
+          <ion-button expand="full" align="bottom" [routerLink]="['/join-lobby', item.id]">
           Join Lobby
           </ion-button>
+          <ion-button  expand="full" *ngIf="item.userId === this.authService.user.getValue().id" class="button-active" color="danger" align="center" (click)="removeLobby(item.id)">Delete <br><ion-icon color="primary" float-right name="close-circle"></ion-icon></ion-button>
+
           <ion-icon name="lock-closed-outline" *ngIf="item.password != ''"></ion-icon>
           <ion-icon name="lock-open-outline" *ngIf="item.password === ''"></ion-icon>
         </ion-card-content>

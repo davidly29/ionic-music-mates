@@ -12,12 +12,14 @@ ion-content {
 }
 
 ion-toolbar{
-  --background: #9DC0BC;
-  --font-color: #B2EDC5;
+  --background: var(--ion-color-secondary);
+}
+.second-bar {
+  background: transparent;
 }
 
 ion-footer {
-  --ion-background-color: var(--ion-color-secondary);
+  background-color: var(--ion-color-secondary);
 }
 
 .other-user {
@@ -33,7 +35,12 @@ ion-footer {
 }
 ion-grid{
   width: 100%;
-  height: 60%;
+  height: 100px;
+  vertical-align: 40%;
+}
+.second-grid {
+  align-items: flex-end;
+  height: 50px;
 }
 .grid-temp{
   alignment: bottom;
@@ -80,4 +87,12 @@ ion-grid{
 
 .fixed[scrolly=true] {
   overflow-y: auto;
+}
+
+ion-list {
+  overflow: hidden;
+  overflow-y: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }

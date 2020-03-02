@@ -3,6 +3,7 @@ import {ServicePage} from '../service/service.page';
 import {LobbyModel} from '../lobby.model';
 import {FirebaseServiceService} from '../../firebase-service.service';
 import {AuthService} from '../../auth/auth.service';
+import {AlertController, ModalController} from '@ionic/angular';
 
 @Component({
   selector: 'app-join-lobby',
@@ -27,7 +28,8 @@ export class JoinLobbyPage implements OnInit {
     centeredSlides: true,
     slidesPerView: 1.6,
   };
-  constructor(private lobbyService: ServicePage, private firebaseService: FirebaseServiceService, private authService: AuthService) { }
+  constructor(private lobbyService: ServicePage, private firebaseService: FirebaseServiceService, private authService: AuthService,
+              private alert: AlertController) { }
 
   ngOnInit() {
   // this.loadedLobbies = this.lobbyService.lobbies;
@@ -37,9 +39,13 @@ export class JoinLobbyPage implements OnInit {
   }
 
   removeLobby(id) {
-    this.firebaseService.removeLobby(id).then(obj => {
-      console.log(obj);
-    });
+    // this.tempLobby = this.loadedLobbies.find(temp => temp.id === id);
+    // if (this.tempLobby.userId !== this.authService.user.getValue().id) {
+    //   this.alert.create({header: 'You can only delete lobbies you have made', buttons: ['OK']}).then(alertEl => alertEl.present());
+    // } else {
+      this.firebaseService.removeLobby(id).then(obj => {
+        console.log(obj);
+      });
   }
 
   joinLobby(lobby: LobbyModel) {

@@ -121,7 +121,7 @@ export class FirebaseServiceService {
   }
 
   removeLobby(lobbyId) {
-      return this.lobbyCollection.doc('/' + lobbyId).delete();
+      return this.lobbyCollection.doc(lobbyId).delete();
   }
 
   //////////////////////////////////////////////////////

@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content color="primary">
+<ion-content color="primary" [scrollEvents]="true">
 <!--  <iframe width="100%" height="30%" [src]="viewSongs()"></iframe>-->
 <!--  <ion-item>-->
 <!--  <ion-label>Lobby Name {{tempLobby?.name}}</ion-label>-->
@@ -16,12 +16,17 @@
 <!--    <ion-label>Description {{tempLobby?.description}}</ion-label>-->
 <!--  </ion-item>-->
 <!--  <ion-button type="round" (click)="checkUserJoined()">Check</ion-button>-->
-  <iframe align="left" width="40%" height="80%" [src]="sanitizeVidId(this.playlist.songs[this.currentSongIndex])"></iframe>
+  <iframe align="left" width="40%" height="100%" [src]="sanitizeVidId(this.playlist.songs[this.currentSongIndex])"></iframe>
 
-  <ion-grid align="right" fixed class="fixed">
-    <ion-infinite-scroll>
-      <ion-infinite-scroll-content>
-    <ion-row *ngFor="let message of allMessages">
+  <ion-row text-right style="width: 50%;">
+    <ion-button type="round" (click)="joinLobby()">Join Lobby</ion-button>
+    <ion-button type="round" (click)="viewLobbyUsers()">View Users<br><ion-badge id="cart-badge">{{tempLobby.joinedUsers.length}}</ion-badge></ion-button>
+    <ion-button type="round" (click)="viewSongs()">View Your Songs</ion-button>
+    <ion-button type="round" (click)="addSongsUser()">Add Specific Song</ion-button>
+  </ion-row>
+
+  <ion-grid align="right" fixed>
+    <ion-row *ngFor="let message of allMessages" style="width: 60%;">
       <ion-col size="9" *ngIf="currentUser.getValue().email !== message.sentBy && this.activatedRoute.snapshot.paramMap.get('id') === message.lobbyId" text-wrap class="message other-user">
         <b>{{ message.sentBy }}</b>
         <span> {{message.msgContent }}</span>
@@ -34,8 +39,6 @@
         <div class="time" text-right> {{ message.time | date:'short'}} </div>
       </ion-col>
     </ion-row>
-      </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
   </ion-grid>
 <!--  <ion-list>-->
 <!--    <ion-item *ngFor="let item of playlist.songs">-->
@@ -46,15 +49,7 @@
 <!--      </ion-col>-->
 <!--    </ion-item>-->
 <!--  </ion-list>-->
-  <ion-footer no-shadow class="footer">
-    <ion-toolbar position="bottom">
-    <ion-button type="round" align="left" (click)="joinLobby()">Join Lobby</ion-button>
-    <ion-button type="round"  align="right"(click)="viewLobbyUsers()">Lobby Users<br><ion-badge id="cart-badge">{{tempLobby.joinedUsers.length}}</ion-badge></ion-button>
-    <ion-button type="round"  align="center" (click)="viewSongs()">View Your Songs</ion-button>
-    <ion-button type="round"  align="center" (click)="addSongsUser()">Add Specific Song</ion-button>
 
-    </ion-toolbar>
-  </ion-footer>
     <!--  <ion-button  align="right"(click)="checkUserJoined()">Check</ion-button>-->
 <!-- <ion-icon name="checkmark-circle">{{ joined ? 'Joined' : 'Not Joined'}}</ion-icon>-->
 <!--  <ion-buttons>-->
@@ -71,8 +66,6 @@
       </ion-col>
       <ion-col size="2"></ion-col>
       <div class="ion-text-end">
-        <ion-col style="text-align: right"><ion-button padding type="round"  align="right" (click)="goToPrevVideo()">Prev</ion-button></ion-col>
-        <ion-col style="text-align: right"><ion-button padding type="round"  align="right" (click)="goToNextVideo()">Next</ion-button></ion-col>
         <ion-buttons>
           <ion-button expand="block"  fill="clear" color="primary" [disabled]="newMsg === ''" class="msg-btn" (click)="sendMessage()">
             <ion-icon name="send" slot="icon-only" align="right" l></ion-icon>

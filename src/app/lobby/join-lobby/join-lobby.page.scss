@@ -34,10 +34,11 @@ ion-slides {
   margin-top: 30%;
 }
 ion-card {
+  flex-wrap: wrap;
   //opacity: 0.7;
-  width: 80%;
-  height: 60%;
-  background: #B2EDC5;
+  width: 80% !important;
+  height: 180px !important;
+  min-height: 60% !important;
 }
 ion-note {
   alignment: left;
@@ -56,6 +57,17 @@ ion-searchbar {
   font-size: 1.25em;
   border: 1px solid;
 }
-.ion-card-content {
-
+ion-card-content {
+  height: 60% !important;
+  min-height: 60% !important;
+}
+.xicon {
+  alignment: right;
+  text-align: right;
+  align-items: end;
+}
+.button-active{
+  box-shadow: none !important;
+  border-color: transparent !important;
+  outline: none !important;
 }
