@@ -130,8 +130,8 @@ export class FirebaseServiceService {
       return this.user;
   }
 
-  deleteUserFromLobby(users) {
-      return this.userCollection.doc(users).delete();
+  deleteUserFromLobby(lobby: LobbyModel) {
+      return this.lobbyCollection.doc(lobby.id).update(lobby);
   }
 
   addUser(user: LobbyUserModel) {

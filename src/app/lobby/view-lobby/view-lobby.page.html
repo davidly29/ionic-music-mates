@@ -4,6 +4,9 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+    <ion-button (click)="this.lobbyStatus()">{{isJoined ? 'Leave Lobby' : 'Join Lobby'}}</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -16,17 +19,21 @@
 <!--    <ion-label>Description {{tempLobby?.description}}</ion-label>-->
 <!--  </ion-item>-->
 <!--  <ion-button type="round" (click)="checkUserJoined()">Check</ion-button>-->
-  <iframe align="left" width="40%" height="100%" [src]="sanitizeVidId(this.playlist.songs[this.currentSongIndex])"></iframe>
+<!--  <iframe align="left" width="40%" height="100%" [src]="sanitizeVidId(this.playlist.songs[this.currentSongIndex])"></iframe>-->
+  <div class="video-container">
+    <iframe align="left" width="40%" height="100%" [src]="sanitizeVidId(this.tempLobby.songs[this.currentSongIndex])"></iframe>
+    <ion-button type="round" (click)="goToPrevVideo()" style="width: 19%">Prev</ion-button>
+    <ion-button type="round" (click)="goToNextVideo()" style="width: 19%">Next</ion-button>
+  </div>
 
-  <ion-row text-right style="width: 50%;">
-    <ion-button type="round" (click)="joinLobby()">Join Lobby</ion-button>
-    <ion-button type="round" (click)="viewLobbyUsers()">View Users<br><ion-badge id="cart-badge">{{tempLobby.joinedUsers.length}}</ion-badge></ion-button>
-    <ion-button type="round" (click)="viewSongs()">View Your Songs</ion-button>
-    <ion-button type="round" (click)="addSongsUser()">Add Specific Song</ion-button>
-  </ion-row>
 
-  <ion-grid align="right" fixed>
-    <ion-row *ngFor="let message of allMessages" style="width: 60%;">
+<!--    <ion-button type="round" (click)="joinLobby()">Join Lobby</ion-button>-->
+<!--    <ion-button type="round" (click)="viewLobbyUsers()">View Users<br><ion-badge id="cart-badge">{{tempLobby.joinedUsers.length}}</ion-badge></ion-button>-->
+<!--    <ion-button type="round" (click)="viewSongs()">View Your Songs</ion-button>-->
+<!--    <ion-button type="round" (click)="addSongsUser()">Add Specific Song</ion-button>-->
+
+<ion-grid align="right">
+    <ion-row *ngFor="let message of allMessages">
       <ion-col size="9" *ngIf="currentUser.getValue().email !== message.sentBy && this.activatedRoute.snapshot.paramMap.get('id') === message.lobbyId" text-wrap class="message other-user">
         <b>{{ message.sentBy }}</b>
         <span> {{message.msgContent }}</span>
@@ -39,7 +46,8 @@
         <div class="time" text-right> {{ message.time | date:'short'}} </div>
       </ion-col>
     </ion-row>
-  </ion-grid>
+</ion-grid>
+
 <!--  <ion-list>-->
 <!--    <ion-item *ngFor="let item of playlist.songs">-->
 <!--      <ion-col (click)="playUserSongs(item)">-->
@@ -68,7 +76,7 @@
       <div class="ion-text-end">
         <ion-buttons>
           <ion-button expand="block"  fill="clear" color="primary" [disabled]="newMsg === ''" class="msg-btn" (click)="sendMessage()">
-            <ion-icon name="send" slot="icon-only" align="right" l></ion-icon>
+            <ion-icon name="send" slot="icon-only" align="right"></ion-icon>
           </ion-button>
         </ion-buttons>
       </div>

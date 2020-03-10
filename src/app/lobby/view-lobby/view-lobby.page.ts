@@ -20,6 +20,7 @@ import {SongModel} from '../song.model';
 import {UserSongsModalComponent} from './user-songs-modal/user-songs-modal.component';
 import {UserAddSongsComponent} from './user-add-songs/user-add-songs.component';
 import index from '@ionic/angular-toolkit/schematics/page';
+import {NgForm} from '@angular/forms';
 declare var cordova: any;
 @Component({
   selector: 'app-view-lobby',
@@ -29,6 +30,7 @@ declare var cordova: any;
 export class ViewLobbyPage implements OnInit {
   joined: boolean;
   result = {};
+  playlistSongs: string[];
   lobbyUsers: LobbyUserModel[];
   currentUser: BehaviorSubject<User>;
 
@@ -59,7 +61,8 @@ export class ViewLobbyPage implements OnInit {
     userId: '',
     password: '',
     allowedUsers: 0,
-    joinedUsers: []
+    joinedUsers: [],
+    songs: []
   };
 
   tempUser: LobbyUserModel = {
@@ -95,7 +98,8 @@ export class ViewLobbyPage implements OnInit {
   currentId = '';
   url: SafeResourceUrl = '';
   songs = [];
-  currentVideo = '';
+  currentVideo: string;
+  userSongs: SongModel;
   currentSongIndex = 0;
   constructor(private activatedRoute: ActivatedRoute, private lobbyService: LobbyServiceService,
               private firebaseService: FirebaseServiceService, private toastCtrl: ToastController
@@ -156,13 +160,13 @@ export class ViewLobbyPage implements OnInit {
     // let temps = this.playlist.songs.indexOf(currentId);
     // temps = temps + 1;
     this.currentSongIndex = this.currentSongIndex + 1;
-    this.currentVideo = this.playlist.songs[this.currentSongIndex];
+    this.currentVideo = this.tempLobby.songs[this.currentSongIndex];
     return this.currentVideo;
   }
 
   goToPrevVideo() {
     this.currentSongIndex = this.currentSongIndex - 1;
-    this.currentVideo = this.playlist.songs[this.currentSongIndex];
+    this.currentVideo = this.tempLobby.songs[this.currentSongIndex];
     return this.currentVideo;
   }
 
@@ -188,6 +192,7 @@ export class ViewLobbyPage implements OnInit {
 
       this.tempUser.lobbyId = this.activatedRoute.snapshot.paramMap.get('id');
       this.tempUser.users = this.authService.user.getValue().id;
+      this.isJoined = true;
 
       this.tempLobby.joinedUsers.push(this.currentUserName);
       this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
@@ -229,15 +234,34 @@ export class ViewLobbyPage implements OnInit {
           this.result = { access_token: accessToken, expires_in: expiresAt, ref: encryptedRefreshToken };
         });
   }
+
   leaveCurrentLobby() {
-    this.joined = false;
-    this.firebaseService.deleteUserFromLobby(this.currentUser.getValue().id);
+    this.isJoined = false;
+    let name = '';
+    name = this.tempLobby.joinedUsers.find(x => (x === this.authService.user.getValue().email));
+    const indexToRemove = this.tempLobby.joinedUsers.indexOf(name);
+    this.tempLobby.joinedUsers.splice(indexToRemove, 1);
+    if (name !== '') {
+      this.firebaseService.deleteUserFromLobby(this.tempLobby);
+      this.toastCtrl.create({
+        message: 'You have left the lobby',
+        duration: 2000
+      }).then(toast => toast.present());
+    } else {
+      this.toastCtrl.create({
+        message: 'You have not joined this lobby',
+        duration: 2000
+      }).then(toast => toast.present());
+    }
   }
+
   viewSongs() {
     const temp = this.authService.user.getValue().id;
     if (this.allPlaylists.find(x => x.userId === temp) != null) {
       this.playlist = this.allPlaylists.find(x => x.userId === temp);
     }
+    this.tempLobby.songs = this.playlist.songs;
+    this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
   }
 
   async presentToast() {
@@ -271,12 +295,12 @@ export class ViewLobbyPage implements OnInit {
       modelEl.present();
     });
   }
-
-  showToast(msg) {
-    this.toastCtrl.create({
-      message: msg,
-      duration: 2000
-    }).then(toast => toast.present());
+  lobbyStatus() {
+    if (this.isJoined) {
+      this.leaveCurrentLobby();
+    } else {
+      this.joinLobby();
+    }
   }
 
 }

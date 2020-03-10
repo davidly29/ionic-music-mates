@@ -32,7 +32,7 @@ export class PlaySongPage implements OnInit {
     userId: 'test',
     name: 'test',
     id: 'test',
-    songs: [],
+    songs: null,
   };
 
   allPlaylists: PlaylistModel[];
