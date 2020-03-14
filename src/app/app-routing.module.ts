@@ -9,12 +9,9 @@ const routes: Routes = [
   { path: '', redirectTo: 'post-log', pathMatch: 'full' },
   { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
   { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
-  { path: 'playlist', loadChildren: './playlist/playlist.module#PlaylistPageModule' },
-  { path: 'edit-playlist', loadChildren: './playlist/edit-playlist/edit-playlist.module#EditPlaylistPageModule' },
-  { path: 'create-playlist', loadChildren: './playlist/create-playlist/create-playlist.module#CreatePlaylistPageModule' },
   { path: 'post-log', loadChildren: './lobby/post-log/post-log.module#PostLogPageModule' },
   { path: 'lobby', loadChildren: './lobby/lobby.module#LobbyPageModule' },
-  { path: 'create-lobby', loadChildren: './lobby/create-lobby/create-lobby.module#CreateLobbyPageModule',},
+  { path: 'create-lobby', loadChildren: './lobby/create-lobby/create-lobby.module#CreateLobbyPageModule', },
   { path: 'join-lobby', loadChildren: './lobby/join-lobby/join-lobby.module#JoinLobbyPageModule'},
   { path: 'join-lobby/:id', loadChildren: './lobby/view-lobby/view-lobby.module#ViewLobbyPageModule'},
   { path: 'edit-lobby', loadChildren: './lobby/edit-lobby/edit-lobby.module#EditLobbyPageModule' },
@@ -22,6 +19,8 @@ const routes: Routes = [
   { path: 'view-lobby', loadChildren: './lobby/view-lobby/view-lobby.module#ViewLobbyPageModule', canLoad: [GuardGuard]},
   { path: 'play-song', loadChildren: './lobby/play-song/play-song.module#PlaySongPageModule', canLoad: [GuardGuard]},
   { path: 'lobby-joined', loadChildren: './lobby/lobby-joined/lobby-joined.module#LobbyJoinedPageModule' },
+  { path: 'playlist', loadChildren: './playlist/playlist.module#PlaylistPageModule' },
+
 
 
 ];

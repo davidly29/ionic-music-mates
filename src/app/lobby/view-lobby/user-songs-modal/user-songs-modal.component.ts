@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PlaylistModel} from '../../../playlist/playlist-model';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {ModalController} from '@ionic/angular';
+import {PlaylistModel} from '../../../playlist/PlaylistModel';
 
 @Component({
   selector: 'app-user-songs-modal',

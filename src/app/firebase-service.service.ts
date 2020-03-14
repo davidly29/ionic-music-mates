@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { AngularFireObject } from '@angular/fire/database';
 import {LobbyModel} from './lobby/lobby.model';
 import {Observable} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {LobbyUserModel} from './lobby/join-lobby/lobbyUserModel';
 import {MessageModel} from './lobby/view-lobby/messageModel';
-import {any} from 'codelyzer/util/function';
-import {PlaylistModel} from './playlist/playlist-model';
 import {AngularFirestoreDocument} from '@angular/fire/firestore';
+import {PlaylistModel} from './playlist/PlaylistModel';
 
 @Injectable({
   providedIn: 'root'

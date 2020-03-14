@@ -14,13 +14,12 @@ import { AutosizeModule} from 'ngx-autosize';
 import {MessageModel} from './messageModel';
 import {isBoolean} from 'util';
 import {ViewUserModalComponent} from './view-user-modal/view-user-modal.component';
-import {PlaylistModel} from '../../playlist/playlist-model';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {SongModel} from '../song.model';
 import {UserSongsModalComponent} from './user-songs-modal/user-songs-modal.component';
 import {UserAddSongsComponent} from './user-add-songs/user-add-songs.component';
 import index from '@ionic/angular-toolkit/schematics/page';
-import {NgForm} from '@angular/forms';
+import {PlaylistModel} from '../../playlist/PlaylistModel';
 declare var cordova: any;
 @Component({
   selector: 'app-view-lobby',
@@ -28,6 +27,7 @@ declare var cordova: any;
   styleUrls: ['./view-lobby.page.scss'],
 })
 export class ViewLobbyPage implements OnInit {
+  tempshit = 'shit';
   joined: boolean;
   result = {};
   playlistSongs: string[];
@@ -43,16 +43,16 @@ export class ViewLobbyPage implements OnInit {
     userId: 'test',
     name: 'test',
     id: 'test',
-    songs: [],
+    songs: [] = [],
   };
 
   allPlaylists: PlaylistModel[];
   allLobbies: LobbyModel[];
   allMessages: MessageModel[] = [];
-
   currentLobbyMessages: MessageModel[];
-
   loadedLobby: LobbyModel;
+  allTheSongs: SongModel[] = [];
+
 
   tempLobby: LobbyModel = {
     id: '',
@@ -72,6 +72,8 @@ export class ViewLobbyPage implements OnInit {
     users: 'test'
   };
 
+  tempSong: SongModel;
+  currentVideoId: string;
   messages = [
     {
       msgContent: 'Hello There',
@@ -98,8 +100,7 @@ export class ViewLobbyPage implements OnInit {
   currentId = '';
   url: SafeResourceUrl = '';
   songs = [];
-  currentVideo: string;
-  userSongs: SongModel;
+  lobbySongs: string[];
   currentSongIndex = 0;
   constructor(private activatedRoute: ActivatedRoute, private lobbyService: LobbyServiceService,
               private firebaseService: FirebaseServiceService, private toastCtrl: ToastController
@@ -107,7 +108,7 @@ export class ViewLobbyPage implements OnInit {
               private modalCtrl: ModalController, private dom: DomSanitizer) { }
 
   ngOnInit() {
-    this.playlist.songs = [];
+    this.lobbySongs = [];
     this.firebaseService.getLobbies().subscribe(res => {
       this.allLobbies = res;
       console.log(this.allLobbies);
@@ -153,21 +154,38 @@ export class ViewLobbyPage implements OnInit {
     this.currentId = this.currentUser.getValue().id;
     this.checkUserJoined();
     this.songs = this.playlist.songs;
-    this.currentVideo = this.playlist.songs[1];
+    // tslint:disable-next-line:no-conditional-assignment
+    this.lobbySongs.push('MjBzElQrm4E');
+    // tslint:disable-next-line:no-conditional-assignment
+    // if (this.tempLobby.songs.length == null) {
+    //     this.tempLobby.songs.push(new SongModel('', 'MjBzElQrm4E'));
+    //     this.currentVideo.id = 'MjBzElQrm4E';
+    //     this.currentVideo.name = 'MjBzElQrm4E';
+    // } else {
+    //   this.currentVideo = this.playlist.songs[0];
+    // }
+    this.currentVideoId = 'MjBzElQrm4E';
+    // this.tempLobby.songs = this.tempSong;
   }
 
   goToNextVideo() {
-    // let temps = this.playlist.songs.indexOf(currentId);
-    // temps = temps + 1;
-    this.currentSongIndex = this.currentSongIndex + 1;
-    this.currentVideo = this.tempLobby.songs[this.currentSongIndex];
-    return this.currentVideo;
+    // if (this.currentSongIndex === this.tempLobby.songs.length) {
+    //   this.currentSongIndex = this.tempLobby.songs.length;
+    //   this.currentVideoId = this.tempLobby.songs[this.currentSongIndex].id;
+    //   return this.currentVideoId;
+    // } else {
+      this.currentSongIndex = this.currentSongIndex + 1;
+      return this.currentSongIndex;
   }
 
   goToPrevVideo() {
-    this.currentSongIndex = this.currentSongIndex - 1;
-    this.currentVideo = this.tempLobby.songs[this.currentSongIndex];
-    return this.currentVideo;
+    // if (this.currentSongIndex === 0) {
+    //   this.currentSongIndex = 0;
+    //   this.currentVideoId = this.tempLobby.songs[this.currentSongIndex].id;
+    //   return this.currentVideoId;
+    // } else {
+      this.currentSongIndex = this.currentSongIndex - 1;
+      return this.currentSongIndex;
   }
 
   joinLobby() {
@@ -207,7 +225,10 @@ export class ViewLobbyPage implements OnInit {
       modalEl.present();
     });
   }
-
+  getSongId() {
+    this.tempSong = this.tempLobby.songs[this.currentSongIndex];
+    return this.tempSong;
+  }
   sanitizeVidId(id) {
     return this.dom.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + id);
   }
@@ -261,7 +282,14 @@ export class ViewLobbyPage implements OnInit {
       this.playlist = this.allPlaylists.find(x => x.userId === temp);
     }
     this.tempLobby.songs = this.playlist.songs;
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < this.tempLobby.songs.length; i++) {
+      this.lobbySongs.push(this.tempLobby.songs[i].id);
+    }
     this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
+    this.allTheSongs = this.playlist.songs;
+    this.tempshit = this.playlist.songs[0].name;
+    return this.lobbySongs;
   }
 
   async presentToast() {

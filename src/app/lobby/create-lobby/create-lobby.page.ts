@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FirebaseServiceService} from '../../firebase-service.service';
 import {LobbyModel} from '../lobby.model';
-import {ToastController} from '@ionic/angular';
+import {NavController, ToastController} from '@ionic/angular';
 import {ActivatedRoute} from '@angular/router';
 import {AuthService} from '../../auth/auth.service';
 import {take} from 'rxjs/operators';
@@ -18,11 +18,12 @@ export class CreateLobbyPage implements OnInit {
     password: '',
     description: '',
     allowedUsers: null,
-    joinedUsers: []
+    joinedUsers: [],
+    songs: []
   };
   lobbyId = null;
   constructor(private dbService: FirebaseServiceService, public toastController: ToastController, private route: ActivatedRoute,
-              private authService: AuthService) {
+              private authService: AuthService, private navCtrl: NavController) {
   }
 
   saveLobby() {
@@ -30,6 +31,7 @@ export class CreateLobbyPage implements OnInit {
       this.lobby.userId = currentUserid;
       this.dbService.addLobby(this.lobby).then(r => this.toastController.dismiss());
     });
+    this.navCtrl.back();
   }
   ngOnInit() {
     this.lobbyId = this.route.snapshot.params.id;

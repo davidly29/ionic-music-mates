@@ -9,11 +9,11 @@ import { LoadingService } from '../../loading.service';
 import {AlertController, LoadingController, ModalController, Platform, ToastController} from '@ionic/angular';
 import {ModalPlayComponent} from './modal-play/modal-play.component';
 import {FirebaseServiceService} from '../../firebase-service.service';
-import {PlaylistModel} from '../../playlist/playlist-model';
 import {ActivatedRoute} from '@angular/router';
 import {AuthService} from '../../auth/auth.service';
 import {BehaviorSubject} from 'rxjs';
 import {User} from '../../auth/user.model';
+import {PlaylistModel} from '../../playlist/PlaylistModel';
 
 declare var cordova: any;
 
@@ -46,6 +46,11 @@ export class PlaySongPage implements OnInit {
   loading: LoadingService;
   currentUser: BehaviorSubject<User>;
 
+
+  tempSong: SongModel = {
+    id: '',
+    name: ''
+  };
   videoKey = '';
   vid = '';
   yt = 'https://www.youtube.com/';
@@ -110,16 +115,21 @@ export class PlaySongPage implements OnInit {
 }
 
 
-  addSong(id) {
+  addSong(id, name) {
     // this.songs.push(new SongModel('song1', id));
     if (this.allPlaylists.find(x => x.userId === this.currentUser.getValue().id) != null) {
       this.playlist = this.allPlaylists.find(x => x.userId === this.currentUser.getValue().id);
-      this.playlist.songs.push(id);
+      this.tempSong.name = name;
+      this.tempSong.id = id;
+
+      this.playlist.songs.push(this.tempSong);
       this.firebaseService.updatePlaylist(this.playlist, this.playlist.id);
     } else {
       this.playlist.userId = this.currentUser.getValue().id;
       this.playlist.videoId = id;
-      this.playlist.songs.push(id);
+      this.tempSong.name = name;
+      this.tempSong.id = id;
+      this.playlist.songs.push(this.tempSong);
       this.firebaseService.addPlaylist(this.playlist);
     }
 
