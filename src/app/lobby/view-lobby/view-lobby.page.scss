@@ -7,6 +7,8 @@
 }
 ion-row{
   align-items: end;
+  width: 50%;
+  justify-items: right;
 }
 ion-content {
   //--background: url('../img/musiclobby.png');
@@ -34,6 +36,7 @@ ion-footer {
   backround: var(--ion-color-secondary);
   background-color: #0cd1e8;
   color: #fff;
+  width: 20px;
 }
 ion-grid{
   width: 100%;
@@ -103,8 +106,8 @@ ion-list {
 .video-container embed {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 40%;
+  left: 50%;
+  width: 50%;
   height: 100%;
 }
 .your-class {
