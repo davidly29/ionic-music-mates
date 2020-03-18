@@ -22,7 +22,9 @@
 <!--  <iframe align="left" width="40%" height="100%" [src]="sanitizeVidId(this.playlist.songs[this.currentSongIndex])"></iframe>-->
   <ion-button type="round" (click)="goToPrevVideo()" style="width: 25%">Prev Vid</ion-button>
   <ion-button type="round" (click)="goToNextVideo()" style="width: 24%">Next Vid</ion-button>
+<!--  <ion-button type="round" (click)="testAndroid()" style="width: 24%">test</ion-button>-->
   <div class="video-container">
+
     <p align="right">
     <iframe align="right" width="50%" height="100%" [src]="sanitizeVidId(this.tempLobby.songs[this.currentSongIndex]?.id)"></iframe>
     </p>

@@ -20,6 +20,7 @@ import {UserSongsModalComponent} from './user-songs-modal/user-songs-modal.compo
 import {UserAddSongsComponent} from './user-add-songs/user-add-songs.component';
 import index from '@ionic/angular-toolkit/schematics/page';
 import {PlaylistModel} from '../../playlist/PlaylistModel';
+import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
 declare var cordova: any;
 @Component({
   selector: 'app-view-lobby',
@@ -105,7 +106,7 @@ export class ViewLobbyPage implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private lobbyService: LobbyServiceService,
               private firebaseService: FirebaseServiceService, private toastCtrl: ToastController
   ,           private authService: AuthService, private toastController: ToastController,
-              private modalCtrl: ModalController, private dom: DomSanitizer) { }
+              private modalCtrl: ModalController, private dom: DomSanitizer, public streamingMedia: StreamingMedia) { }
 
   ngOnInit() {
     this.lobbySongs = [];
@@ -217,7 +218,16 @@ export class ViewLobbyPage implements OnInit {
 
     }
   }
-
+  testAndroid() {
+    const options: StreamingVideoOptions = {
+      successCallback: () => { console.log('Video played'); },
+      errorCallback: (e) => { console.log('Error streaming'); },
+      orientation: 'landscape',
+      shouldAutoClose: true,
+      controls: false
+    };
+    this.streamingMedia.playVideo('https://www.youtube.com/watch?v=-jWh1lK3ruE', options);
+  }
   playUserSongs(songId) {
     this.modalCtrl.create({
       component: UserSongsModalComponent, componentProps: {song: songId}
