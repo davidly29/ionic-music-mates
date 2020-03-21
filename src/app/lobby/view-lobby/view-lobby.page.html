@@ -30,8 +30,11 @@
     </p>
 
   </div>
-
-
+  <ion-list>
+    <ion-card-content ion-item *ngFor="let device of devices">
+      <p>{{device.name}}</p>
+    </ion-card-content>
+  </ion-list>
 <!--    <ion-button type="round" (click)="joinLobby()">Join Lobby</ion-button>-->
 <!--    <ion-button type="round" (click)="viewLobbyUsers()">View Users<br><ion-badge id="cart-badge">{{tempLobby.joinedUsers.length}}</ion-badge></ion-button>-->
 <!--    <ion-button type="round" (click)="viewSongs()">View Your Songs</ion-button>-->

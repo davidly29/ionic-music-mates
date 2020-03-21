@@ -114,6 +114,10 @@ export class FirebaseServiceService {
     return this.playlistCollection.doc(playlistId).update(playlist);
   }
 
+  updateUser(user: LobbyUserModel, id: string) {
+      return this.userCollection.doc(id).update(user);
+  }
+
   addPlaylist(playlist: PlaylistModel) {
       return this.playlistCollection.add(playlist);
   }

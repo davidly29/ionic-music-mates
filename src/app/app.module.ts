@@ -19,6 +19,7 @@ import {ModalPlayComponent} from './lobby/play-song/modal-play/modal-play.compon
 import {UserSongsModalComponent} from './lobby/view-lobby/user-songs-modal/user-songs-modal.component';
 import {UserAddSongsComponent} from './lobby/view-lobby/user-add-songs/user-add-songs.component';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
+import { BLE } from '@ionic-native/ble/ngx';
 
 @NgModule({
   declarations: [AppComponent, ModalPlayComponent, UserSongsModalComponent, UserAddSongsComponent],
@@ -32,6 +33,7 @@ import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-m
     SplashScreen,
     YtServiceService,
     StreamingMedia,
+    BLE,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     YoutubeVideoPlayer
   ],

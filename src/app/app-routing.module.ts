@@ -20,6 +20,8 @@ const routes: Routes = [
   { path: 'play-song', loadChildren: './lobby/play-song/play-song.module#PlaySongPageModule', canLoad: [GuardGuard]},
   { path: 'lobby-joined', loadChildren: './lobby/lobby-joined/lobby-joined.module#LobbyJoinedPageModule' },
   { path: 'playlist', loadChildren: './playlist/playlist.module#PlaylistPageModule' },
+  // { path: 'add-songs', loadChildren: './lobby/view-lobby/add-songs/add-songs.module#AddSongsPageModule' },
+
 
 
 

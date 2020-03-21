@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild, NgZone} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ServicePageModule} from '../service/service.module';
 import {LobbyModel} from '../lobby.model';
@@ -21,6 +21,7 @@ import {UserAddSongsComponent} from './user-add-songs/user-add-songs.component';
 import index from '@ionic/angular-toolkit/schematics/page';
 import {PlaylistModel} from '../../playlist/PlaylistModel';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
+import { BLE } from '@ionic-native/ble/ngx';
 declare var cordova: any;
 @Component({
   selector: 'app-view-lobby',
@@ -54,6 +55,15 @@ export class ViewLobbyPage implements OnInit {
   loadedLobby: LobbyModel;
   allTheSongs: SongModel[] = [];
 
+  allRegisteredUsers: LobbyUserModel[];
+
+  currentUserLobby: LobbyUserModel = {
+      name: '',
+      email: '',
+      lobbyId: '',
+      users: '',
+      id: '',
+  };
 
   tempLobby: LobbyModel = {
     id: '',
@@ -103,10 +113,12 @@ export class ViewLobbyPage implements OnInit {
   songs = [];
   lobbySongs: string[];
   currentSongIndex = 0;
+  devices: any[] = [];
   constructor(private activatedRoute: ActivatedRoute, private lobbyService: LobbyServiceService,
               private firebaseService: FirebaseServiceService, private toastCtrl: ToastController
   ,           private authService: AuthService, private toastController: ToastController,
-              private modalCtrl: ModalController, private dom: DomSanitizer, public streamingMedia: StreamingMedia) { }
+              private modalCtrl: ModalController, private dom: DomSanitizer, public streamingMedia: StreamingMedia,
+              private ble: BLE, private ngZone: NgZone) { }
 
   ngOnInit() {
     this.lobbySongs = [];
@@ -126,6 +138,10 @@ export class ViewLobbyPage implements OnInit {
 
     this.firebaseService.getAllMessages().subscribe(res => {
       this.allMessages = res;
+    });
+
+    this.firebaseService.getUsers().subscribe(res => {
+        this.allRegisteredUsers = res;
     });
 
     const id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -167,6 +183,21 @@ export class ViewLobbyPage implements OnInit {
     // }
     this.currentVideoId = 'MjBzElQrm4E';
     // this.tempLobby.songs = this.tempSong;
+  }
+
+  scan() {
+    this.devices = [];
+    this.ble.scan([], 15).subscribe(
+        device => this.onDeviceDiscovered(device)
+    );
+  }
+
+  onDeviceDiscovered(device) {
+    console.log('Found' + JSON.stringify(device, null, 2));
+    this.ngZone.run(() => {
+      this.devices.push(device);
+      console.log(device);
+    });
   }
 
   goToNextVideo() {
@@ -215,7 +246,11 @@ export class ViewLobbyPage implements OnInit {
 
       this.tempLobby.joinedUsers.push(this.currentUserName);
       this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
-
+      this.currentUserLobby = this.allRegisteredUsers.find(x => x.users === this.authService.user.getValue().email);
+      const lobbyToAdd = this.activatedRoute.snapshot.paramMap.get('id');
+      this.currentUserLobby.lobbyId = lobbyToAdd;
+      this.currentUserLobby.name = 'updated';
+      this.firebaseService.updateUser(this.currentUserLobby, this.currentUserLobby.id).then(console.log);
     }
   }
   testAndroid() {
