@@ -19,7 +19,8 @@ export class CreateLobbyPage implements OnInit {
     description: '',
     allowedUsers: null,
     joinedUsers: [],
-    songs: []
+    songs: [],
+    isPassword: false,
   };
   lobbyId = null;
   constructor(private dbService: FirebaseServiceService, public toastController: ToastController, private route: ActivatedRoute,
@@ -29,6 +30,11 @@ export class CreateLobbyPage implements OnInit {
   saveLobby() {
     this.authService.userId.pipe(take(1)).subscribe(currentUserid => {
       this.lobby.userId = currentUserid;
+      if (this.lobby.password.length > 0) {
+        this.lobby.isPassword = true;
+      } else {
+        this.lobby.isPassword = false;
+      }
       this.dbService.addLobby(this.lobby).then(r => this.toastController.dismiss());
     });
     this.navCtrl.back();

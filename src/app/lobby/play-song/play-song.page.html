@@ -41,7 +41,7 @@
           <ion-icon slot="bottom" name="add-outline"> </ion-icon>
           Add
         </ion-item-option>
-        <ion-item-option color="secondary">
+        <ion-item-option color="secondary" (click)="playVideo(video.snippet.title, video.id.videoId, video.id.channelId)">
           <ion-icon slot="bottom" name="play-outline"> </ion-icon>
           Play
         </ion-item-option>

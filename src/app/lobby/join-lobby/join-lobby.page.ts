@@ -4,6 +4,8 @@ import {LobbyModel} from '../lobby.model';
 import {FirebaseServiceService} from '../../firebase-service.service';
 import {AuthService} from '../../auth/auth.service';
 import {AlertController, ModalController} from '@ionic/angular';
+import {ActivatedRoute, Router} from '@angular/router';
+import {PasswordCheckComponent} from '../view-lobby/password-check/password-check.component';
 
 @Component({
   selector: 'app-join-lobby',
@@ -20,7 +22,8 @@ export class JoinLobbyPage implements OnInit {
     userId: '',
     description: '',
     name: '',
-    allowedUsers: null
+    allowedUsers: null,
+    isPassword: false,
   };
 
   sliderConfig = {
@@ -29,7 +32,7 @@ export class JoinLobbyPage implements OnInit {
     slidesPerView: 1.6,
   };
   constructor(private lobbyService: ServicePage, private firebaseService: FirebaseServiceService, private authService: AuthService,
-              private alert: AlertController) { }
+              private alert: AlertController, private route: Router, private modalCtrl: ModalController) { }
 
   ngOnInit() {
   // this.loadedLobbies = this.lobbyService.lobbies;
@@ -49,9 +52,12 @@ export class JoinLobbyPage implements OnInit {
   }
 
   joinLobby(lobby: LobbyModel) {
-    // this.tempLobby = lobby;
-    // this.tempLobby.joinedUsers.push(this.authService.user.getValue().email);
-    // this.firebaseService.updateLobby(lobby, lobby.id).then(c => {console.log(c); });
+    if (lobby.isPassword) {
+      // tslint:disable-next-line:max-line-length
+      this.modalCtrl.create({component: PasswordCheckComponent, componentProps: {password: lobby.password, lobbyId: lobby.id}}).then(modalEl => {
+        modalEl.present();
+    });
+    }
   }
 
 }

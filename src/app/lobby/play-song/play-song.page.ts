@@ -40,7 +40,7 @@ export class PlaySongPage implements OnInit {
   searchKey = '';
   response: any = {};
 
-  private categoryArray;
+  private categoryArray = [];
   private videos = [];
   private video;
   loading: LoadingService;

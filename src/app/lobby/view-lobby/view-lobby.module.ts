@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { ViewLobbyPage } from './view-lobby.page';
 import { AutosizeModule} from 'ngx-autosize';
 import {ViewUserModalComponent} from './view-user-modal/view-user-modal.component';
+import {PasswordCheckComponent} from './password-check/password-check.component';
 
 const routes: Routes = [
   {

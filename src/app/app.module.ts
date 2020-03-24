@@ -20,13 +20,15 @@ import {UserSongsModalComponent} from './lobby/view-lobby/user-songs-modal/user-
 import {UserAddSongsComponent} from './lobby/view-lobby/user-add-songs/user-add-songs.component';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
 import { BLE } from '@ionic-native/ble/ngx';
+import {PasswordCheckComponent} from './lobby/view-lobby/password-check/password-check.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent, ModalPlayComponent, UserSongsModalComponent, UserAddSongsComponent],
-  entryComponents: [ModalPlayComponent, UserSongsModalComponent, UserAddSongsComponent],
+  declarations: [AppComponent, ModalPlayComponent, UserSongsModalComponent, UserAddSongsComponent, PasswordCheckComponent],
+  entryComponents: [ModalPlayComponent, UserSongsModalComponent, UserAddSongsComponent, PasswordCheckComponent],
   // tslint:disable-next-line:max-line-length
   imports: [BrowserModule, HttpClientModule, AngularFireModule.initializeApp(environment.firebase), AngularFirestoreModule,
-    IonicModule.forRoot(), AppRoutingModule],
+    IonicModule.forRoot(), AppRoutingModule, FormsModule],
 
   providers: [
     StatusBar,
