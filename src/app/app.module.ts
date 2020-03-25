@@ -21,6 +21,7 @@ import {UserAddSongsComponent} from './lobby/view-lobby/user-add-songs/user-add-
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
 import { BLE } from '@ionic-native/ble/ngx';
 import {PasswordCheckComponent} from './lobby/view-lobby/password-check/password-check.component';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 import {FormsModule} from '@angular/forms';
 
 @NgModule({
@@ -28,7 +29,15 @@ import {FormsModule} from '@angular/forms';
   entryComponents: [ModalPlayComponent, UserSongsModalComponent, UserAddSongsComponent, PasswordCheckComponent],
   // tslint:disable-next-line:max-line-length
   imports: [BrowserModule, HttpClientModule, AngularFireModule.initializeApp(environment.firebase), AngularFirestoreModule,
-    IonicModule.forRoot(), AppRoutingModule, FormsModule],
+    IonicModule.forRoot(), AppRoutingModule, FormsModule,
+    NgCircleProgressModule.forRoot({
+      // set defaults here
+      radius: 100,
+      outerStrokeWidth: 16,
+      innerStrokeWidth: 8,
+      outerStrokeColor: '#78C000',
+      innerStrokeColor: '#C7E596',
+      animationDuration: 300, })],
 
   providers: [
     StatusBar,
