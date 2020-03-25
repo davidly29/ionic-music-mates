@@ -25,5 +25,5 @@
     <ion-input required type="number" placeholder="Max users" [(ngModel)]="lobby.allowedUsers"></ion-input>
   </ion-item>
   </ion-list>
-  <ion-button expand="full" (click)="saveLobby()" [routerLink]="['/post-log/tabs/joinLobby']" class="ion-submit-button" >Save Lobby</ion-button>
+  <ion-button expand="full" (click)="saveLobby()" [routerLink]="['/post-log/tabs/joinLobby' + lobbyId]" class="ion-submit-button" >Save Lobby</ion-button>
 </ion-content>

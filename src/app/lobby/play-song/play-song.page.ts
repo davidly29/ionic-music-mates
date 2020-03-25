@@ -124,7 +124,25 @@ export class PlaySongPage implements OnInit {
 
       this.playlist.songs.push(this.tempSong);
       this.firebaseService.updatePlaylist(this.playlist, this.playlist.id);
+      this.toastController.create({
+        message: 'Song Added',
+        duration: 3000,
+        showCloseButton: true,
+        closeButtonText: 'OK',
+        animated: true
+      }).then((obj) => {
+        obj.present();
+      });
     } else {
+      this.toastController.create({
+        message: 'Song Added',
+        duration: 3000,
+        showCloseButton: true,
+        closeButtonText: 'OK',
+        animated: true
+      }).then((obj) => {
+        obj.present();
+      });
       this.playlist.userId = this.currentUser.getValue().id;
       this.playlist.videoId = id;
       this.tempSong.name = name;
