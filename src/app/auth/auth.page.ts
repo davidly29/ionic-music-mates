@@ -11,12 +11,23 @@ import {Observable} from 'rxjs';
   styleUrls: ['./auth.page.scss'],
 })
 export class AuthPage implements OnInit {
+  splash = true;
+  tabBarElement: any;
   isLoading = false;
   isLogin = false;
   constructor(private authService: AuthService, private loadingCtrl: LoadingController, private router: Router,
-              private alert: AlertController) { }
+              private alert: AlertController) {
+      // this.tabBarElement = document.querySelector('.tabbar');
+  }
 
   ngOnInit() {
+      // this.ionViewDidLoad();
+  }
+
+  ionViewDidLoad() {
+      setTimeout(() => {
+          this.splash = false;
+      }, 4000);
   }
 
   showAlert(message: string) {

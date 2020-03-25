@@ -32,6 +32,7 @@
     "@ionic/angular": "^4.6.1",
     "@ionic/lab": "^3.0.0",
     "angularfire2": "^5.2.1",
+    "animate.css": "^3.7.2",
     "capacitor-youtube-player": "^1.0.0-alpha.1-48",
     "cordova-android": "^8.1.0",
     "cordova-browser": "6.0.0",
