@@ -1,6 +1,14 @@
 ion-content {
   //--ion-background-color: #7C7287;
 }
+ion-toolbar {
+  background-color: var(--ion-color-secondary);
+  color: var(--ion-color-secondary);
+}
+ion-header {
+  color: var(--ion-color-secondary);
+  background-color: var(--ion-color-secondary);
+}
 .text {
   color: #fff7f4;
   --ion-background-color: rgba(0, 0, 0, 0.85);

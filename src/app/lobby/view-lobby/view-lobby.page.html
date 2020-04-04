@@ -76,18 +76,27 @@
 </ion-content>
 <ion-footer>
   <ion-toolbar>
-    <ion-row align-items-center no-padding>
-      <ion-col size="10">
+    <ion-row align-items-left no-padding>
+      <ion-col size="11">
         <textarea autosize maxRows="3" [(ngModel)]="newMsg" class="message-input"></textarea>
       </ion-col>
-      <ion-col size="2"></ion-col>
-      <div class="ion-text-end">
-        <ion-buttons>
-          <ion-button expand="block"  fill="clear" color="primary" [disabled]="newMsg === ''" class="msg-btn" (click)="sendMessage()">
-            <ion-icon name="send" slot="icon-only" align="right"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </div>
+      <ion-col size="1">
+        <div class="ion-text-end">
+          <ion-buttons>
+            <ion-button expand="block"  fill="clear" color="primary" [disabled]="newMsg === ''" class="msg-btn" (click)="sendMessage()">
+              <ion-icon name="send" slot="icon-only" align="right"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </div>
+      </ion-col>
     </ion-row>
+    <ion-button color="secondary" padding-end="40px" slot="end" (click)="viewSongs()">
+      <div>
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </div>
+    </ion-button>
+    <ion-button color="secondary" padding-end="40px" slot="end" (click)="viewLobbyUsers()">
+      <div><ion-icon name="people"></ion-icon></div>
+    </ion-button>
   </ion-toolbar>
 </ion-footer>

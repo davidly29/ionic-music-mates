@@ -6,10 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-songs.page.scss'],
 })
 export class AddSongsPage implements OnInit {
-
   constructor() { }
 
   ngOnInit() {
+  }
+
+  importUserPlaylist() {
+
   }
 
 }

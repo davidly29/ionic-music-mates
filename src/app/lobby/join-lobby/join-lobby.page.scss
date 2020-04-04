@@ -57,10 +57,13 @@ ion-searchbar {
   font-size: 1.25em;
   border: 1px solid;
 }
-ion-card-content {
-  height: 60% !important;
+ion-card-content, .card-ios {
+  height: 70% !important;
   min-height: 60% !important;
+  padding-bottom: 40px;
+  position: relative;
 }
+
 .xicon {
   alignment: right;
   text-align: right;

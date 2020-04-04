@@ -22,6 +22,7 @@ import index from '@ionic/angular-toolkit/schematics/page';
 import {PlaylistModel} from '../../playlist/PlaylistModel';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
 import { BLE } from '@ionic-native/ble/ngx';
+import {AddPlaylistLobbyComponent} from './add-playlist-lobby/add-playlist-lobby.component';
 declare var cordova: any;
 @Component({
   selector: 'app-view-lobby',
@@ -121,7 +122,6 @@ export class ViewLobbyPage implements OnInit {
               private ble: BLE, private ngZone: NgZone) { }
 
   ngOnInit() {
-    this.lobbySongs = [];
     this.firebaseService.getLobbies().subscribe(res => {
       this.allLobbies = res;
       console.log(this.allLobbies);
@@ -172,7 +172,7 @@ export class ViewLobbyPage implements OnInit {
     this.checkUserJoined();
     this.songs = this.playlist.songs;
     // tslint:disable-next-line:no-conditional-assignment
-    this.lobbySongs.push('MjBzElQrm4E');
+   // this.lobbySongs.push('MjBzElQrm4E');
     // tslint:disable-next-line:no-conditional-assignment
     // if (this.tempLobby.songs.length == null) {
     //     this.tempLobby.songs.push(new SongModel('', 'MjBzElQrm4E'));
@@ -183,6 +183,14 @@ export class ViewLobbyPage implements OnInit {
     // }
     this.currentVideoId = 'MjBzElQrm4E';
     // this.tempLobby.songs = this.tempSong;
+  }
+
+  addPlaylist() {
+      this.modalCtrl.create({
+        component: AddPlaylistLobbyComponent, componentProps: {lobby: this.tempLobby}
+      }).then(modalEl => {
+        modalEl.present();
+      });
   }
 
   scan() {
@@ -334,6 +342,15 @@ export class ViewLobbyPage implements OnInit {
     this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
     this.allTheSongs = this.playlist.songs;
     this.tempshit = this.playlist.songs[0].name;
+    this.toastController.create({
+      message: 'Playlist Loaded',
+      duration: 3000,
+      showCloseButton: true,
+      closeButtonText: 'OK',
+      animated: true
+    }).then((obj) => {
+      obj.present();
+    });
     return this.lobbySongs;
   }
 

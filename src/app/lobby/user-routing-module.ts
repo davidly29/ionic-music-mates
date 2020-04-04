@@ -12,25 +12,25 @@ const routes: Routes = [
             {path: 'joinLobby', children: [
                     {
                         path: '',
-                        loadChildren: './join-lobby/join-lobby.module#JoinLobbyPageModule', // canLoad: [GuardGuard]
+                        loadChildren: './join-lobby/join-lobby.module#JoinLobbyPageModule', canLoad: [GuardGuard]
                     }
                 ]},
             {path: 'edit:lobbyId', children: [
                     {
                         path: '',
-                        loadChildren: './edit-lobby/edit-lobby.module#EditLobbyPageModule'
+                        loadChildren: './edit-lobby/edit-lobby.module#EditLobbyPageModule', canLoad: [GuardGuard]
                     }
                 ]},
             {path: 'viewLobby', children: [
                     {
                         path: ':lobbyId',
-                        loadChildren: './lobby.module#LobbyPageModule', // canLoad: [GuardGuard]
+                        loadChildren: './lobby.module#LobbyPageModule', canLoad: [GuardGuard]
                     }
                 ]},
             {path: 'createLobby', children: [
                     {
                         path: '',
-                        loadChildren: './create-lobby/create-lobby.module#CreateLobbyPageModule',
+                        loadChildren: './create-lobby/create-lobby.module#CreateLobbyPageModule', canLoad: [GuardGuard]
                     }
                 ]},
             {path: 'song', children: [

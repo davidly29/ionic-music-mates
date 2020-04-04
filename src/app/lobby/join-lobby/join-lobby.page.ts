@@ -54,7 +54,7 @@ export class JoinLobbyPage implements OnInit {
   joinLobby(lobby: LobbyModel) {
     if (lobby.isPassword) {
       // tslint:disable-next-line:max-line-length
-      this.modalCtrl.create({component: PasswordCheckComponent, componentProps: {password: lobby.password, lobbyId: lobby.id}}).then(modalEl => {
+      this.modalCtrl.create({component: PasswordCheckComponent, componentProps: {password: lobby.password, lobbyId: lobby.id, lobbyToJoin: lobby}}).then(modalEl => {
         modalEl.present();
     });
     }

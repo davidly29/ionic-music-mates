@@ -58,7 +58,7 @@ ion-grid{
 
 .msg-btn {
   --padding-start: 0.5em;
-  --padding-end: 1em;
+  --padding-end: 0.5em;
 }
 
 .message-input {
@@ -67,7 +67,7 @@ ion-grid{
   border-radius: 10px;
   background: #f4f5f8;
   resize: none;
-  padding-left: 10px;
+  padding-left: 20px;
   padding-right: 10px;
 }
 #cart-badge {
