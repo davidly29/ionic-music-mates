@@ -5,7 +5,7 @@ import {LobbyModel} from '../lobby.model';
 import {FirebaseServiceService} from '../../firebase-service.service';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {LobbyServiceService} from '../lobby-service.service';
-import {IonContent, ModalController, ToastController} from '@ionic/angular';
+import {AlertController, IonContent, ModalController, ToastController} from '@ionic/angular';
 import {User} from '../../auth/user.model';
 import {AuthService} from '../../auth/auth.service';
 import {LobbyUserModel} from '../join-lobby/lobbyUserModel';
@@ -66,6 +66,14 @@ export class ViewLobbyPage implements OnInit {
       id: '',
   };
 
+  newUserLobby: LobbyUserModel = {
+    name: '',
+    email: '',
+    lobbyId: '',
+    users: '',
+    id: '',
+  };
+
   tempLobby: LobbyModel = {
     id: '',
     name: '',
@@ -114,12 +122,13 @@ export class ViewLobbyPage implements OnInit {
   songs = [];
   lobbySongs: string[];
   currentSongIndex = 0;
+  allUsers: LobbyUserModel[];
   devices: any[] = [];
   constructor(private activatedRoute: ActivatedRoute, private lobbyService: LobbyServiceService,
               private firebaseService: FirebaseServiceService, private toastCtrl: ToastController
   ,           private authService: AuthService, private toastController: ToastController,
               private modalCtrl: ModalController, private dom: DomSanitizer, public streamingMedia: StreamingMedia,
-              private ble: BLE, private ngZone: NgZone) { }
+              private ble: BLE, private ngZone: NgZone, private alertCtrl: AlertController ) { }
 
   ngOnInit() {
     this.firebaseService.getLobbies().subscribe(res => {
@@ -181,6 +190,12 @@ export class ViewLobbyPage implements OnInit {
     // } else {
     //   this.currentVideo = this.playlist.songs[0];
     // }
+    if (this.tempLobby.songs.length < 1) {
+      this.toastCtrl.create({
+        message: 'No Playlist Set :(',
+        duration: 3000
+      }).then(toast => toast.present());
+    }
     this.currentVideoId = 'MjBzElQrm4E';
     // this.tempLobby.songs = this.tempSong;
   }
@@ -228,6 +243,10 @@ export class ViewLobbyPage implements OnInit {
       return this.currentSongIndex;
   }
 
+  joinedLobby() {
+
+  }
+
   joinLobby() {
     this.checkUserJoined();
     if (this.isJoined) {
@@ -241,24 +260,18 @@ export class ViewLobbyPage implements OnInit {
         obj.present();
       });
     } else {
-      this.currentUser = this.authService.user;
-      this.tempUser.email = this.authService.user.getValue().email;
       const id = this.activatedRoute.snapshot.paramMap.get('id');
       this.firebaseService.getLobby(id).subscribe(tempLobby => {
         this.tempLobby = tempLobby;
       });
-
-      this.tempUser.lobbyId = this.activatedRoute.snapshot.paramMap.get('id');
-      this.tempUser.users = this.authService.user.getValue().id;
       this.isJoined = true;
-
-      this.tempLobby.joinedUsers.push(this.currentUserName);
+      this.currentUserLobby = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
+      this.tempLobby.joinedUsers.push(this.authService.user.getValue().email);
       this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
-      this.currentUserLobby = this.allRegisteredUsers.find(x => x.users === this.authService.user.getValue().email);
-      const lobbyToAdd = this.activatedRoute.snapshot.paramMap.get('id');
-      this.currentUserLobby.lobbyId = lobbyToAdd;
-      this.currentUserLobby.name = 'updated';
-      this.firebaseService.updateUser(this.currentUserLobby, this.currentUserLobby.id).then(console.log);
+
+      this.currentUserLobby.lobbyId = this.activatedRoute.snapshot.paramMap.get('id');
+      this.newUserLobby = this.currentUserLobby;
+      this.firebaseService.updateUser(this.newUserLobby, this.newUserLobby.id).then(console.log);
     }
   }
   testAndroid() {
@@ -317,6 +330,11 @@ export class ViewLobbyPage implements OnInit {
     this.tempLobby.joinedUsers.splice(indexToRemove, 1);
     if (name !== '') {
       this.firebaseService.deleteUserFromLobby(this.tempLobby);
+      this.currentUserLobby = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
+      this.currentUserLobby.lobbyId = '';
+      this.newUserLobby = this.currentUserLobby;
+      this.firebaseService.updateUser(this.newUserLobby, this.newUserLobby.id).then(console.log);
+
       this.toastCtrl.create({
         message: 'You have left the lobby',
         duration: 2000
@@ -335,10 +353,6 @@ export class ViewLobbyPage implements OnInit {
       this.playlist = this.allPlaylists.find(x => x.userId === temp);
     }
     this.tempLobby.songs = this.playlist.songs;
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < this.tempLobby.songs.length; i++) {
-      this.lobbySongs.push(this.tempLobby.songs[i].id);
-    }
     this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
     this.allTheSongs = this.playlist.songs;
     this.tempshit = this.playlist.songs[0].name;

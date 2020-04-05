@@ -24,11 +24,9 @@
   <ion-button type="round" (click)="goToNextVideo()" style="width: 24%">Next Vid</ion-button>
 <!--  <ion-button type="round" (click)="testAndroid()" style="width: 24%">test</ion-button>-->
   <div class="video-container">
-
     <p align="right">
     <iframe align="right" width="50%" height="100%" [src]="sanitizeVidId(this.tempLobby.songs[this.currentSongIndex]?.id)"></iframe>
     </p>
-
   </div>
 <!--  <ion-list>-->
 <!--    <ion-card-content ion-item *ngFor="let device of devices">-->

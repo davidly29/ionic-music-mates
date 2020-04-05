@@ -132,6 +132,16 @@ export class FirebaseServiceService {
       return this.user;
   }
 
+  getUser(id) {
+      return this.lobbyCollection.doc<LobbyModel>(id).valueChanges().pipe(
+          take(1),
+          map(lb => {
+              lb.id = id;
+              return lb;
+          })
+      );
+  }
+
   deleteUserFromLobby(lobby: LobbyModel) {
       return this.lobbyCollection.doc(lobby.id).update(lobby);
   }

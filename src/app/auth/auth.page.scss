@@ -52,7 +52,8 @@ ion-label{
   left: 0;
   z-index: 100000;
   width:100%;
-  background: #002a3e;
+  background-image: url("/src/assets/img/ballet.jpg");
+  --ion-background-color: url("/src/assets/img/ballet.jpg") no-repeat;;
 }
 
 .flb {

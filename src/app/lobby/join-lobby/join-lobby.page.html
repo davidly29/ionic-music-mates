@@ -8,10 +8,9 @@
 </ion-header>
 
 <ion-content color="primary">
-    <ion-searchbar></ion-searchbar>
   <br>
   <br>
-
+  <ion-searchbar></ion-searchbar>
 <!--    <ion-grid>-->
 <!--      <ion-row>-->
 <!--        <ion-col>-->
@@ -73,7 +72,7 @@
           <div class="fontSecond">{{item.description}}</div>
           <ion-note color="danger" slot="end">Max Users: {{item.allowedUsers}} </ion-note>
           <ion-button expand="full" align="bottom" (click)="joinLobby(item)">
-          Join Lobby
+          Enter Lobby
           </ion-button>
           <ion-icon name="lock-closed-outline" *ngIf="item.password != ''"></ion-icon>
           <ion-icon name="lock-open-outline" *ngIf="item.password === ''"></ion-icon>

@@ -3,20 +3,20 @@
 <!--    <ion-title size="large" align="center">Welcome to MusicMates</ion-title>-->
 <!--  </ion-toolbar>-->
 <!--</ion-header>-->
-<div id="custom-overlay" [style.display]="splash ? 'flex': 'none'">
-    <div class="flb">
-      <ion-list>
-      <ion-item padding-start="100px" color="primary" *ngFor="let val of ['Discover', 'Party', 'Play']; let i = index;" class="animated fadeInLeft delay-{{i}}s #itemlist">
-          {{val}}
-      </ion-item>
-      </ion-list>
-        <div class="Aligner-item Aligner-item--top"></div>
-        <ion-title Welcome To Music Mates></ion-title>
-        <ion-item color="primary" class="animated fadeInRight delay-{{1}}"><img src="assets/img/ballet.jpg" style="width: 100%; height: 100%;"></ion-item>
-        <div class="Aligner-item Aligner-item--bottom"></div>
-      <ion-button (click)="ionViewDidLoad()" align="bottom">Get Started !</ion-button>
-    </div>
-</div>
+<!--<div id="custom-overlay" [style.display]="splash ? 'flex': 'none'">-->
+<!--    <div class="flb">-->
+<!--      <ion-list>-->
+<!--      <ion-item padding-start="100px" color="primary" *ngFor="let val of ['Discover', 'Party', 'Play']; let i = index;" class="animated fadeInLeft delay-{{i}}s #itemlist">-->
+<!--          {{val}}-->
+<!--      </ion-item>-->
+<!--      </ion-list>-->
+<!--        <div class="Aligner-item Aligner-item&#45;&#45;top"></div>-->
+<!--        <ion-title Welcome To Music Mates></ion-title>-->
+<!--&lt;!&ndash;        <ion-item color="primary" class="animated fadeInRight delay-{{1}}"><img src="assets/img/ballet.jpg" style="width: 100%; height: 100%;"></ion-item>&ndash;&gt;-->
+<!--        <div class="Aligner-item Aligner-item&#45;&#45;bottom"></div>-->
+<!--      <ion-button (click)="ionViewDidLoad()" align="bottom">Get Started !</ion-button>-->
+<!--    </div>-->
+<!--</div>-->
 <!--    </div>-->
 <!--    <circle-progress-->
 <!--            [percent]="85"-->
@@ -29,9 +29,8 @@
 <!--            [animationDuration]="300"-->
 <!--    ></circle-progress>-->
 <!--</div>-->
-<ion-content padding="0px" color="primary">
-  <ion-title align="center">Music Mates</ion-title>
-  <ion-card-subtitle align="center">Discover, Party, Play</ion-card-subtitle>
+<ion-content padding="0px" color="medium">
+  <ion-title align="center"><img src="../assets/img/music_mates_logo.png" width="50%" height="40%" align="center"></ion-title>
   <form padding="0px" #f="ngForm" (ngSubmit)="onSubmit(f)">
   <ion-grid align="center" class="my-grid">
     <ion-row>

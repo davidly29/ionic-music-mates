@@ -26,14 +26,7 @@ export class PasswordCheckComponent implements OnInit {
   checkPassword() {
     if (this.userPassword === this.password) {
       this.onCancel();
-      this.checkIfJoined = this.lobbyToJoin.joinedUsers.find(value => value === this.authService.user.getValue().email);
-      if (this.checkIfJoined === this.authService.user.getValue().email) {
-        this.route.navigate(['/join-lobby' + '/' + this.lobbyId]);
-      } else {
-        this.lobbyToJoin.joinedUsers.push(this.authService.user.getValue().email);
-        this.firebaseService.updateLobby(this.lobbyToJoin, this.lobbyToJoin.id);
-        this.route.navigate(['/join-lobby' + '/' + this.lobbyId]);
-      }
+      this.route.navigate(['/join-lobby' + '/' + this.lobbyId]);
     } else {
       this.onCancel();
       this.route.navigate(['/post-log/tabs/joinLobby']);
