@@ -5,6 +5,8 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
 import {AuthService} from './auth/auth.service';
+import {FirebaseServiceService} from './firebase-service.service';
+import {PlaylistModel} from './playlist/PlaylistModel';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -16,7 +18,8 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private youtube: YoutubeVideoPlayer,
-    private authService: AuthService
+    private authService: AuthService,
+    private firebaseService: FirebaseServiceService,
   ) {
     this.initializeApp();
   }

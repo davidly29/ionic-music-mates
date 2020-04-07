@@ -1,9 +1,17 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Welcome to </ion-title>
+    <ion-title>Welcome</ion-title>
     <ion-card-subtitle>Lets start by importing a playlist</ion-card-subtitle>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-
+  <ion-card-subtitle>Choose a Song to add</ion-card-subtitle>
+  <ion-button (click)="getUserPlaylist()"></ion-button>
+<ion-list>
+  <ion-item-sliding *ngFor="let song of playlist.songs">
+  <ion-item>
+    {{song.name}}
+  </ion-item>
+  </ion-item-sliding>
+</ion-list>
 </ion-content>

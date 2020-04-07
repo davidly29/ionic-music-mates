@@ -23,6 +23,7 @@ import {PlaylistModel} from '../../playlist/PlaylistModel';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
 import { BLE } from '@ionic-native/ble/ngx';
 import {AddPlaylistLobbyComponent} from './add-playlist-lobby/add-playlist-lobby.component';
+import {AddSongsPageModule} from './add-songs/add-songs.module';
 declare var cordova: any;
 @Component({
   selector: 'app-view-lobby',
@@ -122,13 +123,12 @@ export class ViewLobbyPage implements OnInit {
   songs = [];
   lobbySongs: string[];
   currentSongIndex = 0;
-  allUsers: LobbyUserModel[];
   devices: any[] = [];
   constructor(private activatedRoute: ActivatedRoute, private lobbyService: LobbyServiceService,
               private firebaseService: FirebaseServiceService, private toastCtrl: ToastController
   ,           private authService: AuthService, private toastController: ToastController,
               private modalCtrl: ModalController, private dom: DomSanitizer, public streamingMedia: StreamingMedia,
-              private ble: BLE, private ngZone: NgZone, private alertCtrl: AlertController ) { }
+              private ble: BLE, private ngZone: NgZone, private alertCtrl: AlertController) { }
 
   ngOnInit() {
     this.firebaseService.getLobbies().subscribe(res => {
@@ -346,7 +346,38 @@ export class ViewLobbyPage implements OnInit {
       }).then(toast => toast.present());
     }
   }
-
+  async showPlaylistAlert() {
+    const alert = await this.alertCtrl.create({
+      header: 'Playlist Already Loaded',
+      subHeader: 'There is already a loaded playlist',
+      message: 'would you like to remove this playlist and load your own ?',
+      buttons: [
+        {
+        text: 'Cancel',
+        handler: data => {
+        console.log('Cancel clicked');
+        this.alertCtrl.dismiss();
+        }
+        },
+        {
+          text: 'Override Playlist',
+          handler: data => {
+            this.viewSongs();
+          }
+        }
+      ]
+    });
+    await alert.present();
+    const result = await alert.onDidDismiss();
+    console.log(result);
+  }
+  loadSongs() {
+    if (this.tempLobby.songs.length > 0) {
+      this.showPlaylistAlert().then(console.log);
+    } else {
+      this.viewSongs();
+    }
+  }
   viewSongs() {
     const temp = this.authService.user.getValue().id;
     if (this.allPlaylists.find(x => x.userId === temp) != null) {

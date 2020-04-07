@@ -1,11 +1,16 @@
 <ion-header>
   <ion-toolbar color="secondary">
-    <ion-title>{{this.authService.user.getValue().email}}'s Playlist</ion-title>
+    <ion-title align="center">{{this.authService.user.getValue().email}}'s Playlist</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content color="primary">
-  <ion-button type="round" (click)="getUserPlaylist()">Load Your Songs</ion-button>
+  <ion-card-subtitle align="center">Hear you can add songs from your playlist to a lobby you have joined</ion-card-subtitle>
+  <ion-card-subtitle align="center">Or Remove songs from your personal playlist</ion-card-subtitle>
+  <ion-button type="round" align="center" (click)="getUserPlaylist()">Load Your Songs</ion-button>
   <ion-list>
     <ion-item-sliding *ngFor="let song of playlist.songs">
       <ion-item color="primary">
@@ -17,6 +22,10 @@
       <ion-item-options>
         <ion-item-option color="secondary" (click)="removeSong(song.id)">
           Remove
+          <ion-icon slot="bottom" name="trash-bin-outline"></ion-icon>
+        </ion-item-option>
+        <ion-item-option color="secondary" (click)="addToLobby(song)">
+          Add To Lobby
           <ion-icon slot="bottom" name="trash-bin-outline"></ion-icon>
         </ion-item-option>
       </ion-item-options>

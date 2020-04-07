@@ -6,6 +6,7 @@ import {AuthService} from '../../auth/auth.service';
 import {AlertController, ModalController} from '@ionic/angular';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PasswordCheckComponent} from '../view-lobby/password-check/password-check.component';
+import {PlaylistModel} from '../../playlist/PlaylistModel';
 
 @Component({
   selector: 'app-join-lobby',
@@ -14,7 +15,6 @@ import {PasswordCheckComponent} from '../view-lobby/password-check/password-chec
 })
 export class JoinLobbyPage implements OnInit {
   loadedLobbies: LobbyModel[];
-
   tempLobby: LobbyModel = {
     id: '',
     joinedUsers: [],
@@ -53,7 +53,8 @@ export class JoinLobbyPage implements OnInit {
 
   joinLobby(lobby: LobbyModel) {
     if (lobby.isPassword) {
-      this.modalCtrl.create({component: PasswordCheckComponent, componentProps: {password: lobby.password, lobbyId: lobby.id, lobbyToJoin: lobby}}).then(modalEl => {
+      this.modalCtrl.create({component: PasswordCheckComponent, componentProps:
+            {password: lobby.password, lobbyId: lobby.id, lobbyToJoin: lobby}}).then(modalEl => {
         modalEl.present();
     });
     }
