@@ -11,6 +11,8 @@
   <br>
   <br>
   <ion-searchbar></ion-searchbar>
+  <br>
+  <ion-button (click)="checkLobby(ionSlides)">View Current Lobby</ion-button><ion-label>{{currentlyInLobby ? this.usersLobby.name : ''}}</ion-label><div *ngIf="currentlyInLobby"><ion-button>Enter</ion-button></div>
 <!--    <ion-grid>-->
 <!--      <ion-row>-->
 <!--        <ion-col>-->
@@ -54,7 +56,7 @@
 <!--      </ion-row>-->
 
 <!--    </ion-grid>-->
-    <ion-slides [options]="sliderConfig">
+    <ion-slides [options]="sliderConfig" #ionSlides>
       <ion-slide *ngFor="let item of loadedLobbies">
       <ion-card color="secondary">
         <div align="right" style="color: var(--ion-color-secondary);">

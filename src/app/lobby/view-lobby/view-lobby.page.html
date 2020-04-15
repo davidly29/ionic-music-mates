@@ -1,6 +1,6 @@
-<ion-header>
+<ion-header xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
   <ion-toolbar color="secondary">
-    <ion-title>Lobby: {{tempLobby?.name}}</ion-title>
+    <ion-title>{{tempLobby?.name}}</ion-title>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
@@ -11,33 +11,31 @@
 </ion-header>
 
 <ion-content color="primary" [scrollEvents]="true">
-<!--  <iframe width="100%" height="30%" [src]="viewSongs()"></iframe>-->
-<!--  <ion-item>-->
-<!--  <ion-label>Lobby Name {{tempLobby?.name}}</ion-label>-->
-<!--</ion-item>-->
-<!--  <ion-item>-->
-<!--    <ion-label>Description {{tempLobby?.description}}</ion-label>-->
-<!--  </ion-item>-->
-<!--  <ion-button type="round" (click)="checkUserJoined()">Check</ion-button>-->
-<!--  <iframe align="left" width="40%" height="100%" [src]="sanitizeVidId(this.playlist.songs[this.currentSongIndex])"></iframe>-->
-  <ion-button type="round" (click)="goToPrevVideo()" style="width: 25%">Prev Vid</ion-button>
-  <ion-button type="round" (click)="goToNextVideo()" style="width: 24%">Next Vid</ion-button>
-<!--  <ion-button type="round" (click)="testAndroid()" style="width: 24%">test</ion-button>-->
   <div class="video-container">
     <p align="right">
-    <iframe align="right" width="50%" height="100%" [src]="sanitizeVidId(this.tempLobby.songs[this.currentSongIndex]?.id)"></iframe>
+    <iframe align="right" width="100%" height="38%" [src]="sanitizeVidId(this.tempLobby.currentSong)"></iframe>
     </p>
   </div>
-<!--  <ion-list>-->
-<!--    <ion-card-content ion-item *ngFor="let device of devices">-->
-<!--      <p>{{device.name}}</p>-->
-<!--    </ion-card-content>-->
-<!--  </ion-list>-->
-<!--    <ion-button type="round" (click)="joinLobby()">Join Lobby</ion-button>-->
-<!--    <ion-button type="round" (click)="viewLobbyUsers()">View Users<br><ion-badge id="cart-badge">{{tempLobby.joinedUsers.length}}</ion-badge></ion-button>-->
-<!--    <ion-button type="round" (click)="viewSongs()">View Your Songs</ion-button>-->
-<!--    <ion-button type="round" (click)="addSongsUser()">Add Specific Song</ion-button>-->
-<ion-grid align="left">
+    <div style="height: 30%"></div>
+    <ion-grid align="center" padding-top="0px" style="height: 30%;">
+        <ion-row>
+            <ion-col style="width: 50%">
+                <ion-button align="right" style="width: 100%" (click)="goToPrevVideo()">
+                    Prev
+                    <ion-icon slot="end" name="caret-back-circle"></ion-icon>
+                </ion-button>
+            </ion-col>
+            <ion-col style="width: 50%;">
+                <ion-button align="right" style="width: 100%;" (click)="goToNextVideo()">
+                    Next
+                    <ion-icon slot="end" name="battery-dead-outline"></ion-icon>
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+<!--    <div style="height: 25%"></div>-->
+<ion-grid align="bottom">
     <ion-row *ngFor="let message of allMessages">
       <ion-col size="9" *ngIf="currentUser.getValue().email !== message.sentBy && this.activatedRoute.snapshot.paramMap.get('id') === message.lobbyId" text-wrap class="message other-user">
         <b>{{ message.sentBy }}</b>
@@ -71,6 +69,22 @@
 <!--    </ion-button>-->
 <!--  </ion-buttons>-->
 <!--  <ion-button (click)="viewSongs()">load</ion-button>-->
+
+<ion-button (click)="openAVideo()"> video </ion-button>
+
+    <ion-list>
+      <ion-row *ngFor="let device of devices">
+        <ion-item (click)="deviceSelected(device)">
+         <ion-label>
+        {{ device.name}}
+        {{ device.name || 'Unnamed'}}
+        {{ device.id }}
+        RSSI: {{ device.rssi }}
+      </ion-label>
+      </ion-item>
+      </ion-row>
+  </ion-list>
+
 </ion-content>
 <ion-footer>
   <ion-toolbar>
@@ -88,13 +102,14 @@
         </div>
       </ion-col>
     </ion-row>
-    <ion-button color="secondary" padding-end="40px" slot="end" (click)="loadSongs()">
-      <div>
-        <ion-icon name="cloud-download-outline"></ion-icon>
-      </div>
+    <ion-button color="secondary" padding-end="20%" slot="end" (click)="loadSongs()">
+      <div><ion-icon name="cloud-done"></ion-icon></div>
     </ion-button>
-    <ion-button color="secondary" padding-end="40px" slot="end" routerLink="/playlist">
+    <ion-button color="secondary" padding-end="20%" slot="end" routerLink="/playlist">
       <div><ion-icon name="add-circle-outline"></ion-icon></div>
+    </ion-button>
+    <ion-button color="secondary" padding-end="20%" slot="end" (click)="Scan()">
+      <div><ion-icon name="bluetooth-sharp"></ion-icon></div>
     </ion-button>
   </ion-toolbar>
 </ion-footer>

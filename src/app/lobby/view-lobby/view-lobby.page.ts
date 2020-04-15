@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewChild, NgZone} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {ServicePageModule} from '../service/service.module';
 import {LobbyModel} from '../lobby.model';
 import {FirebaseServiceService} from '../../firebase-service.service';
@@ -24,6 +24,8 @@ import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-m
 import { BLE } from '@ionic-native/ble/ngx';
 import {AddPlaylistLobbyComponent} from './add-playlist-lobby/add-playlist-lobby.component';
 import {AddSongsPageModule} from './add-songs/add-songs.module';
+import {YoutubeVideoPlayer} from '@ionic-native/youtube-video-player/ngx';
+
 declare var cordova: any;
 @Component({
   selector: 'app-view-lobby',
@@ -49,6 +51,8 @@ export class ViewLobbyPage implements OnInit {
     id: 'test',
     songs: [] = [],
   };
+  statusMessage: string;
+  deviceMode = true;
 
   allPlaylists: PlaylistModel[];
   allLobbies: LobbyModel[];
@@ -82,6 +86,7 @@ export class ViewLobbyPage implements OnInit {
     userId: '',
     password: '',
     allowedUsers: 0,
+    currentSong: '',
     joinedUsers: [],
     songs: []
   };
@@ -128,7 +133,8 @@ export class ViewLobbyPage implements OnInit {
               private firebaseService: FirebaseServiceService, private toastCtrl: ToastController
   ,           private authService: AuthService, private toastController: ToastController,
               private modalCtrl: ModalController, private dom: DomSanitizer, public streamingMedia: StreamingMedia,
-              private ble: BLE, private ngZone: NgZone, private alertCtrl: AlertController) { }
+              private ble: BLE, private ngZone: NgZone, private alertCtrl: AlertController, private route: Router,
+              private youtube: YoutubeVideoPlayer) { }
 
   ngOnInit() {
     this.firebaseService.getLobbies().subscribe(res => {
@@ -198,8 +204,16 @@ export class ViewLobbyPage implements OnInit {
     }
     this.currentVideoId = 'MjBzElQrm4E';
     // this.tempLobby.songs = this.tempSong;
+    // tslint:disable-next-line:no-conditional-assignment
+    if (this.tempLobby.currentSong = '') {
+      this.tempLobby.currentSong = this.tempLobby.songs[0].id;
+      this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
+    }
   }
 
+  openAVideo() {
+    this.youtube.openVideo('MjBzElQrm4E');
+  }
   addPlaylist() {
       this.modalCtrl.create({
         component: AddPlaylistLobbyComponent, componentProps: {lobby: this.tempLobby}
@@ -208,19 +222,50 @@ export class ViewLobbyPage implements OnInit {
       });
   }
 
-  scan() {
-    this.devices = [];
-    this.ble.scan([], 15).subscribe(
-        device => this.onDeviceDiscovered(device)
+  Scan() {
+    this.setStatus('Scanning for Bluetooth LE Devices');
+    this.devices = [];  // clear list
+
+    this.ble.scan([], 5).subscribe( // scanning for 5 seconds on one tap
+        device => this.onDeviceDiscovered(device),
+        error => this.scanError(error)
     );
+
+    setTimeout(this.setStatus.bind(this), 5000, 'Scan complete');
   }
 
   onDeviceDiscovered(device) {
-    console.log('Found' + JSON.stringify(device, null, 2));
+    console.log('Discovered ' + JSON.stringify(device, null, 2));
     this.ngZone.run(() => {
-      this.devices.push(device);
-      console.log(device);
+      console.log(JSON.parse(JSON.stringify(device, null, 2)).name);
+      this.devices.push(device); // filling the list with discovered list
     });
+  }
+  // If location permission is denied, you'll end up here
+  scanError(error) {
+    this.setStatus('Error ' + error);
+    this.toastCtrl.create({
+      message: 'Error scanning for Bluetooth low energy devices',
+      position: 'bottom',
+      duration: 5000
+    }).then((obj) => {
+      obj.present();
+    });
+  }
+  setStatus(message) {
+    console.log(message);
+    this.ngZone.run(() => {
+      this.statusMessage = message;
+    });
+  }
+  deviceSelected(device: any) {
+    console.log(JSON.stringify(device) + ' selected');
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        special: JSON.stringify(device)
+      }
+    };
+    this.route.navigate(['device-details'], navigationExtras);
   }
 
   goToNextVideo() {
@@ -230,7 +275,9 @@ export class ViewLobbyPage implements OnInit {
     //   return this.currentVideoId;
     // } else {
       this.currentSongIndex = this.currentSongIndex + 1;
-      return this.currentSongIndex;
+      this.tempLobby.currentSong = this.tempLobby.songs[this.currentSongIndex].id;
+      this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
+      return this.tempLobby;
   }
 
   goToPrevVideo() {
@@ -240,7 +287,9 @@ export class ViewLobbyPage implements OnInit {
     //   return this.currentVideoId;
     // } else {
       this.currentSongIndex = this.currentSongIndex - 1;
-      return this.currentSongIndex;
+      this.tempLobby.currentSong = this.tempLobby.songs[this.currentSongIndex].id;
+      this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id).then(console.log);
+      return this.tempLobby;
   }
 
   joinedLobby() {

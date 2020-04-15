@@ -34,6 +34,7 @@
     "angularfire2": "^5.2.1",
     "animate.css": "^3.7.2",
     "capacitor-youtube-player": "^1.0.0-alpha.1-48",
+    "com.bunkerpalace.cordova.YoutubeVideoPlayer": "git+https://github.com/JonSmart/CordovaYoutubeVideoPlayer.git",
     "cordova-android": "^8.1.0",
     "cordova-browser": "6.0.0",
     "cordova-plugin-ble-central": "^1.2.4",
