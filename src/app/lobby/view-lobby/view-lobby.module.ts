@@ -10,6 +10,7 @@ import { AutosizeModule} from 'ngx-autosize';
 import {ViewUserModalComponent} from './view-user-modal/view-user-modal.component';
 import {PasswordCheckComponent} from './password-check/password-check.component';
 import {AddPlaylistLobbyComponent} from './add-playlist-lobby/add-playlist-lobby.component';
+import {BleDeviceScanComponent} from './ble-device-scan/ble-device-scan.component';
 
 const routes: Routes = [
   {
@@ -26,7 +27,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     AutosizeModule
   ],
-  declarations: [ViewLobbyPage, ViewUserModalComponent, AddPlaylistLobbyComponent],
-  entryComponents: [ViewUserModalComponent, AddPlaylistLobbyComponent]
+  declarations: [ViewLobbyPage, ViewUserModalComponent, AddPlaylistLobbyComponent, BleDeviceScanComponent],
+  entryComponents: [ViewUserModalComponent, AddPlaylistLobbyComponent, BleDeviceScanComponent]
 })
 export class ViewLobbyPageModule {}

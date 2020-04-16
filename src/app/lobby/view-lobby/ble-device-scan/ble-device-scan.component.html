@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>Connect To A Device</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="onCancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="primary">
+  <ion-list>
+    <ion-row *ngFor="let device of devices">
+      <ion-item (click)="deviceSelected(device)">
+        <ion-label>
+          {{ device.name}}
+          {{ device.name || 'Unnamed'}}
+          {{ device.id }}
+          RSSI: {{ device.rssi }}
+        </ion-label>
+      </ion-item>
+    </ion-row>
+  </ion-list>
+</ion-content>

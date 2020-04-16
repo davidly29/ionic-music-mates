@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start"> <ion-back-button></ion-back-button> </ion-buttons>
+    <ion-title>{{ peripheral.name || 'Device' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="padding" color="primary">
+
+  <ion-card>
+    <ion-card-header>
+      {{ peripheral.name || 'Unnamed' }}
+    </ion-card-header>
+    <ion-card-content>
+      {{ peripheral.id }}
+    </ion-card-content>
+  </ion-card>
+  <div>
+      <circle-progress
+              [percent]="loading"
+              [radius]="100"
+              [outerStrokeWidth]="16"
+              [innerStrokeWidth]="8"
+              [outerStrokeColor]="'#78C000'"
+              [innerStrokeColor]="'#C7E596'"
+              [animation]="true"
+              [animationDuration]="300"
+      ></circle-progress>
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-item>
+      <ion-label>{{ statusMessage }}</ion-label>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

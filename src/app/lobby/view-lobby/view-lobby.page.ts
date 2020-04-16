@@ -25,6 +25,7 @@ import { BLE } from '@ionic-native/ble/ngx';
 import {AddPlaylistLobbyComponent} from './add-playlist-lobby/add-playlist-lobby.component';
 import {AddSongsPageModule} from './add-songs/add-songs.module';
 import {YoutubeVideoPlayer} from '@ionic-native/youtube-video-player/ngx';
+import {BleDeviceScanComponent} from './ble-device-scan/ble-device-scan.component';
 
 declare var cordova: any;
 @Component({
@@ -221,7 +222,14 @@ export class ViewLobbyPage implements OnInit {
         modalEl.present();
       });
   }
+ openBLEModal() {
+    this.Scan();
+   // tslint:disable-next-line:max-line-length
+    this.modalCtrl.create({component: BleDeviceScanComponent, componentProps: {devices: this.devices}}).then(modelEl => {
+      modelEl.present();
+   });
 
+ }
   Scan() {
     this.setStatus('Scanning for Bluetooth LE Devices');
     this.devices = [];  // clear list
