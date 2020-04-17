@@ -31,11 +31,18 @@ export class PlaySongPage implements OnInit {
     videoId: 'test',
     userId: 'test',
     name: 'test',
-    id: 'test',
     songs: null,
   };
 
-  allPlaylists: PlaylistModel[];
+  updatePlaylist: PlaylistModel = {
+    videoId: 'test',
+    userId: 'test',
+    name: 'test',
+    id: 'test',
+    songs: [],
+  };
+
+  allPlaylists: PlaylistModel[] = [];
 
   searchKey = '';
   response: any = {};
@@ -55,6 +62,7 @@ export class PlaySongPage implements OnInit {
   vid = '';
   yt = 'https://www.youtube.com/';
   category: any;
+  newSongArray: SongModel[] = [];
   constructor(private youtube: YoutubeVideoPlayer, private dom: DomSanitizer,
               private ytProvider: YtServiceService, private alertCtrl: AlertController, public modalCtrl: ModalController,
               // tslint:disable-next-line:max-line-length
@@ -64,44 +72,13 @@ export class PlaySongPage implements OnInit {
   }
 
   ngOnInit() {
-
     this.firebaseService.getPlaylists().subscribe(res => {
       this.allPlaylists = res;
       }
     );
-    // const config = {
-    //   clientId: '<SPOTIFY CLIENT ID>',
-    //   redirectUrl: '<REDIRECT URL, MUST MATCH WITH AUTH ENDPOINT AND SPOTIFY DEV CONSOLE>',
-    //   scopes: ['streaming'], // see Spotify Dev console for all scopes
-    //   tokenExchangeUrl: '<URL OF TOKEN EXCHANGE HTTP ENDPOINT>',
-    //   tokenRefreshUrl: '<URL OF TOKEN REFRESH HTTP ENDPOINT>',
-    // };
-    //
-    // this.spotifyAuth.authorize(config)
-    //     .then(({ accessToken, expiresAt }) => {
-    //       console.log(`Got an access token, its ${accessToken}!`);
-    //       console.log(`Its going to expire in ${expiresAt - Date.now()}ms.`);
-    //     });
-
-
-   // this.spotifyAuth.forget().then(() => console.log("We're logged out!"));
     this.currentUser = this.authService.user;
   }
 
-  // authWithSpotify() {
-  //   const config = {
-  //     clientId: '4671fcc7c9564f94b408922a06f54835',
-  //     redirectUrl: 'ionicfyp://callback',
-  //     scopes: ['streaming', 'playlist-read-private', 'user-read-email', 'user-read-private'],
-  //     tokenExchangeUrl: 'https://ionicfypserver.herokuapp.com/exchange',
-  //     tokenRefreshUrl: 'https://ionicfypserver.herokuapp.com/refresh',
-  //   };
-  //
-  //   cordova.plugins.spotifyAuth.authorize(config)
-  //       .then(({ accessToken, encryptedRefreshToken, expiresAt }) => {
-  //         this.result = { access_token: accessToken, expires_in: expiresAt, ref: encryptedRefreshToken };
-  //       });
-  // }
 
   sanitizeVid(url) {
     return this.dom.bypassSecurityTrustResourceUrl(url);
@@ -134,8 +111,23 @@ export class PlaySongPage implements OnInit {
         obj.present();
       });
     } else {
+      // If this is a new User
+      this.tempSong.name = name;
+      this.tempSong.id = id;
+      this.playlist.userId = this.authService.user.getValue().id;
+      this.newSongArray.push(this.tempSong);
+
+      this.playlist.songs = this.newSongArray;
+      this.firebaseService.addPlaylist(this.playlist);
+      this.firebaseService.getPlaylists().subscribe(temp => {
+        this.allPlaylists = temp;
+      });
+      if (this.allPlaylists.find(x => x.userId === this.currentUser.getValue().id) != null) {
+        this.updatePlaylist = this.allPlaylists.find(x => x.userId === this.authService.user.getValue().id);
+        this.firebaseService.updatePlaylist(this.updatePlaylist, this.updatePlaylist.id).then(console.log);
+      }
       this.toastController.create({
-        message: 'Song Added',
+        message: 'Song Added to New Playlist',
         duration: 3000,
         showCloseButton: true,
         closeButtonText: 'OK',
@@ -143,12 +135,6 @@ export class PlaySongPage implements OnInit {
       }).then((obj) => {
         obj.present();
       });
-      this.playlist.userId = this.currentUser.getValue().id;
-      this.playlist.videoId = id;
-      this.tempSong.name = name;
-      this.tempSong.id = id;
-      this.playlist.songs.push(this.tempSong);
-      this.firebaseService.addPlaylist(this.playlist);
     }
 
   }

@@ -6,35 +6,99 @@
     </ion-buttons>
     <ion-buttons slot="end">
     <ion-button (click)="this.lobbyStatus()">{{isJoined ? 'Leave Lobby' : 'Join Lobby'}}</ion-button>
+    <ion-button (click)="this.viewLobbyUsers()">View Users<ion-icon name="people"></ion-icon></ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 <ion-content color="primary" [scrollEvents]="true">
-  <div class="video-container">
-    <p align="right">
-    <iframe align="right" width="100%" height="38%" [src]="sanitizeVidId(this.tempLobby.currentSong)"></iframe>
-    </p>
-  </div>
-    <div style="height: 30%"></div>
-    <ion-grid align="center" padding-top="0px" style="height: 30%;">
+
+    <iframe id="player" type="text/html" width="100%" height=38% [src]="this.url" frameborder="2px"></iframe>
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+
+    <script>
+        // 2. This code loads the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '390',
+                width: '640',
+                videoId: 'AbqjEBd9KX4',
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+        function playerSeekTo(player, seconds) {
+            player.seekTo(seconds);
+        }
+        function time() {
+            this.tempLobby.videoId = player.getCurrentTime();
+        }
+        // 4. The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
+
+        // 5. The API calls this function when the player's state changes.
+        //    The function indicates that when playing a video (state=1),
+        //    the player should play for six seconds and then stop.
+        var done = false;
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING && !done) {
+                setTimeout(stopVideo, 6000);
+                done = true;
+            }
+        }
+        function stopVideo() {
+            player.time();
+            time();
+            this.saveTimeStamp()
+            player.stopVideo();
+        }
+    </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+<!--  <div class="video-container">-->
+<!--    <p align="right">-->
+<!--    <iframe align="right" width="100%" height="38%" [src]="sanitizeVidId(this.tempLobby.currentSong)"></iframe>-->
+<!--    </p>-->
+<!--  </div>-->
+<!--    <div style="height: 20%"></div>-->
+    <ion-grid align="center" style="height: 15%;">
         <ion-row>
-            <ion-col style="width: 50%">
-                <ion-button align="right" style="width: 100%" (click)="goToPrevVideo()">
+            <ion-col style="width: 25%">
+                <ion-button align="right" color="secondary" style="width: 100%" (click)="goToPrevVideo()">
                     Prev
-                    <ion-icon slot="end" name="caret-back-circle"></ion-icon>
+                    <ion-icon slot="icon-only" name="play-skip-back"></ion-icon>
                 </ion-button>
             </ion-col>
-            <ion-col style="width: 50%;">
-                <ion-button align="right" style="width: 100%;" (click)="goToNextVideo()">
+            <ion-col style="width: 25%;">
+                <ion-button align="right" color="secondary" style="width: 100%;" (click)="goToNextVideo()">
                     Next
-                    <ion-icon slot="end" name="battery-dead-outline"></ion-icon>
+                    <ion-icon slot="icon-only" name="play-skip-forward"></ion-icon>
+                </ion-button>
+            </ion-col>
+            <ion-col style="width: 25%">
+                <ion-button color="secondary" style="width: 100%;" (click)="getLobbySongs()">
+                    <ion-icon name="list-outline"></ion-icon>
+                </ion-button>
+            </ion-col>
+            <ion-col style="width: 25%">
+                <ion-button color="secondary" style="width: 100%;" (click)="openAVideo()">
+                    <ion-icon slot="icon-only" name="tv"></ion-icon>
                 </ion-button>
             </ion-col>
         </ion-row>
     </ion-grid>
-
-<!--    <div style="height: 25%"></div>-->
 <ion-grid align="bottom">
     <ion-row *ngFor="let message of allMessages">
       <ion-col size="9" *ngIf="currentUser.getValue().email !== message.sentBy && this.activatedRoute.snapshot.paramMap.get('id') === message.lobbyId" text-wrap class="message other-user">
@@ -70,7 +134,7 @@
 <!--  </ion-buttons>-->
 <!--  <ion-button (click)="viewSongs()">load</ion-button>-->
 
-<ion-button (click)="openAVideo()"> video </ion-button>
+
 </ion-content>
 <ion-footer>
   <ion-toolbar>
@@ -89,13 +153,13 @@
       </ion-col>
     </ion-row>
     <ion-button color="secondary" padding-end="20%" slot="end" (click)="loadSongs()">
-      <div><ion-icon name="cloud-done"></ion-icon></div>
+      <div><ion-icon name="download"></ion-icon></div>
     </ion-button>
     <ion-button color="secondary" padding-end="20%" slot="end" routerLink="/playlist">
       <div><ion-icon name="add-circle-outline"></ion-icon></div>
     </ion-button>
-    <ion-button color="secondary" padding-end="20%" slot="end" (click)="openBLEModal()">
-      <div><ion-icon name="bluetooth-sharp"></ion-icon></div>
-    </ion-button>
+      <ion-button color="secondary" padding-end="20%" slot="end" routerLink="/playlist">
+          <div><ion-icon name="wifi"></ion-icon></div>
+      </ion-button>
   </ion-toolbar>
 </ion-footer>

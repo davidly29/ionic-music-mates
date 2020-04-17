@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild, NgZone} from '@angular/core';
+import {Component, Input, OnInit, ViewChild, NgZone, Pipe} from '@angular/core';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {ServicePageModule} from '../service/service.module';
 import {LobbyModel} from '../lobby.model';
@@ -26,6 +26,7 @@ import {AddPlaylistLobbyComponent} from './add-playlist-lobby/add-playlist-lobby
 import {AddSongsPageModule} from './add-songs/add-songs.module';
 import {YoutubeVideoPlayer} from '@ionic-native/youtube-video-player/ngx';
 import {BleDeviceScanComponent} from './ble-device-scan/ble-device-scan.component';
+import {ShowLobbySongsModalComponent} from './show-lobby-songs-modal/show-lobby-songs-modal.component';
 
 declare var cordova: any;
 @Component({
@@ -89,7 +90,8 @@ export class ViewLobbyPage implements OnInit {
     allowedUsers: 0,
     currentSong: '',
     joinedUsers: [],
-    songs: []
+    songs: [],
+    videoTime: 0,
   };
 
   tempUser: LobbyUserModel = {
@@ -125,7 +127,7 @@ export class ViewLobbyPage implements OnInit {
     time: ''
   };
   currentId = '';
-  url: SafeResourceUrl = '';
+  url: any;
   songs = [];
   lobbySongs: string[];
   currentSongIndex = 0;
@@ -209,9 +211,15 @@ export class ViewLobbyPage implements OnInit {
     if (this.tempLobby.currentSong = '') {
       this.tempLobby.currentSong = this.tempLobby.songs[0].id;
       this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
+      this.sanitizeVidId(this.tempLobby.currentSong);
+    } else {
+      this.sanitizeVidId(this.tempLobby.currentSong);
     }
   }
 
+  saveTimeStamp() {
+    this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id).then(console.log);
+  }
   openAVideo() {
     this.youtube.openVideo('MjBzElQrm4E');
   }
@@ -277,25 +285,17 @@ export class ViewLobbyPage implements OnInit {
   }
 
   goToNextVideo() {
-    // if (this.currentSongIndex === this.tempLobby.songs.length) {
-    //   this.currentSongIndex = this.tempLobby.songs.length;
-    //   this.currentVideoId = this.tempLobby.songs[this.currentSongIndex].id;
-    //   return this.currentVideoId;
-    // } else {
       this.currentSongIndex = this.currentSongIndex + 1;
       this.tempLobby.currentSong = this.tempLobby.songs[this.currentSongIndex].id;
+      this.sanitizeVidId(this.tempLobby.currentSong);
       this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
       return this.tempLobby;
   }
 
   goToPrevVideo() {
-    // if (this.currentSongIndex === 0) {
-    //   this.currentSongIndex = 0;
-    //   this.currentVideoId = this.tempLobby.songs[this.currentSongIndex].id;
-    //   return this.currentVideoId;
-    // } else {
       this.currentSongIndex = this.currentSongIndex - 1;
       this.tempLobby.currentSong = this.tempLobby.songs[this.currentSongIndex].id;
+      this.sanitizeVidId(this.tempLobby.currentSong);
       this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id).then(console.log);
       return this.tempLobby;
   }
@@ -324,11 +324,20 @@ export class ViewLobbyPage implements OnInit {
       this.isJoined = true;
       this.currentUserLobby = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
       this.tempLobby.joinedUsers.push(this.authService.user.getValue().email);
-      this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
+      this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id).then(console.log);
 
       this.currentUserLobby.lobbyId = this.activatedRoute.snapshot.paramMap.get('id');
       this.newUserLobby = this.currentUserLobby;
-      this.firebaseService.updateUser(this.newUserLobby, this.newUserLobby.id).then(console.log);
+      this.firebaseService.updateUser(this.currentUserLobby, this.currentUserLobby.id).then(console.log);
+      this.toastController.create({
+        message: 'Joined',
+        duration: 3000,
+        showCloseButton: true,
+        closeButtonText: 'OK',
+        animated: true
+      }).then((obj) => {
+        obj.present();
+      });
     }
   }
   testAndroid() {
@@ -353,7 +362,8 @@ export class ViewLobbyPage implements OnInit {
     return this.tempSong;
   }
   sanitizeVidId(id) {
-    return this.dom.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + id);
+    this.url = this.dom.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + id);
+    return this.url;
   }
   checkUserJoined() {
     this.tempLobby.joinedUsers.find(item => {
@@ -378,7 +388,26 @@ export class ViewLobbyPage implements OnInit {
           this.result = { access_token: accessToken, expires_in: expiresAt, ref: encryptedRefreshToken };
         });
   }
-
+  getLobbySongs() {
+    if (this.tempLobby.songs === null ) {
+      this.toastController.create({
+        message: 'There is no songs yet',
+        duration: 3000,
+        showCloseButton: true,
+        closeButtonText: 'OK',
+        animated: true
+      }).then((obj) => {
+        obj.present();
+      });
+    } else {
+      this.modalCtrl.create({
+        component: ShowLobbySongsModalComponent
+        , componentProps: {songs: this.tempLobby.songs}
+      }).then(modalEl => {
+        modalEl.present();
+      });
+    }
+  }
   leaveCurrentLobby() {
     this.isJoined = false;
     let name = '';

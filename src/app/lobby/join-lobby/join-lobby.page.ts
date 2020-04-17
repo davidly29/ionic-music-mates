@@ -57,6 +57,7 @@ export class JoinLobbyPage implements OnInit {
               private toastCtrl: ToastController, public platform: Platform) {}
 
   ngOnInit() {
+    this.currentUser.users = '';
     this.lobbyIndex = 0;
   // this.loadedLobbies = this.lobbyService.lobbies;
     this.firebaseService.getLobbies().subscribe(res => {
@@ -65,12 +66,22 @@ export class JoinLobbyPage implements OnInit {
     this.firebaseService.getUsers().subscribe(res => {
       this.allRegisteredUsers = res;
     });
+
   }
   removeLobby(id) {
       this.firebaseService.removeLobby(id).then(obj => {
         console.log(obj);
       });
   }
+  checkMyAccount() {
+    this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
+    if (this.currentUser.users !== this.authService.user.getValue().id) {
+      this.firebaseService.addUser(new LobbyUserModel('', this.authService.user.getValue().email,
+          '', this.authService.user.getValue().id)).then(console.log);
+    }
+  }
+
+
   checkLobby(slide) {
     this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
     this.firebaseService.getLobby(this.currentUser.lobbyId).subscribe(lobby => {

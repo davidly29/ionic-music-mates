@@ -11,6 +11,7 @@ import {ViewUserModalComponent} from './view-user-modal/view-user-modal.componen
 import {PasswordCheckComponent} from './password-check/password-check.component';
 import {AddPlaylistLobbyComponent} from './add-playlist-lobby/add-playlist-lobby.component';
 import {BleDeviceScanComponent} from './ble-device-scan/ble-device-scan.component';
+import {ShowLobbySongsModalComponent} from './show-lobby-songs-modal/show-lobby-songs-modal.component';
 
 const routes: Routes = [
   {
@@ -27,7 +28,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     AutosizeModule
   ],
-  declarations: [ViewLobbyPage, ViewUserModalComponent, AddPlaylistLobbyComponent, BleDeviceScanComponent],
-  entryComponents: [ViewUserModalComponent, AddPlaylistLobbyComponent, BleDeviceScanComponent]
+  declarations: [ViewLobbyPage, ViewUserModalComponent, AddPlaylistLobbyComponent, BleDeviceScanComponent, ShowLobbySongsModalComponent],
+  entryComponents: [ViewUserModalComponent, AddPlaylistLobbyComponent, BleDeviceScanComponent, ShowLobbySongsModalComponent]
 })
 export class ViewLobbyPageModule {}

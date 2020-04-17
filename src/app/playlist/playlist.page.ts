@@ -18,7 +18,6 @@ export class PlaylistPage implements OnInit {
     videoId: 'test',
     userId: 'test',
     name: 'test',
-    id: 'test',
     songs: [],
   };
 
@@ -50,7 +49,7 @@ export class PlaylistPage implements OnInit {
   };
 
   allPlaylists: PlaylistModel[] = [];
-  allRegisteredUsers: LobbyUserModel[];
+  allRegisteredUsers: LobbyUserModel[] = [];
   allLobbies: LobbyModel[] = [];
   isCurrentlyInLobby = false;
   newSongArray: SongModel[] = [];
@@ -78,11 +77,13 @@ export class PlaylistPage implements OnInit {
     if (this.allPlaylists.find(x => x.userId === temp) != null) {
       this.playlist = this.allPlaylists.find(x => x.userId === temp);
     }
-    this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
+    // this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
     // this.usersLobby = this.allLobbies.find(x => x.id === this.currentUser.lobbyId);
-    this.firebaseService.getLobby(this.currentUser.lobbyId).subscribe(lobby => {
-      this.usersLobby = lobby;
-    });
+
+    // TODO this may be needed somewhere
+    // this.firebaseService.getLobby(this.currentUser.lobbyId).subscribe(lobby => {
+    //   this.usersLobby = lobby;
+    // });
     return this.playlist;
   }
 
@@ -98,6 +99,9 @@ export class PlaylistPage implements OnInit {
     }
 
   addToLobby(song) {
+    this.firebaseService.getLobby(this.currentUser.lobbyId).subscribe(lobby => {
+      this.usersLobby = lobby;
+    });
     this.toAdd = song;
     this.newSongArray = this.usersLobby.songs;
     this.newSongArray.push(this.toAdd);

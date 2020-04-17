@@ -23,6 +23,7 @@ export class CreateLobbyPage implements OnInit {
     songs: [],
     isPassword: false,
     currentSong: '',
+    videoTime: 0,
   };
 
   lobbyId = null;
