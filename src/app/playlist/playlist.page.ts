@@ -15,11 +15,19 @@ import {LobbyUserModel} from '../lobby/join-lobby/lobbyUserModel';
 })
 export class PlaylistPage implements OnInit {
   playlist: PlaylistModel = {
-    videoId: 'test',
+    username: 'test',
     userId: 'test',
     name: 'test',
     songs: [],
   };
+  newUserPlaylist: PlaylistModel = {
+    username: 'test',
+    userId: 'test',
+    name: '',
+    id: 'test',
+    songs: [],
+  };
+
 
   toDelete: SongModel = {
    id: '',
@@ -51,16 +59,25 @@ export class PlaylistPage implements OnInit {
   allPlaylists: PlaylistModel[] = [];
   allRegisteredUsers: LobbyUserModel[] = [];
   allLobbies: LobbyModel[] = [];
+
+  usersPlaylist: PlaylistModel[] = [];
+
   isCurrentlyInLobby = false;
   newSongArray: SongModel[] = [];
+  isCreate = false;
   constructor( private firebaseService: FirebaseServiceService, private toastCtrl: ToastController
     ,          private authService: AuthService, private toastController: ToastController) { }
 
   ngOnInit() {
     this.firebaseService.getPlaylists().subscribe(res => {
           this.allPlaylists = res;
-        }
-    );
+      // tslint:disable-next-line:prefer-for-of
+          for (let i = 0; i < this.allPlaylists.length; i ++) {
+            if (this.allPlaylists[i].userId === this.authService.user.getValue().email) {
+              this.usersPlaylist.push(this.allPlaylists[i]);
+            }
+          }
+        });
 
     this.firebaseService.getUsers().subscribe(res => {
       this.allRegisteredUsers = res;
@@ -68,10 +85,21 @@ export class PlaylistPage implements OnInit {
 
     this.firebaseService.getLobbies().subscribe(res => {
       this.allLobbies = res;
-      console.log(this.allLobbies);
     });
+    const temp = this.authService.user.getValue().id;
+    if (this.allPlaylists.find(x => x.userId === temp) != null) {
+      this.playlist = this.allPlaylists.find(x => x.userId === temp);
+      return this.playlist;
+    }
   }
-
+  newPlaylistCreate() {
+    this.newUserPlaylist.userId = this.authService.user.getValue().id;
+    this.firebaseService.addPlaylist(this.newUserPlaylist).then(console.log);
+  }
+  switchAdd() {
+    this.isCreate = true;
+    return this.isCreate;
+  }
   getUserPlaylist() {
     const temp = this.authService.user.getValue().id;
     if (this.allPlaylists.find(x => x.userId === temp) != null) {
@@ -84,7 +112,8 @@ export class PlaylistPage implements OnInit {
     // this.firebaseService.getLobby(this.currentUser.lobbyId).subscribe(lobby => {
     //   this.usersLobby = lobby;
     // });
-    return this.playlist;
+    this.newSongArray = this.playlist.songs;
+    return this.newSongArray;
   }
 
   removeSong(id) {

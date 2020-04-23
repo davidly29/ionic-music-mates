@@ -4,6 +4,8 @@ import {NgForm} from '@angular/forms';
 import {AlertController, LoadingController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
+import {LobbyUserModel} from '../lobby/join-lobby/lobbyUserModel';
+import {FirebaseServiceService} from '../firebase-service.service';
 
 @Component({
   selector: 'app-auth',
@@ -15,8 +17,14 @@ export class AuthPage implements OnInit {
   tabBarElement: any;
   isLoading = false;
   isLogin = false;
+  newUser: LobbyUserModel = {
+      email: '',
+      name: '',
+      users: '',
+      lobbyId: '',
+  };
   constructor(private authService: AuthService, private loadingCtrl: LoadingController, private router: Router,
-              private alert: AlertController) {
+              private alert: AlertController, private firebaseService: FirebaseServiceService) {
       // this.tabBarElement = document.querySelector('.tabbar');
   }
 
@@ -49,6 +57,9 @@ export class AuthPage implements OnInit {
             authOb = this.authService.login(email, password);
           } else {
             authOb = this.authService.signUp(email, password);
+            this.newUser.name = email;
+            this.newUser.email = email;
+            this.firebaseService.addUser(this.newUser);
           }
           authOb.subscribe(resData => {
             console.log(resData);
@@ -72,8 +83,6 @@ export class AuthPage implements OnInit {
               });
     });
   }
-
-
   onSubmit(form: NgForm) {
     if (!form.valid) {
       return;

@@ -22,10 +22,10 @@ const routes: Routes = [
   { path: 'playlist', loadChildren: './playlist/playlist.module#PlaylistPageModule' },
   { path: 'add-songs', loadChildren: './lobby/view-lobby/add-songs/add-songs.module#AddSongsPageModule' },
   { path: 'device-details', loadChildren: './lobby/view-lobby/device-details/device-details.module#DeviceDetailsPageModule' },
+  { path: 'songs-adding', loadChildren: './lobby/songs-adding/songs-adding.module#SongsAddingPageModule' },
+
 
   // { path: 'add-songs', loadChildren: './lobby/view-lobby/add-songs/add-songs.module#AddSongsPageModule' },
-
-
 
 
 ];

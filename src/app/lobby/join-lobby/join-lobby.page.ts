@@ -95,6 +95,17 @@ export class JoinLobbyPage implements OnInit {
     slide.slider.slideTo(2, 2000);
   }
   joinLobby(lobby: LobbyModel) {
+    if (lobby.joinedUsers.length >= lobby.allowedUsers) {
+      this.toastCtrl.create({
+        message: 'There is no songs yet',
+        duration: 3000,
+        showCloseButton: true,
+        closeButtonText: 'OK',
+        animated: true
+      }).then((obj) => {
+        obj.present();
+      });
+    }
     if (lobby.isPassword) {
       this.modalCtrl.create({component: PasswordCheckComponent, componentProps:
             {password: lobby.password, lobbyId: lobby.id, lobbyToJoin: lobby}}).then(modalEl => {

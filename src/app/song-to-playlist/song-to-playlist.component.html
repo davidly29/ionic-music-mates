@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>Adding {{this.songToAdd.name}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="primary">
+<ion-list>
+  <ion-item-sliding *ngFor="let item of allPlaylists">
+    <ion-item (click)="addToPlaylist(item)" *ngIf="item.userId === this.authService.user.getValue().id" class="text">
+      {{item.name}} <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-item>
+
+    <ion-item-options>
+      <ion-item-option color="danger" (click)="addToPlaylist(item)">
+        <ion-icon slot="bottom" name="add-outline"> </ion-icon>
+        Remove
+      </ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
+
+  <ion-row>
+    <ion-item class="text">
+      Create New Playlist
+      <ion-input required type="text" placeholder="Playlist Name" [(ngModel)]="this.newUserPlaylist.name"></ion-input>
+      <ion-button (click)="createNewPlaylist()">Create</ion-button>
+    </ion-item>
+  </ion-row>
+</ion-list>
+</ion-content>

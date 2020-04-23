@@ -13,7 +13,7 @@ import {SongModel} from '../../song.model';
 })
 export class AddSongsPage implements OnInit {
   playlist: PlaylistModel = {
-    videoId: 'test',
+    username: 'test',
     userId: 'test',
     name: 'test',
     id: 'test',

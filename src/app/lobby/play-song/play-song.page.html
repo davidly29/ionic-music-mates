@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-toolbar color="secondary">
-  </ion-toolbar>
+  <br>
+  <br>
   <ion-searchbar no-padding color='danger' [(ngModel)]="searchKey" (keyup.enter)="getSongBySearch()" placeholder="Search Youtube for songs..." class="form-control">
   </ion-searchbar>
 </ion-header>
@@ -32,15 +32,15 @@
     <ion-item-sliding *ngFor="let video of response.items">
       <ion-item (click)="playVideo(video.snippet.title, video.id.videoId, video.id.channelId)" class="text">
         <img [src]="video.snippet.thumbnails.default.url" alt="">
-        <ion-col >{{ video.snippet.description}}</ion-col>
+        <ion-col ><div>{{video.snippet.title}}</div> <br> {{ video.snippet.description}}</ion-col>
       </ion-item>
 
       <ion-item-options>
-        <ion-item-option color="secondary" (click)="addSong(video.id.videoId, video.snippet.title)">
+        <ion-item-option color="danger" (click)="addSong(video.id.videoId, video.snippet.title)">
           <ion-icon slot="bottom" name="add-outline"> </ion-icon>
           Add
         </ion-item-option>
-        <ion-item-option color="secondary" (click)="playVideo(video.snippet.title, video.id.videoId, video.id.channelId)">
+        <ion-item-option color="danger" (click)="playVideo(video.snippet.title, video.id.videoId, video.id.channelId)">
           <ion-icon slot="bottom" name="play-outline"> </ion-icon>
           Play
         </ion-item-option>

@@ -1,3 +1,13 @@
+ion-content {
+  --ion-background-color: var(--ion-color-primary);
+}
 ion-list {
   background-color: var(--ion-color-primary-rgb);
+}
+ion-item {
+  color: var(--ion-color-tertiary);
+}
+.text {
+  color: #fff7f4;
+  --ion-background-color: rgba(0, 0, 0, 0.85);
 }

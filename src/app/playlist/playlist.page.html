@@ -10,10 +10,10 @@
 <ion-content color="primary">
   <ion-card-subtitle align="center">Hear you can add songs from your playlist to a lobby you have joined</ion-card-subtitle>
   <ion-card-subtitle align="center">Or Remove songs from your personal playlist</ion-card-subtitle>
-  <ion-button type="round" align="center" (click)="getUserPlaylist()">Load Your Songs</ion-button>
+  <ion-button type="round" align="center" (click)="getUserPlaylist()" style="width: 100%">Load Your Songs</ion-button>
   <ion-list>
-    <ion-item-sliding *ngFor="let song of playlist.songs">
-      <ion-item color="primary">
+    <ion-item-sliding *ngFor="let song of allPlaylists">
+      <ion-item color="primary" *ngIf="song.userId == this.authService.user.getValue().id">
         <ion-label color="light">
           {{song.name}}
         </ion-label>
@@ -30,5 +30,15 @@
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
+  </ion-list>
+  <ion-list lines="full">
+    <!--<ion-item>-->
+    <!--  <ion-input required type="text" placeholder="ID" [(ngModel)]="lobby.userId"></ion-input>-->
+    <!--</ion-item>-->
+  <ion-label (click)="switchAdd()" color="primary" class="text">Create Playlist <ion-icon name="add-circle-outline"></ion-icon></ion-label>
+    <ion-item *ngIf="isCreate">
+      <ion-input required type="text" placeholder="New Playlist Name" [(ngModel)]="newUserPlaylist.name"></ion-input>
+    </ion-item>
+    <ion-button *ngIf="isCreate" (click)="newPlaylistCreate()">Save</ion-button>
   </ion-list>
 </ion-content>

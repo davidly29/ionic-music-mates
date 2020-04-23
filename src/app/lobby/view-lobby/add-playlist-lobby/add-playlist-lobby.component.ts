@@ -13,7 +13,7 @@ import {AuthService} from '../../../auth/auth.service';
 export class AddPlaylistLobbyComponent implements OnInit {
   @Input() lobby: LobbyModel;
   userPlaylist: PlaylistModel = {
-    videoId: 'test',
+    username: 'test',
     userId: 'test',
     name: 'test',
     id: 'test',

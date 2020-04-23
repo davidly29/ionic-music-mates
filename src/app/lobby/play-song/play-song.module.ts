@@ -6,7 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { PlaySongPage } from './play-song.page';
-import {ModalPlayComponent} from './modal-play/modal-play.component';
+import {SongToPlaylistComponent} from '../../song-to-playlist/song-to-playlist.component';
+import {ViewUserModalComponent} from '../view-lobby/view-user-modal/view-user-modal.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [PlaySongPage]
+  declarations: [PlaySongPage, SongToPlaylistComponent],
+  entryComponents: [SongToPlaylistComponent],
 })
 export class PlaySongPageModule {}

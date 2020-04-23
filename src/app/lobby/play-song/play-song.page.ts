@@ -6,14 +6,15 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {SpotifyAuth} from '@ionic-native/spotify-auth/ngx';
 import {YtServiceService} from '../../yt-service.service';
 import { LoadingService } from '../../loading.service';
-import {AlertController, LoadingController, ModalController, Platform, ToastController} from '@ionic/angular';
+import {AlertController, LoadingController, ModalController, NavController, Platform, ToastController} from '@ionic/angular';
 import {ModalPlayComponent} from './modal-play/modal-play.component';
 import {FirebaseServiceService} from '../../firebase-service.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, NavigationExtras} from '@angular/router';
 import {AuthService} from '../../auth/auth.service';
 import {BehaviorSubject} from 'rxjs';
 import {User} from '../../auth/user.model';
 import {PlaylistModel} from '../../playlist/PlaylistModel';
+import {SongToPlaylistComponent} from '../../song-to-playlist/song-to-playlist.component';
 
 declare var cordova: any;
 
@@ -28,20 +29,19 @@ export class PlaySongPage implements OnInit {
   embedUrl: SafeResourceUrl = '';
 
   playlist: PlaylistModel = {
-    videoId: 'test',
+    username: 'test',
     userId: 'test',
     name: 'test',
     songs: null,
   };
 
   updatePlaylist: PlaylistModel = {
-    videoId: 'test',
+    username: 'test',
     userId: 'test',
     name: 'test',
     id: 'test',
     songs: [],
   };
-
   allPlaylists: PlaylistModel[] = [];
 
   searchKey = '';
@@ -63,11 +63,12 @@ export class PlaySongPage implements OnInit {
   yt = 'https://www.youtube.com/';
   category: any;
   newSongArray: SongModel[] = [];
+
   constructor(private youtube: YoutubeVideoPlayer, private dom: DomSanitizer,
               private ytProvider: YtServiceService, private alertCtrl: AlertController, public modalCtrl: ModalController,
               // tslint:disable-next-line:max-line-length
               public plt: Platform, private firebaseService: FirebaseServiceService, private activatedRoute: ActivatedRoute,
-              private authService: AuthService, private toastController: ToastController) {
+              private authService: AuthService, private toastController: ToastController, public navCtrl: NavController) {
     this.getCategory();
   }
 
@@ -91,51 +92,67 @@ export class PlaySongPage implements OnInit {
     });
 }
 
-
   addSong(id, name) {
+    this.tempSong.id = id;
+    this.tempSong.name = name;
+
+    // const navigationExtras: NavigationExtras = {
+    //       queryParams: {
+    //           songName: this.tempSong.name,
+    //           songId: this.tempSong.id,
+    //       }, };
+    // this.navCtrl.navigateForward(['/songs-adding'], navigationExtras);
+
+    this.modalCtrl.create({
+      // tslint:disable-next-line:max-line-length
+      component: SongToPlaylistComponent, componentProps: {songID: this.tempSong.id, songName: this.tempSong.name, allPlaylists: this.allPlaylists}
+    }).then(modalEl => {
+      modalEl.present();
+    });
+
     // this.songs.push(new SongModel('song1', id));
-    if (this.allPlaylists.find(x => x.userId === this.currentUser.getValue().id) != null) {
-      this.playlist = this.allPlaylists.find(x => x.userId === this.currentUser.getValue().id);
-      this.tempSong.name = name;
-      this.tempSong.id = id;
-
-      this.playlist.songs.push(this.tempSong);
-      this.firebaseService.updatePlaylist(this.playlist, this.playlist.id);
-      this.toastController.create({
-        message: 'Song Added',
-        duration: 3000,
-        showCloseButton: true,
-        closeButtonText: 'OK',
-        animated: true
-      }).then((obj) => {
-        obj.present();
-      });
-    } else {
-      // If this is a new User
-      this.tempSong.name = name;
-      this.tempSong.id = id;
-      this.playlist.userId = this.authService.user.getValue().id;
-      this.newSongArray.push(this.tempSong);
-
-      this.playlist.songs = this.newSongArray;
-      this.firebaseService.addPlaylist(this.playlist);
-      this.firebaseService.getPlaylists().subscribe(temp => {
-        this.allPlaylists = temp;
-      });
-      if (this.allPlaylists.find(x => x.userId === this.currentUser.getValue().id) != null) {
-        this.updatePlaylist = this.allPlaylists.find(x => x.userId === this.authService.user.getValue().id);
-        this.firebaseService.updatePlaylist(this.updatePlaylist, this.updatePlaylist.id).then(console.log);
-      }
-      this.toastController.create({
-        message: 'Song Added to New Playlist',
-        duration: 3000,
-        showCloseButton: true,
-        closeButtonText: 'OK',
-        animated: true
-      }).then((obj) => {
-        obj.present();
-      });
-    }
+    // if (this.allPlaylists.find(x => x.userId === this.currentUser.getValue().id) != null) {
+    //   this.playlist = this.allPlaylists.find(x => x.userId === this.currentUser.getValue().id);
+    //   this.tempSong.name = name;
+    //   this.tempSong.id = id;
+    //
+    //   this.playlist.songs.push(this.tempSong);
+    //   this.firebaseService.updatePlaylist(this.playlist, this.playlist.id);
+    //   this.toastController.create({
+    //     message: 'Song Added',
+    //     duration: 3000,
+    //     showCloseButton: true,
+    //     closeButtonText: 'OK',
+    //     animated: true
+    //   }).then((obj) => {
+    //     obj.present();
+    //   });
+    // } else {
+    //   // If this is a new User
+    //   this.tempSong.name = name;
+    //   this.tempSong.id = id;
+    //   this.playlist.userId = this.authService.user.getValue().id;
+    //   this.newSongArray.push(this.tempSong);
+    //
+    //   this.playlist.songs = this.newSongArray;
+    //   this.firebaseService.addPlaylist(this.playlist);
+    //   this.firebaseService.getPlaylists().subscribe(temp => {
+    //     this.allPlaylists = temp;
+    //   });
+    //   if (this.allPlaylists.find(x => x.userId === this.currentUser.getValue().id) != null) {
+    //     this.updatePlaylist = this.allPlaylists.find(x => x.userId === this.authService.user.getValue().id);
+    //     this.firebaseService.updatePlaylist(this.updatePlaylist, this.updatePlaylist.id).then(console.log);
+    //   }
+    //   this.toastController.create({
+    //     message: 'Song Added to New Playlist',
+    //     duration: 3000,
+    //     showCloseButton: true,
+    //     closeButtonText: 'OK',
+    //     animated: true
+    //   }).then((obj) => {
+    //     obj.present();
+    //   });
+    // }
 
   }
 
@@ -149,10 +166,10 @@ export class PlaySongPage implements OnInit {
   viewVideo(vid) {
     // if we are on a device where cordova is available we user the youtube video player
     if (this.plt.is('cordova')) {
-      this.youtube.openVideo(vid.id.videoId); // opens video with videoId
+      this.youtube.openVideo(vid.id.username); // opens video with username
     } else {
       // if we are not on a device where cordova is available we open the video in browser.
-      window.open('https://www.youtube.com/watch?v=' + vid.id.videoId);
+      window.open('https://www.youtube.com/watch?v=' + vid.id.username);
     }
   }
 // this function presents videos based on category selected by user

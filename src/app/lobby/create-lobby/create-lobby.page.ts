@@ -5,7 +5,6 @@ import {NavController, ToastController} from '@ionic/angular';
 import {ActivatedRoute} from '@angular/router';
 import {AuthService} from '../../auth/auth.service';
 import {take} from 'rxjs/operators';
-import {LobbyUserModel} from '../join-lobby/lobbyUserModel';
 
 @Component({
   selector: 'app-create-lobby',
@@ -24,6 +23,8 @@ export class CreateLobbyPage implements OnInit {
     isPassword: false,
     currentSong: '',
     videoTime: 0,
+    readyUrl: '',
+    isAdmin: false,
   };
 
   lobbyId = null;
