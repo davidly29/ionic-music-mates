@@ -12,6 +12,7 @@ import {PasswordCheckComponent} from './password-check/password-check.component'
 import {AddPlaylistLobbyComponent} from './add-playlist-lobby/add-playlist-lobby.component';
 import {BleDeviceScanComponent} from './ble-device-scan/ble-device-scan.component';
 import {ShowLobbySongsModalComponent} from './show-lobby-songs-modal/show-lobby-songs-modal.component';
+import {PlaylistAddingComponent} from './playlist-adding/playlist-adding.component';
 
 const routes: Routes = [
   {
@@ -28,7 +29,9 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     AutosizeModule
   ],
-  declarations: [ViewLobbyPage, ViewUserModalComponent, AddPlaylistLobbyComponent, BleDeviceScanComponent, ShowLobbySongsModalComponent],
-  entryComponents: [ViewUserModalComponent, AddPlaylistLobbyComponent, BleDeviceScanComponent, ShowLobbySongsModalComponent]
+  // tslint:disable-next-line:max-line-length
+  declarations: [ViewLobbyPage, ViewUserModalComponent, AddPlaylistLobbyComponent, BleDeviceScanComponent, ShowLobbySongsModalComponent, PlaylistAddingComponent],
+  // tslint:disable-next-line:max-line-length
+  entryComponents: [ViewUserModalComponent, AddPlaylistLobbyComponent, BleDeviceScanComponent, ShowLobbySongsModalComponent, PlaylistAddingComponent]
 })
 export class ViewLobbyPageModule {}

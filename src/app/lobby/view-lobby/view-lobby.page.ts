@@ -27,6 +27,7 @@ import {AddSongsPageModule} from './add-songs/add-songs.module';
 import {YoutubeVideoPlayer} from '@ionic-native/youtube-video-player/ngx';
 import {BleDeviceScanComponent} from './ble-device-scan/ble-device-scan.component';
 import {ShowLobbySongsModalComponent} from './show-lobby-songs-modal/show-lobby-songs-modal.component';
+import {PlaylistAddingComponent} from './playlist-adding/playlist-adding.component';
 
 declare var cordova: any;
 @Component({
@@ -472,11 +473,12 @@ export class ViewLobbyPage implements OnInit {
     console.log(result);
   }
   loadSongs() {
-    if (this.tempLobby.songs.length > 0) {
-      this.showPlaylistAlert().then(console.log);
-    } else {
-      this.viewSongs();
-    }
+    this.modalCtrl.create({
+      component: PlaylistAddingComponent
+      , componentProps: {allPlaylists: this.allPlaylists, currentLobby: this.tempLobby}
+    }).then(modalEl => {
+      modalEl.present();
+    });
   }
   viewSongs() {
     const temp = this.authService.user.getValue().id;

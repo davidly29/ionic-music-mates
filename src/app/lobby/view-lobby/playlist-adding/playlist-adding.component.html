@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title align="center">Select A Playlist to load
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="primary">
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of allPlaylists">
+      <ion-item (click)="check(item)" *ngIf="item.userId === this.authService.user.getValue().id" class="text">
+        {{item.name}} <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
+
