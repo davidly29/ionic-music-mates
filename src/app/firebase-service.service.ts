@@ -82,7 +82,9 @@ export class FirebaseServiceService {
   getPlaylists() {
       return this.playlist;
   }
-
+  deletePlaylist(playlistId) {
+      return this.playlistCollection.doc(playlistId).delete();
+  }
   getLobbyMessages(id: string): Observable<MessageModel> {
       return this.lobbyMessageCollection.doc<MessageModel>(id).valueChanges().pipe(
           take(1),
@@ -93,15 +95,8 @@ export class FirebaseServiceService {
       );
   }
 
-
-  getLobby(id: string): Observable<LobbyModel> {
-    return this.lobbyCollection.doc<LobbyModel>(id).valueChanges().pipe(
-        take(1),
-        map(lb => {
-            lb.id = id;
-            return lb;
-        })
-    );
+  getLobby(id: string) {
+    return this.lobbyCollection.doc<LobbyModel>(id).valueChanges();
   }
   updateLobby(lobby: LobbyModel, lobbyId: string) {
     return this.lobbyCollection.doc(lobbyId).update(lobby);

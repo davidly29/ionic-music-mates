@@ -32,6 +32,7 @@ ion-col {
 }
 ion-slides {
   margin-top: 30%;
+
 }
 ion-card {
   flex-wrap: wrap;
@@ -40,6 +41,13 @@ ion-card {
   height: 180px !important;
   min-height: 60% !important;
 }
+.currentLobby {
+    //opacity: 0.7;
+    width: 10% !important;
+    height: 10% !important;
+    min-height: 10% !important;
+}
+
 ion-note {
   alignment: left;
   --font-color: #f80a14

@@ -6,7 +6,6 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
 import {AuthService} from './auth/auth.service';
 import {FirebaseServiceService} from './firebase-service.service';
-import {PlaylistModel} from './playlist/PlaylistModel';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',

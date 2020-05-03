@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {FirebaseServiceService} from '../firebase-service.service';
-import {ToastController} from '@ionic/angular';
-import {AuthService} from '../auth/auth.service';
+
+import {ModalController, ToastController} from '@ionic/angular';
+
 import {PlaylistModel} from './PlaylistModel';
+
 import {SongModel} from '../lobby/song.model';
 import {LobbyModel} from '../lobby/lobby.model';
 import {LobbyUserModel} from '../lobby/join-lobby/lobbyUserModel';
+import {AuthService} from '../auth/auth.service';
+import {FirebaseServiceService} from '../firebase-service.service';
+import {PlaylistOptionsComponent} from '../lobby/join-lobby/playlist-options/playlist-options.component';
 
 
 @Component({
@@ -28,7 +32,6 @@ export class PlaylistPage implements OnInit {
     songs: [],
   };
 
-
   toDelete: SongModel = {
    id: '',
    name: '',
@@ -38,7 +41,6 @@ export class PlaylistPage implements OnInit {
     id: '',
     name: '',
   };
-
   usersLobby: LobbyModel = {
     id: '',
     name: '',
@@ -56,28 +58,23 @@ export class PlaylistPage implements OnInit {
     users: 'test'
   };
 
-  allPlaylists: PlaylistModel[] = [];
-  allRegisteredUsers: LobbyUserModel[] = [];
   allLobbies: LobbyModel[] = [];
-
+  allRegisteredUsers: LobbyUserModel[] = [];
   usersPlaylist: PlaylistModel[] = [];
 
   isCurrentlyInLobby = false;
   newSongArray: SongModel[] = [];
   isCreate = false;
+  clicked = false;
+  allPlaylist: PlaylistModel[] = [];
+  users: LobbyUserModel[] = [];
   constructor( private firebaseService: FirebaseServiceService, private toastCtrl: ToastController
-    ,          private authService: AuthService, private toastController: ToastController) { }
+    ,          private authService: AuthService, private toastController: ToastController, private modalCtrl: ModalController) { }
 
   ngOnInit() {
     this.firebaseService.getPlaylists().subscribe(res => {
-          this.allPlaylists = res;
-      // tslint:disable-next-line:prefer-for-of
-          for (let i = 0; i < this.allPlaylists.length; i ++) {
-            if (this.allPlaylists[i].userId === this.authService.user.getValue().email) {
-              this.usersPlaylist.push(this.allPlaylists[i]);
-            }
-          }
-        });
+      this.allPlaylist = res;
+    });
 
     this.firebaseService.getUsers().subscribe(res => {
       this.allRegisteredUsers = res;
@@ -86,9 +83,10 @@ export class PlaylistPage implements OnInit {
     this.firebaseService.getLobbies().subscribe(res => {
       this.allLobbies = res;
     });
+
     const temp = this.authService.user.getValue().id;
-    if (this.allPlaylists.find(x => x.userId === temp) != null) {
-      this.playlist = this.allPlaylists.find(x => x.userId === temp);
+    if (this.allPlaylist.find(x => x.userId === temp) != null) {
+      this.playlist = this.allPlaylist.find(x => x.userId === temp);
       return this.playlist;
     }
   }
@@ -119,19 +117,28 @@ export class PlaylistPage implements OnInit {
     return this.isCreate;
   }
   getUserPlaylist() {
-    const temp = this.authService.user.getValue().id;
-    if (this.allPlaylists.find(x => x.userId === temp) != null) {
-      this.playlist = this.allPlaylists.find(x => x.userId === temp);
-    }
-    // this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
-    // this.usersLobby = this.allLobbies.find(x => x.id === this.currentUser.lobbyId);
-
     // TODO this may be needed somewhere
     // this.firebaseService.getLobby(this.currentUser.lobbyId).subscribe(lobby => {
     //   this.usersLobby = lobby;
     // });
-    this.newSongArray = this.playlist.songs;
-    return this.newSongArray;
+    this.firebaseService.getPlaylists().subscribe(res => {
+      this.allPlaylist = res;
+    });
+    this.firebaseService.addPlaylist(this.newUserPlaylist).then(console.log);
+    return this.allPlaylist;
+  }
+  itemClicked() {
+    this.clicked = true;
+    this.usersLobby = this.allLobbies.find(x => x.id === this.currentUser.lobbyId);
+  }
+  openOptions(song) {
+    this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
+    this.usersLobby = this.allLobbies.find(x => x.id === this.currentUser.lobbyId);
+
+    // tslint:disable-next-line:max-line-length
+    this.modalCtrl.create({component: PlaylistOptionsComponent, componentProps: {song: song, usersLobby: this.usersLobby }}).then(modelEl => {
+      modelEl.present();
+    });
   }
 
   removeSong(id) {

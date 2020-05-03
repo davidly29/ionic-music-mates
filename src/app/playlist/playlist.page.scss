@@ -5,9 +5,12 @@ ion-list {
   background-color: var(--ion-color-primary-rgb);
 }
 ion-item {
-  color: var(--ion-color-tertiary);
+  padding: 8px;
+}
+ion-item-sliding {
+  padding: 8px;
 }
 .text {
-  color: #fff7f4;
+  color: rgba(0, 0, 0, 0.85);
   --ion-background-color: rgba(0, 0, 0, 0.85);
 }

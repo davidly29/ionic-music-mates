@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { JoinLobbyPage } from './join-lobby.page';
+import {LobbyManagerComponent} from './lobby-manager/lobby-manager.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [JoinLobbyPage]
+  declarations: [JoinLobbyPage, LobbyManagerComponent],
+  entryComponents: [LobbyManagerComponent]
 })
 export class JoinLobbyPageModule {}

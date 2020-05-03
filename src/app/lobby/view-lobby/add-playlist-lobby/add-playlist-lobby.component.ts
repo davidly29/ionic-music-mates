@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {LobbyModel} from '../../lobby.model';
-import {PlaylistModel} from '../../../playlist/PlaylistModel';
 import {ModalController} from '@ionic/angular';
 import {FirebaseServiceService} from '../../../firebase-service.service';
 import {AuthService} from '../../../auth/auth.service';
+import {PlaylistModel} from '../../../playlist/PlaylistModel';
 
 @Component({
   selector: 'app-add-playlist-lobby',

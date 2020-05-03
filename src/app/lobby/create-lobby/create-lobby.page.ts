@@ -25,6 +25,7 @@ export class CreateLobbyPage implements OnInit {
     videoTime: 0,
     readyUrl: '',
     isAdmin: false,
+    isReady: false,
   };
 
   lobbyId = null;

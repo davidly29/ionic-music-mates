@@ -9,21 +9,20 @@
 <ion-list>
   <ion-item-sliding *ngFor="let item of playlists">
     <ion-item (click)="addToPlaylist(item)" *ngIf="item.userId === this.authService.user.getValue().id" class="text">
-      {{item.name}} <ion-icon name="add-circle-outline"></ion-icon>
+      {{item.name }} <ion-icon name="add-circle-outline" color="light"></ion-icon>
     </ion-item>
 
     <ion-item-options>
-      <ion-item-option color="danger" (click)="addToPlaylist(item)">
-        <ion-icon slot="bottom" name="add-outline"> </ion-icon>
-        Remove
+      <ion-item-option color="danger" (click)="deletePlaylist(item)">
+        Remove <ion-icon name="trash-bin"></ion-icon>
       </ion-item-option>
     </ion-item-options>
   </ion-item-sliding>
 
   <ion-row>
-    <ion-item class="text">
-      Create New Playlist
-      <ion-input required type="text" placeholder="Playlist Name" [(ngModel)]="this.newUserPlaylist.name"></ion-input>
+    <ion-item class="text" align="center" style="width: 100%">
+      Create New Playlist <br><ul></ul>
+      <ion-input required type="text" placeholder="Playlist Name  " [(ngModel)]="this.newUserPlaylist.name"></ion-input>
       <ion-button (click)="createNewPlaylist()">Create</ion-button>
     </ion-item>
   </ion-row>

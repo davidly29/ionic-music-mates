@@ -19,7 +19,6 @@ import {SongModel} from '../song.model';
 import {UserSongsModalComponent} from './user-songs-modal/user-songs-modal.component';
 import {UserAddSongsComponent} from './user-add-songs/user-add-songs.component';
 import index from '@ionic/angular-toolkit/schematics/page';
-import {PlaylistModel} from '../../playlist/PlaylistModel';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
 import { BLE } from '@ionic-native/ble/ngx';
 import {AddPlaylistLobbyComponent} from './add-playlist-lobby/add-playlist-lobby.component';
@@ -28,8 +27,12 @@ import {YoutubeVideoPlayer} from '@ionic-native/youtube-video-player/ngx';
 import {BleDeviceScanComponent} from './ble-device-scan/ble-device-scan.component';
 import {ShowLobbySongsModalComponent} from './show-lobby-songs-modal/show-lobby-songs-modal.component';
 import {PlaylistAddingComponent} from './playlist-adding/playlist-adding.component';
+import { ChangeDetectorRef } from '@angular/core';
+import {SongToLobbyComponent} from './song-to-lobby/song-to-lobby.component';
+import {PlaylistModel} from '../../playlist/PlaylistModel';
 
 declare var cordova: any;
+
 @Component({
   selector: 'app-view-lobby',
   templateUrl: './view-lobby.page.html',
@@ -57,22 +60,14 @@ export class ViewLobbyPage implements OnInit {
   statusMessage: string;
   deviceMode = true;
 
-  allPlaylists: PlaylistModel[] = [];
+  thePlaylists: PlaylistModel[] = [];
   allLobbies: LobbyModel[];
   allMessages: MessageModel[] = [];
   currentLobbyMessages: MessageModel[];
   loadedLobby: LobbyModel;
   allTheSongs: SongModel[] = [];
 
-  allRegisteredUsers: LobbyUserModel[];
-
-  currentUserLobby: LobbyUserModel = {
-      name: '',
-      email: '',
-      lobbyId: '',
-      users: '',
-      id: '',
-  };
+  allRegisteredUsers: LobbyUserModel[] = [];
 
   newUserLobby: LobbyUserModel = {
     name: '',
@@ -80,6 +75,13 @@ export class ViewLobbyPage implements OnInit {
     lobbyId: '',
     users: '',
     id: '',
+  };
+
+  currentUserLobby: LobbyUserModel = {
+    name: 'test',
+    lobbyId: 'test',
+    email: 'test',
+    users: 'test'
   };
 
   tempLobby: LobbyModel = {
@@ -95,6 +97,7 @@ export class ViewLobbyPage implements OnInit {
     videoTime: 0,
     readyUrl: '',
     isAdmin: false,
+    isReady: false,
   };
 
   tempUser: LobbyUserModel = {
@@ -131,31 +134,37 @@ export class ViewLobbyPage implements OnInit {
   };
   currentId = '';
   url: any;
+  secondUrl: any;
   songs = [];
   lobbySongs: string[];
   currentSongIndex = 0;
   devices: any[] = [];
   seconds = 0;
-
   everyoneReady = false;
   playUrl = '';
+  testString = '';
   constructor(private activatedRoute: ActivatedRoute, private lobbyService: LobbyServiceService,
               private firebaseService: FirebaseServiceService, private toastCtrl: ToastController
   ,           private authService: AuthService, private toastController: ToastController,
               private modalCtrl: ModalController, private dom: DomSanitizer, public streamingMedia: StreamingMedia,
               private ble: BLE, private ngZone: NgZone, private alertCtrl: AlertController, private route: Router,
-              private youtube: YoutubeVideoPlayer) { }
+              private youtube: YoutubeVideoPlayer, private changeRef: ChangeDetectorRef) { }
 
   ngOnInit() {
+    const lobbyID = this.activatedRoute.snapshot.paramMap.get('id');
     this.firebaseService.getLobbies().subscribe(res => {
       this.allLobbies = res;
+      this.tempLobby = this.allLobbies.find(x => x.id === lobbyID)
       console.log(this.allLobbies);
     });
 
+    this.firebaseService.getUsers().subscribe(res => {
+      this.allRegisteredUsers = res;
+    });
+
     this.firebaseService.getPlaylists().subscribe(res => {
-          this.allPlaylists = res;
-        }
-    );
+          this.thePlaylists = res;
+        });
 
     this.firebaseService.getUsers().subscribe(res => {
       this.lobbyUsers = res;
@@ -163,10 +172,6 @@ export class ViewLobbyPage implements OnInit {
 
     this.firebaseService.getAllMessages().subscribe(res => {
       this.allMessages = res;
-    });
-
-    this.firebaseService.getUsers().subscribe(res => {
-        this.allRegisteredUsers = res;
     });
 
     const id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -187,29 +192,45 @@ export class ViewLobbyPage implements OnInit {
     this.currentUser = this.authService.user;
 
     this.loadedLobby = this.lobbyService.getLobby(this.activatedRoute.snapshot.paramMap.get('id'));
-    this.firebaseService.getLobby(this.activatedRoute.snapshot.paramMap.get('id')).subscribe(temp => {
+    this.firebaseService.getLobby(lobbyID).subscribe(temp => {
       this.tempLobby = temp;
+      this.sanitizeVidId(this.tempLobby.currentSong);
     });
     this.currentUserName = this.currentUser.getValue().email;
     this.currentId = this.currentUser.getValue().id;
     this.checkUserJoined();
     this.songs = this.playlist.songs;
     if (this.tempLobby.songs.length < 1) {
-      this.toastCtrl.create({
-        message: 'No Playlist Set :(',
-        duration: 3000
-      }).then(toast => toast.present());
+      // this.toastCtrl.create({
+      //   message: 'No Playlist Set :(',
+      //   duration: 3000
+      // }).then(toast => toast.present());
     }
     this.currentVideoId = 'MjBzElQrm4E';
     // this.tempLobby.songs = this.tempSong;
     // tslint:disable-next-line:no-conditional-assignment
-    if (this.tempLobby.currentSong = '') {
+  }
+  ionViewDidEnter() {
+    this.toastCtrl.create({
+      message: 'Active Page',
+      position: 'bottom',
+      duration: 5000
+    }).then((obj) => {
+      obj.present();
+    });
+    const lobbyID = this.activatedRoute.snapshot.paramMap.get('id');
+    this.firebaseService.getLobby(lobbyID).subscribe(temp => {
+      this.tempLobby = temp;
+      this.sanitizeVidId(this.tempLobby.currentSong);
+    });
+    if (this.tempLobby.currentSong === '') {
       this.tempLobby.currentSong = this.tempLobby.songs[0].id;
       this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
       this.sanitizeVidId(this.tempLobby.currentSong);
     } else {
       this.sanitizeVidId(this.tempLobby.currentSong);
     }
+    this.checkUserJoined();
   }
 
   saveTimeStamp(time) {
@@ -222,11 +243,19 @@ export class ViewLobbyPage implements OnInit {
     this.youtube.openVideo(this.tempLobby.currentSong);
   }
   checkUsersReady() {
-    this.playUrl = '/?autoplay=1';
+    this.everyoneReady = true;
+    // this.playUrl = '/?autoplay=1';
+    // this.urlToSanitize = 'https://www.youtube.com/embed/' + this.tempLobby.currentSong;
+    // this.tempLobby.readyUrl = this.urlToSanitize;
+    // this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
     this.url = this.sanitizeVidId(this.tempLobby.currentSong);
-    this.tempLobby.readyUrl = this.url.toString();
-    this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
     return this.url;
+  }
+
+  makeReady() {
+    this.tempLobby.isReady = true;
+    this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
+    return this.tempLobby;
   }
 
   addPlaylist() {
@@ -297,6 +326,7 @@ export class ViewLobbyPage implements OnInit {
         this.currentSongIndex = this.currentSongIndex + 1;
         this.tempLobby.currentSong = this.tempLobby.songs[this.currentSongIndex].id;
         this.sanitizeVidId(this.tempLobby.currentSong);
+        this.tempLobby.readyUrl = this.url;
         this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
         return this.tempLobby;
       }
@@ -339,10 +369,8 @@ export class ViewLobbyPage implements OnInit {
       this.tempLobby.joinedUsers.push(this.authService.user.getValue().email);
       this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id).then(console.log);
 
-      // this.currentUserLobby = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
-      // this.currentUserLobby.lobbyId = this.activatedRoute.snapshot.paramMap.get('id');
-      // this.newUserLobby = this.currentUserLobby;
-      // this.firebaseService.updateUser(this.currentUserLobby, this.currentUserLobby.id).then(console.log);
+
+      const lobbyID = this.activatedRoute.snapshot.paramMap.get('id');
       this.toastController.create({
         message: 'Joined',
         duration: 3000,
@@ -377,7 +405,14 @@ export class ViewLobbyPage implements OnInit {
     return this.tempSong;
   }
   sanitizeVidId(id) {
-    this.url = this.dom.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/' + id);
+    this.playUrl = '?autoplay=1';
+    if (this.everyoneReady) {
+      this.secondUrl = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id);
+      this.url = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id + '?autoplay=1');
+    } else {
+      this.secondUrl = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id);
+      this.url = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id);
+    }
     return this.url;
   }
   checkUserJoined() {
@@ -430,10 +465,7 @@ export class ViewLobbyPage implements OnInit {
     const indexToRemove = this.tempLobby.joinedUsers.indexOf(name);
     this.tempLobby.joinedUsers.splice(indexToRemove, 1);
     if (name !== '') {
-      this.firebaseService.deleteUserFromLobby(this.tempLobby);
-      this.currentUserLobby = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
-      this.currentUserLobby.lobbyId = '';
-      this.newUserLobby = this.currentUserLobby;
+      // this.firebaseService.deleteUserFromLobby(this.tempLobby);;
       this.firebaseService.updateUser(this.newUserLobby, this.newUserLobby.id).then(console.log);
 
       this.toastCtrl.create({
@@ -447,43 +479,53 @@ export class ViewLobbyPage implements OnInit {
       }).then(toast => toast.present());
     }
   }
-  async showPlaylistAlert() {
-    const alert = await this.alertCtrl.create({
-      header: 'Playlist Already Loaded',
-      subHeader: 'There is already a loaded playlist',
-      message: 'would you like to remove this playlist and load your own ?',
-      buttons: [
-        {
-        text: 'Cancel',
-        handler: data => {
-        console.log('Cancel clicked');
-        this.alertCtrl.dismiss();
-        }
-        },
-        {
-          text: 'Override Playlist',
-          handler: data => {
-            this.viewSongs();
-          }
-        }
-      ]
+
+  playlistSong() {
+    this.modalCtrl.create({
+      component: SongToLobbyComponent
+      , componentProps: {lobby: this.tempLobby}
+    }).then(modalEl => {
+      modalEl.present();
     });
-    await alert.present();
-    const result = await alert.onDidDismiss();
-    console.log(result);
   }
+  //
+  // async showPlaylistAlert() {
+  //   const alert = await this.alertCtrl.create({
+  //     header: 'Playlist Already Loaded',
+  //     subHeader: 'There is already a loaded playlist',
+  //     message: 'would you like to remove this playlist and load your own ?',
+  //     buttons: [
+  //       {
+  //       text: 'Cancel',
+  //       handler: data => {
+  //       console.log('Cancel clicked');
+  //       this.alertCtrl.dismiss();
+  //       }
+  //       },
+  //       {
+  //         text: 'Override Playlist',
+  //         handler: data => {
+  //           this.viewSongs();
+  //         }
+  //       }
+  //     ]
+  //   });
+  //   await alert.present();
+  //   const result = await alert.onDidDismiss();
+  //   console.log(result);
+  // }
   loadSongs() {
     this.modalCtrl.create({
       component: PlaylistAddingComponent
-      , componentProps: {allPlaylists: this.allPlaylists, currentLobby: this.tempLobby}
+      , componentProps: {currentLobby: this.tempLobby}
     }).then(modalEl => {
       modalEl.present();
     });
   }
   viewSongs() {
     const temp = this.authService.user.getValue().id;
-    if (this.allPlaylists.find(x => x.userId === temp) != null) {
-      this.playlist = this.allPlaylists.find(x => x.userId === temp);
+    if (this.thePlaylists.find(x => x.userId === temp) != null) {
+      this.playlist = this.thePlaylists.find(x => x.userId === temp);
     }
     this.tempLobby.songs = this.playlist.songs;
     this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);

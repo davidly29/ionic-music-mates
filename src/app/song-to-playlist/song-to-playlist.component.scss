@@ -1,11 +1,20 @@
 ion-item {
   border: #f4f5f8;
-  --border-width-top: 3px;
-  --border-width-right: 3px;
-  --border-width-bottom: 3px;
-  --border-width-left: 3px;
+  padding: 3px;
 }
+ion-list {
+  background-color: #f8de7e;
+}
+
+ion-item-sliding {
+  padding: 3px;
+}
+ion-item-option {
+  padding: 3px;
+}
+
 .text {
   color: #fff7f4;
   --ion-background-color: rgba(0, 0, 0, 0.85);
+  padding: 2px;
 }

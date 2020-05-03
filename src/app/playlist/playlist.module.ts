@@ -6,6 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { PlaylistPage } from './playlist.page';
+import {FirebaseServiceService} from '../firebase-service.service';
+import {PlaylistOptionsComponent} from '../lobby/join-lobby/playlist-options/playlist-options.component';
 
 const routes: Routes = [
   {
@@ -21,6 +23,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [PlaylistPage]
+  declarations: [PlaylistPage, PlaylistOptionsComponent],
+  entryComponents: [PlaylistOptionsComponent]
 })
 export class PlaylistPageModule {}

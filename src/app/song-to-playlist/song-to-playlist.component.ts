@@ -1,8 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PlaylistModel} from '../playlist/PlaylistModel';
+
 import {AuthService} from '../auth/auth.service';
 import {FirebaseServiceService} from '../firebase-service.service';
 import {SongModel} from '../lobby/song.model';
+import {ToastController} from '@ionic/angular';
+import {PlaylistModel} from '../playlist/PlaylistModel';
 
 @Component({
   selector: 'app-song-to-playlist',
@@ -34,7 +36,8 @@ export class SongToPlaylistComponent implements OnInit {
     name: '',
   };
 
-  constructor(private authService: AuthService, private firebaseService: FirebaseServiceService) { }
+  // tslint:disable-next-line:max-line-length
+  constructor(private authService: AuthService, private firebaseService: FirebaseServiceService, private toastController: ToastController) { }
 
   ngOnInit() {
     this.songToAdd.name = this.songName;
@@ -46,6 +49,23 @@ export class SongToPlaylistComponent implements OnInit {
     });
     this.firebaseService.addPlaylist(this.playlist);
 
+  }
+
+  getPlaylists() {
+    this.firebaseService.getPlaylists().subscribe(data => {
+      this.playlists = data;
+    });
+    return this.playlists;
+  }
+  deletePlaylist(item: PlaylistModel) {
+    this.firebaseService.deletePlaylist(item.id).then(console.log);
+    this.toastController.create({
+      message: 'Playlist Deleted',
+      position: 'bottom',
+      duration: 5000
+    }).then((obj) => {
+      obj.present();
+    });
   }
 
   addToPlaylist(item: PlaylistModel) {
@@ -63,11 +83,25 @@ export class SongToPlaylistComponent implements OnInit {
     // this.playlistSongs.push(this.songToAdd);
     // this.playlist.songs.push(this.songToAdd);
 
-    this.firebaseService.addPlaylist(this.playlist).then(console.log);
+    this.firebaseService.updatePlaylist(item, item.id).then(console.log);
+    this.toastController.create({
+      message: 'Song Added !',
+      position: 'bottom',
+      duration: 5000
+    }).then((obj) => {
+      obj.present();
+    });
   }
   createNewPlaylist() {
     this.newUserPlaylist.username = this.authService.user.getValue().email;
     this.newUserPlaylist.userId = this.authService.user.getValue().id;
     this.firebaseService.addPlaylist(this.newUserPlaylist);
+    this.toastController.create({
+      message: 'Playlist Created !',
+      position: 'bottom',
+      duration: 5000
+    }).then((obj) => {
+      obj.present();
+    });
   }
 }

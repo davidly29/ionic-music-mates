@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="secondary">
-    <ion-title align="center">{{this.authService.user.getValue().email}}'s Playlist</ion-title>
+    <ion-title align="center">{{this.authService.user.getValue().email}}'s Playlist <ion-icon name="headset-outline"></ion-icon> <ion-icon name="albums"></ion-icon></ion-title>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
@@ -10,25 +10,33 @@
 <ion-content color="primary">
   <ion-card-subtitle align="center">Hear you can add songs from your playlist to a lobby you have joined</ion-card-subtitle>
   <ion-card-subtitle align="center">Or Remove songs from your personal playlist</ion-card-subtitle>
-  <ion-button type="round" align="center" (click)="getUserPlaylist()" style="width: 100%">Load Your Songs</ion-button>
+<!--      <div *ngFor="let playlist of allPlaylists">-->
+<!--      <ion-card color="dark" align="center" (click)="itemClicked()" *ngIf="playlist.userId == this.authService.user.getValue().id" class="text">-->
+<!--        <ion-card-header>-->
+<!--          <ion-card-title align="center" class="text">-->
+<!--            {{playlist.name}}-->
+<!--          </ion-card-title>-->
+<!--        </ion-card-header>-->
+
+<!--        <ion-card-content padding-end="40px" *ngIf="this.clicked">-->
+<!--          <ion-row *ngFor="let song of playlist.songs">-->
+<!--            <ion-label>{{song.name}}</ion-label>-->
+<!--          </ion-row>-->
+<!--        </ion-card-content>-->
+<!--      </ion-card>-->
+<!--      </div>-->
+  <ion-button (click)="checkMyAccount()">Get Details</ion-button>
+  <ion-button (click)="getUsers()">Get User</ion-button>
   <ion-list>
-    <ion-item-sliding *ngFor="let song of allPlaylists">
-      <ion-item color="primary" *ngIf="song.userId == this.authService.user.getValue().id">
-        <ion-label color="light">
-          {{song.name}}
+    <ion-item-sliding *ngFor="let play of allPlaylist">
+      <ion-item color="dark" (click)="itemClicked()" *ngIf="play?.userId == this.authService.user.getValue().id">
+        <ion-label color="primary" align="center">
+          {{play?.name}}
+          <ion-row *ngFor="let tev of play?.songs" (click)="openOptions(tev)">
+            <ion-label>{{tev?.name}} <ion-icon name="headset-outline"></ion-icon> </ion-label>
+          </ion-row>
         </ion-label>
       </ion-item>
-
-      <ion-item-options>
-        <ion-item-option color="secondary" (click)="removeSong(song.id)">
-          Remove
-          <ion-icon slot="bottom" name="trash-bin-outline"></ion-icon>
-        </ion-item-option>
-        <ion-item-option color="secondary" (click)="addToLobby(song)">
-          Add To Lobby
-          <ion-icon slot="bottom" name="trash-bin-outline"></ion-icon>
-        </ion-item-option>
-      </ion-item-options>
     </ion-item-sliding>
   </ion-list>
   <ion-list lines="full">
@@ -39,7 +47,7 @@
     <ion-item *ngIf="isCreate">
       <ion-input required type="text" placeholder="New Playlist Name" [(ngModel)]="newUserPlaylist.name"></ion-input>
     </ion-item>
-    <ion-button *ngIf="isCreate" (click)="newPlaylistCreate()">Save</ion-button>
+    <ion-button *ngIf="isCreate" (click)="getUserPlaylist()">Save</ion-button>
   </ion-list>
   <ion-button (click)="getUserPlaylist()">Test</ion-button>
 </ion-content>

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {FirebaseServiceService} from '../../../firebase-service.service';
-import {PlaylistModel} from '../../../playlist/PlaylistModel';
+
 import {LobbyUserModel} from '../../join-lobby/lobbyUserModel';
 import {LobbyModel} from '../../lobby.model';
 import {AuthService} from '../../../auth/auth.service';
 import {SongModel} from '../../song.model';
+import {PlaylistModel} from '../../../playlist/PlaylistModel';
 
 @Component({
   selector: 'app-add-songs',

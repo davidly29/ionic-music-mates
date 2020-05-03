@@ -6,8 +6,10 @@ import {AuthService} from '../../auth/auth.service';
 import {AlertController, ModalController, Platform, ToastController} from '@ionic/angular';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PasswordCheckComponent} from '../view-lobby/password-check/password-check.component';
-import {PlaylistModel} from '../../playlist/PlaylistModel';
 import {LobbyUserModel} from './lobbyUserModel';
+import {LobbyManagerComponent} from './lobby-manager/lobby-manager.component';
+import {PlaylistModel} from '../../playlist/PlaylistModel';
+
 
 @Component({
   selector: 'app-join-lobby',
@@ -51,6 +53,8 @@ export class JoinLobbyPage implements OnInit {
     slidesPerView: 1.6,
   };
   lobbyIndex = 0;
+  usersLobbies: LobbyModel[] = [];
+  allPlaylist: PlaylistModel[] = [];
   constructor(private lobbyService: ServicePage, private firebaseService: FirebaseServiceService, private authService: AuthService,
               // tslint:disable-next-line:max-line-length
               private alert: AlertController, private route: Router, private modalCtrl: ModalController,
@@ -66,8 +70,43 @@ export class JoinLobbyPage implements OnInit {
     this.firebaseService.getUsers().subscribe(res => {
       this.allRegisteredUsers = res;
     });
-
+    this.firebaseService.getPlaylists().subscribe(res => {
+      this.allPlaylist = res;
+    });
   }
+  clearList() {
+    for (let i = 0; this.allPlaylist.length; i++) {
+      if (this.allPlaylist[i].userId === 'test') {
+        this.firebaseService.deletePlaylist(this.allPlaylist[i].id);
+      }
+    }
+  }
+  ionViewDidEnter() {
+    this.checkMyAccount();
+    // this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
+    // // if (this.currentUser.email !== '') {
+    //   this.firebaseService.getLobby(this.currentUser.lobbyId).subscribe(lobby => {
+    //     this.usersLobby = lobby;
+    //   });
+    // }
+  }
+  lobbyManager() {
+      this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
+      this.firebaseService.getLobby(this.currentUser.lobbyId).subscribe(lobby => {
+          this.usersLobby = lobby;
+      });
+    // tslint:disable-next-line:prefer-for-of
+      for (let i = 0; i < this.loadedLobbies.length; i++) {
+        if (this.loadedLobbies[i].userId === this.authService.user.getValue().id) {
+            this.usersLobbies.push(this.loadedLobbies[i]);
+        }
+      }
+      this.modalCtrl.create({component: LobbyManagerComponent, componentProps:
+              {currentUser: this.currentUser, usersLobby: this.usersLobby, userLobbies: this.usersLobbies}}).then(modalEl => {
+          modalEl.present();
+      });
+  }
+
   removeLobby(id) {
       this.firebaseService.removeLobby(id).then(obj => {
         console.log(obj);
@@ -75,10 +114,7 @@ export class JoinLobbyPage implements OnInit {
   }
   checkMyAccount() {
     this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
-    if (this.currentUser.users !== this.authService.user.getValue().id) {
-      this.firebaseService.addUser(new LobbyUserModel('', this.authService.user.getValue().email,
-          '', this.authService.user.getValue().id)).then(console.log);
-    }
+    return this.currentUser;
   }
 
 
@@ -95,17 +131,24 @@ export class JoinLobbyPage implements OnInit {
     slide.slider.slideTo(2, 2000);
   }
   joinLobby(lobby: LobbyModel) {
-    if (lobby.joinedUsers.length >= lobby.allowedUsers) {
-      this.toastCtrl.create({
-        message: 'There is no songs yet',
-        duration: 3000,
-        showCloseButton: true,
-        closeButtonText: 'OK',
-        animated: true
-      }).then((obj) => {
-        obj.present();
-      });
-    }
+    // if (lobby.joinedUsers.length >= lobby.allowedUsers) {
+    //   this.toastCtrl.create({
+    //     message: 'There is no songs yet',
+    //     duration: 3000,
+    //     showCloseButton: true,
+    //     closeButtonText: 'OK',
+    //     animated: true
+    //   }).then((obj) => {
+    //     obj.present();
+    //   });
+    // }
+    this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
+    this.currentUser.lobbyId = lobby.id;
+    this.firebaseService.updateUser(this.currentUser, this.currentUser.id);
+
+    lobby.joinedUsers.push(this.authService.user.getValue().email);
+    this.firebaseService.updateLobby(lobby, lobby.id);
+
     if (lobby.isPassword) {
       this.modalCtrl.create({component: PasswordCheckComponent, componentProps:
             {password: lobby.password, lobbyId: lobby.id, lobbyToJoin: lobby}}).then(modalEl => {

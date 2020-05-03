@@ -13,8 +13,8 @@ import {ActivatedRoute, NavigationExtras} from '@angular/router';
 import {AuthService} from '../../auth/auth.service';
 import {BehaviorSubject} from 'rxjs';
 import {User} from '../../auth/user.model';
-import {PlaylistModel} from '../../playlist/PlaylistModel';
 import {SongToPlaylistComponent} from '../../song-to-playlist/song-to-playlist.component';
+import {PlaylistModel} from '../../playlist/PlaylistModel';
 
 declare var cordova: any;
 
@@ -96,6 +96,10 @@ export class PlaySongPage implements OnInit {
     this.tempSong.id = id;
     this.tempSong.name = name;
 
+    this.firebaseService.getPlaylists().subscribe(res => {
+          this.allPlaylists = res;
+        }
+    );
     // const navigationExtras: NavigationExtras = {
     //       queryParams: {
     //           songName: this.tempSong.name,

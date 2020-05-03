@@ -1,10 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AuthService} from '../../../auth/auth.service';
 import {FirebaseServiceService} from '../../../firebase-service.service';
-import {PlaylistModel} from '../../../playlist/PlaylistModel';
 import {AlertController, ModalController} from '@ionic/angular';
 import {LobbyModel} from '../../lobby.model';
-
+import {PlaylistModel} from '../../../playlist/PlaylistModel';
 @Component({
   selector: 'app-playlist-adding',
   templateUrl: './playlist-adding.component.html',

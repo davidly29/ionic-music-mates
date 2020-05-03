@@ -12,8 +12,6 @@
   <br>
   <ion-searchbar></ion-searchbar>
   <br>
-  <ion-button (click)="checkLobby(ionSlides)">View Current Lobby</ion-button><ion-label>{{currentlyInLobby ? this.usersLobby.name : ''}}</ion-label><div *ngIf="currentlyInLobby"><ion-button>Enter</ion-button></div>
-  <ion-button (click)="checkMyAccount()">ACC</ion-button>
 <!--      <ion-row>-->
 <!--        <ion-col>-->
 <!--          <ion-card align="left">-->
@@ -40,7 +38,7 @@
 <!--            </ion-card-content>-->
 <!--          </ion-card>-->
 <!--        </ion-col>-->
-
+  <ion-button (click)="lobbyManager()">Lobby Manager <ion-icon name="settings"></ion-icon></ion-button>
 <!--        <ion-col>-->
 <!--          <ion-card align="right">-->
 <!--            <ion-card-header>-->
