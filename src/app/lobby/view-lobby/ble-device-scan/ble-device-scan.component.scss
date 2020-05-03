@@ -1,4 +1,10 @@
-
-text {
-  color: #f4f5f8;
+ion-list {
+  background: transparent;
+}
+.text {
+  color: #fff7f4;
+  --ion-background-color: rgba(0, 0, 0, 0.85);
+}
+ion-item {
+  --ion-background-color: rgba(0, 0, 0, 0.85);
 }

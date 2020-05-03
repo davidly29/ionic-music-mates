@@ -34,12 +34,20 @@ ion-slides {
   margin-top: 30%;
 
 }
-ion-card {
+div.swiper-pagination {
+  top: 10px;
+  bottom:inherit;
+}
+ion-card,  .ion-card-ios{
   flex-wrap: wrap;
   //opacity: 0.7;
   width: 80% !important;
-  height: 180px !important;
-  min-height: 60% !important;
+  height: 200px !important;
+  min-height: 70% !important;
+}
+.text {
+  color: #fff7f4;
+  --ion-background-color: rgba(0, 0, 0, 0.85);
 }
 .currentLobby {
     //opacity: 0.7;

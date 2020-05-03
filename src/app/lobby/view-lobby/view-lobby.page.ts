@@ -407,11 +407,11 @@ export class ViewLobbyPage implements OnInit {
   sanitizeVidId(id) {
     this.playUrl = '?autoplay=1';
     if (this.everyoneReady) {
-      this.secondUrl = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id);
-      this.url = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id + '?autoplay=1');
+      this.secondUrl = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id + '?playsinline=1' + 'enablejsapi=1');
+      this.url = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id + '?autoplay=1' + '?playsinline=1' + 'enablejsapi=1');
     } else {
-      this.secondUrl = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id);
-      this.url = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id);
+      this.secondUrl = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id + '?playsinline=1' + 'enablejsapi=1');
+      this.url = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id + '?playsinline=1' + 'enablejsapi=1');
     }
     return this.url;
   }

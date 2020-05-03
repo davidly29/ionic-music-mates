@@ -1,6 +1,11 @@
 <ion-header>
   <ion-toolbar color="secondary">
     <ion-title align="center">Song Option</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content color="primary">
@@ -18,5 +23,4 @@
 <ion-button (click)="addToLobby(this.song)">
   Add To {{this.lobby?.name}}
 </ion-button>
-  <ion-button (click)="cancel()">Cancel</ion-button>
 </ion-content>

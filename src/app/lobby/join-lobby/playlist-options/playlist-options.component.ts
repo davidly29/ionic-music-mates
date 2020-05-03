@@ -88,6 +88,7 @@ export class PlaylistOptionsComponent implements OnInit {
     }).then((obj) => {
       obj.present();
     });
+    this.cancel();
   }
   getUser() {
     this.firebaseService.getUsers().subscribe(res => {

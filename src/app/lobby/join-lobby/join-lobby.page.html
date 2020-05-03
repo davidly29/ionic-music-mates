@@ -10,7 +10,7 @@
 <ion-content color="primary">
   <br>
   <br>
-  <ion-searchbar></ion-searchbar>
+  <ion-searchbar [(ngModel)]="this.lobbyName" (keyup.enter)="lobbySearch()" (keydown.enter)="lobbySearch()" class="text"></ion-searchbar>
   <br>
 <!--      <ion-row>-->
 <!--        <ion-col>-->
@@ -76,6 +76,7 @@
           </ion-button>
           <ion-icon name="lock-closed-outline" *ngIf="item.password != ''"></ion-icon>
           <ion-icon name="lock-open-outline" *ngIf="item.password === ''"></ion-icon>
+          <ion-label></ion-label>
         </ion-card-content>
       </ion-card>
       </ion-slide>

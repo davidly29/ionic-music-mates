@@ -1,16 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ServicePage} from '../service/service.page';
 import {LobbyModel} from '../lobby.model';
 import {FirebaseServiceService} from '../../firebase-service.service';
 import {AuthService} from '../../auth/auth.service';
-import {AlertController, ModalController, Platform, ToastController} from '@ionic/angular';
+import {AlertController, IonSlides, ModalController, Platform, ToastController} from '@ionic/angular';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PasswordCheckComponent} from '../view-lobby/password-check/password-check.component';
 import {LobbyUserModel} from './lobbyUserModel';
 import {LobbyManagerComponent} from './lobby-manager/lobby-manager.component';
 import {PlaylistModel} from '../../playlist/PlaylistModel';
-
-
 @Component({
   selector: 'app-join-lobby',
   templateUrl: './join-lobby.page.html',
@@ -50,11 +48,14 @@ export class JoinLobbyPage implements OnInit {
   sliderConfig = {
     spaceBetween: 10,
     centeredSlides: true,
-    slidesPerView: 1.6,
+    slidesPerView: 1.7,
   };
   lobbyIndex = 0;
+  @ViewChild(IonSlides, { static: false }) slider: IonSlides;
   usersLobbies: LobbyModel[] = [];
   allPlaylist: PlaylistModel[] = [];
+  lobbyName = '';
+  goToIndex = 0;
   constructor(private lobbyService: ServicePage, private firebaseService: FirebaseServiceService, private authService: AuthService,
               // tslint:disable-next-line:max-line-length
               private alert: AlertController, private route: Router, private modalCtrl: ModalController,
@@ -89,6 +90,18 @@ export class JoinLobbyPage implements OnInit {
     //     this.usersLobby = lobby;
     //   });
     // }
+
+  }
+  lobbySearch() {
+    for (let i = 0; i < this.loadedLobbies.length; i++) {
+      if (this.loadedLobbies[i].name === this.lobbyName) {
+         this.goToIndex = i;
+         this.slider.slideTo(i, 500);
+      }
+    }
+  }
+  goToSlide() {
+    this.slider.slideTo(2, 500);
   }
   lobbyManager() {
       this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);

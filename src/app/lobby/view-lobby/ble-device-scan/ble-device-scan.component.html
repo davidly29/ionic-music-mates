@@ -13,7 +13,7 @@
   <ion-list>
     <ion-row *ngFor="let device of devices">
       <ion-item (click)="deviceSelected(device)">
-        <ion-label>
+        <ion-label class="text">
           {{ device.name}}
           {{ device.name || 'Unnamed'}}
           {{ device.id }}

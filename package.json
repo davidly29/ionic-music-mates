@@ -37,13 +37,12 @@
     "com.bunkerpalace.cordova.YoutubeVideoPlayer": "git+https://github.com/JonSmart/CordovaYoutubeVideoPlayer.git",
     "cordova-android": "^8.1.0",
     "cordova-browser": "6.0.0",
+    "cordova-ios": "^5.1.1",
     "cordova-plugin-ble-central": "^1.2.4",
     "cordova-plugin-customurlscheme": "^5.0.0",
     "cordova-plugin-streaming-media": "^2.2.0",
     "cordova-plugin-youtube-video-player": "^2.4.0",
-    "cordova-spotify-oauth": "^0.1.13",
     "core-js": "^2.5.4",
-    "es6-promise-plugin": "^4.2.2",
     "firebase": "^7.6.1",
     "ng-circle-progress": "^1.5.1",
     "ngx-autosize": "^1.7.2",
@@ -96,7 +95,6 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-youtube-video-player": {},
-      "cordova-spotify-oauth": {},
       "cordova-plugin-customurlscheme": {
         "URL_SCHEME": "ionicfyp",
         "ANDROID_SCHEME": " ",
@@ -108,7 +106,8 @@
     },
     "platforms": [
       "browser",
-      "android"
+      "android",
+      "ios"
     ]
   }
 }

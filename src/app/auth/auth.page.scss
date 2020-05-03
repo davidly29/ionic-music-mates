@@ -43,6 +43,11 @@ ion-label{
   --ion-background-color:rgba(0, 0, 0, 0.85);
 
 }
+ion-title, .ion-align-self-start {
+  align-content: center;
+  align-items: center;
+  alignment: top;
+}
 /////////////////////////////////////////////
 #custom-overlay {
   position: fixed;
