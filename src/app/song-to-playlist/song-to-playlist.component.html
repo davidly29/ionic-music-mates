@@ -7,7 +7,7 @@
 
 <ion-content color="primary">
 <ion-list>
-  <ion-item-sliding *ngFor="let item of allPlaylists">
+  <ion-item-sliding *ngFor="let item of playlists">
     <ion-item (click)="addToPlaylist(item)" *ngIf="item.userId === this.authService.user.getValue().id" class="text">
       {{item.name}} <ion-icon name="add-circle-outline"></ion-icon>
     </ion-item>

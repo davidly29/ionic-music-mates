@@ -91,7 +91,7 @@ export class ViewLobbyPage implements OnInit {
     allowedUsers: 0,
     currentSong: '',
     joinedUsers: [],
-    songs: [],
+    songs: [] = [],
     videoTime: 0,
     readyUrl: '',
     isAdmin: false,

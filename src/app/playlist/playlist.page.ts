@@ -92,6 +92,24 @@ export class PlaylistPage implements OnInit {
       return this.playlist;
     }
   }
+
+  ionViewDidEnter() {
+    this.getUserPlaylist();
+    this.checkMyAccount();
+  }
+  checkMyAccount() {
+    const email = this.authService.user.getValue().email;
+    this.currentUser = this.allRegisteredUsers.find(x => x.email === email);
+    return this.currentUser;
+  }
+  getUsers() {
+    this.firebaseService.getLobbies().subscribe(res => {
+      this.allLobbies = res;
+    });
+
+    this.usersLobby = this.allLobbies[0];
+    return this.usersLobby;
+  }
   newPlaylistCreate() {
     this.newUserPlaylist.userId = this.authService.user.getValue().id;
     this.firebaseService.addPlaylist(this.newUserPlaylist).then(console.log);

@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+      <ion-title align="center">{{this.currentUser.email}}'s Lobbies</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="onCancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="primary">
+<ion-item color="dark">
+  <ion-label class="text" align="center">
+    Current Lobby: {{this.usersLobby.name}}
+  </ion-label>
+  <ion-button class="button-clear" style="float: right"><ion-icon name="arrow-forward"></ion-icon>
+  </ion-button>
+</ion-item>
+  <ion-list>
+    <ion-row *ngFor="let lobby of userLobbies">
+      <ion-item color="dark" style="width: 100%">
+      <ion-label class="text">
+        {{lobby?.name}}
+      </ion-label>
+        <ion-button class="button-clear" style="float: right" [routerLink]="'/join-lobby/' + lobby.id"><ion-icon name="arrow-forward"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-row>
+  </ion-list>
+
+</ion-content>
+

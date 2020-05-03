@@ -11,13 +11,29 @@ import {LobbyModel} from '../../lobby.model';
   styleUrls: ['./playlist-adding.component.scss'],
 })
 export class PlaylistAddingComponent implements OnInit {
-  @Input() allPlaylists: PlaylistModel[] = [];
+  play: PlaylistModel = {
+    userId: 'test',
+    songs: [] = [],
+    name: '',
+    username: '',
+  };
+  allPlaylists: PlaylistModel[] = [];
   @Input() currentLobby: LobbyModel;
   // tslint:disable-next-line:max-line-length
   constructor(private authService: AuthService, private firebaseService: FirebaseServiceService, private alertCtrl: AlertController,  private modalCtrl: ModalController) { }
 
   ngOnInit() {
-
+    this.firebaseService.getPlaylists().subscribe(data => {
+      this.allPlaylists = data;
+    });
+    this.firebaseService.addPlaylist(this.play);
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < this.allPlaylists.length; i++) {
+      // tslint:disable-next-line:no-conditional-assignment
+      if (this.allPlaylists[i].userId === 'test') {
+        this.firebaseService.deletePlaylist(this.allPlaylists[i].id);
+      }
+    }
   }
   async showPlaylistAlert(item: PlaylistModel) {
     const alert = await this.alertCtrl.create({

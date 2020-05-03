@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>Select
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="primary">
+  <ion-button (click)="getPlaylist()">Get</ion-button>
+  <ion-list>
+    <ion-row *ngFor="let i of  playlists">
+      <ion-label>
+        {{i.name}}
+        <ion-row *ngFor="let song of i.songs">
+          <ion-label (click)="addToLobby(song)">
+            {{song.name}}
+          </ion-label>
+        </ion-row>
+      </ion-label>
+    </ion-row>
+  </ion-list>
+</ion-content>

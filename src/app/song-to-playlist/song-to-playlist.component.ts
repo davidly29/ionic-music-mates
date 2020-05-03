@@ -14,7 +14,7 @@ export class SongToPlaylistComponent implements OnInit {
   @Input() songName: string;
   @Input() allPlaylists: PlaylistModel[];
   playlistSongs: SongModel[];
-
+  playlists: PlaylistModel[];
   newUserPlaylist: PlaylistModel = {
     songs: [],
     name: '',
@@ -41,6 +41,11 @@ export class SongToPlaylistComponent implements OnInit {
     this.songToAdd.id = this.songID;
     this.playlistSongs = [];
 
+    this.firebaseService.getPlaylists().subscribe(data => {
+      this.playlists = data;
+    });
+    this.firebaseService.addPlaylist(this.playlist);
+
   }
 
   addToPlaylist(item: PlaylistModel) {
@@ -49,13 +54,12 @@ export class SongToPlaylistComponent implements OnInit {
     this.songToAdd.id = this.songID;
 
     // this.playlist.songs.push(this.songToAdd);
-    this.playlist = item;
+    this.playlistSongs = item.songs;
 
     // this.playlistSongs = this.playlist.songs.map((obj) => Object.assign({}, obj));
     this.playlistSongs.push(this.songToAdd);
-
-    this.playlist.songs  = this.playlistSongs.map((obj) => Object.assign({}, obj));
-
+    // this.playlist.songs  = this.playlistSongs.map((obj) => Object.assign({}, obj));
+    item.songs = this.playlistSongs;
     // this.playlistSongs.push(this.songToAdd);
     // this.playlist.songs.push(this.songToAdd);
 

@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title align="center">Song Option</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content color="primary">
+  <ion-button (click)="this.getUser()">Get User</ion-button>
+  <ion-button (click)="this.getCurrentUserLobby()">Get Lobby</ion-button>
+  <br>
+  <ion-label>Current Lobby: {{this.lobby?.name}}</ion-label>
+  <br>
+  <ion-label class="text">{{this.song.name}}</ion-label>
+  <ion-list>
+    <ion-row>
+      <ion-label class="text">{{this.lobby?.songs[0].name}}</ion-label>
+    </ion-row>
+  </ion-list>
+<ion-button (click)="addToLobby(this.song)">
+  Add To {{this.lobby?.name}}
+</ion-button>
+  <ion-button (click)="cancel()">Cancel</ion-button>
+</ion-content>
