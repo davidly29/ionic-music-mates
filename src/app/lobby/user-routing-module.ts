@@ -15,12 +15,6 @@ const routes: Routes = [
                         loadChildren: './join-lobby/join-lobby.module#JoinLobbyPageModule', canLoad: [GuardGuard]
                     }
                 ]},
-            {path: 'edit:lobbyId', children: [
-                    {
-                        path: '',
-                        loadChildren: './edit-lobby/edit-lobby.module#EditLobbyPageModule', canLoad: [GuardGuard]
-                    }
-                ]},
             {path: 'viewLobby', children: [
                     {
                         path: ':lobbyId',

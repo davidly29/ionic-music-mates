@@ -1,3 +1,7 @@
+/*
+Author: David Lynch
+Description: This class function is used to assist the user in deciding what to do with a playlist
+ */
 import {Component, Input, OnInit} from '@angular/core';
 import {PlaylistModel} from '../../../playlist/PlaylistModel';
 import {SongModel} from '../../song.model';
@@ -6,9 +10,6 @@ import {LobbyUserModel} from '../lobbyUserModel';
 import {FirebaseServiceService} from '../../../firebase-service.service';
 import {AuthService} from '../../../auth/auth.service';
 import {ModalController, ToastController} from '@ionic/angular';
-
-
-
 
 @Component({
   selector: 'app-playlist-options',
@@ -55,8 +56,6 @@ export class PlaylistOptionsComponent implements OnInit {
     email: 'test',
     users: 'test',
   };
-
-  newSongArray: SongModel[] = [];
   allLobbies: LobbyModel[] = [];
   allRegisteredUsers: LobbyUserModel[];
 

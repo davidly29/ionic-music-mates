@@ -1,3 +1,7 @@
+/*
+Author: David Lynch
+Description: This class function is used to display a specific video for the user
+ */
 import {Component, Input, OnInit} from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {ModalController} from '@ionic/angular';

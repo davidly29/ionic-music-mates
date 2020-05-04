@@ -1,9 +1,9 @@
 <ion-header xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
   <ion-toolbar color="secondary">
-    <ion-title>{{tempLobby?.name}}</ion-title>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
+      <ion-title align="center" padding="8px">{{tempLobby?.name}}</ion-title>
     <ion-buttons slot="end">
     <ion-button (click)="this.lobbyStatus()">{{isJoined ? 'Leave Lobby' : 'Join Lobby'}}</ion-button>
     <ion-button (click)="this.viewLobbyUsers()">View Users<ion-icon name="people"></ion-icon></ion-button>
@@ -12,13 +12,8 @@
 </ion-header>
 <ion-content color="primary" [scrollEvents]="true">
 
-<!--    <iframe id="player" type="text/html" width="100%" height=38% [src]="this.url" frameborder="2px"></iframe>-->
-<!--    -->
-<!--  <div class="video-container">-->
-<!--    <p align="right">-->
     <iframe align="right" width="100%" height="42%" [src]="this.url" allowfullscreen></iframe>
-<!--    </p>-->
-<!--  </div>-->
+
     <div style="height: 38%"></div>
     <ion-grid align="center" style="height: 15%;">
         <ion-row>
@@ -62,25 +57,6 @@
       </ion-col>
     </ion-row>
 </ion-grid>
-
-<!--  <ion-list>-->
-<!--    <ion-item *ngFor="let item of playlist.songs">-->
-<!--      <ion-col (click)="playUserSongs(item)">-->
-<!--        <ion-label>-->
-<!--          Label: {{item}}-->
-<!--        </ion-label>-->
-<!--      </ion-col>-->
-<!--    </ion-item>-->
-<!--  </ion-list>-->
-
-    <!--  <ion-button  align="right"(click)="checkUserJoined()">Check</ion-button>-->
-<!-- <ion-icon name="checkmark-circle">{{ joined ? 'Joined' : 'Not Joined'}}</ion-icon>-->
-<!--  <ion-buttons>-->
-<!--    <ion-button expand="block"  fill="clear" color="primary" (click)="authWithSpotify()">-->
-<!--      <ion-icon name="send" slot="icon-only"></ion-icon>-->
-<!--    </ion-button>-->
-<!--  </ion-buttons>-->
-<!--  <ion-button (click)="viewSongs()">load</ion-button>-->
 
 </ion-content>
 <ion-footer>

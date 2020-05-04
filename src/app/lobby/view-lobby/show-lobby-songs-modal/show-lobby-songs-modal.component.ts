@@ -1,3 +1,7 @@
+/*
+Author: David Lynch
+Description: This class function is to show the lobbies current songs
+ */
 import {Component, Input, OnInit} from '@angular/core';
 import {SongModel} from '../../song.model';
 import {ModalController} from '@ionic/angular';

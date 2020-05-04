@@ -1,3 +1,7 @@
+/*
+Author: David Lynch
+Description: This class function is to add a playlist to a lobby
+ */
 import {Component, Input, OnInit} from '@angular/core';
 import {LobbyModel} from '../../lobby.model';
 import {ModalController} from '@ionic/angular';

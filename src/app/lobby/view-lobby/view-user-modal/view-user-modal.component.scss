@@ -1,13 +1,12 @@
 .text {
   color: #fff7f4;
-  --ion-background-color: var(--ion-color-primary);
 }
 ion-row{
-  background-color: var(--ion-color-primary);
+  background-color: transparent;
 }
 ion-list{
   background-color: transparent
 }
 ion-col {
-  background-color: var(--ion-color-primary);
+  background-color: transparent;
 }

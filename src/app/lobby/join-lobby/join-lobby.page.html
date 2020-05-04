@@ -12,48 +12,7 @@
   <br>
   <ion-searchbar [(ngModel)]="this.lobbyName" (keyup.enter)="lobbySearch()" (keydown.enter)="lobbySearch()" class="text"></ion-searchbar>
   <br>
-<!--      <ion-row>-->
-<!--        <ion-col>-->
-<!--          <ion-card align="left">-->
-<!--            <ion-card-header>-->
-<!--              <ion-card-title>-->
-<!--                View Friend's Lobby-->
-<!--              </ion-card-title>-->
-<!--            </ion-card-header>-->
-<!--            <ion-card-content>-->
-<!--              <ion-icon name="people-circle-outline"></ion-icon>-->
-<!--            </ion-card-content>-->
-<!--          </ion-card>-->
-<!--        </ion-col>-->
-
-<!--        <ion-col>-->
-<!--          <ion-card align="center">-->
-<!--            <ion-card-header>-->
-<!--              <ion-card-title>-->
-<!--                Search Lobby-->
-<!--              </ion-card-title>-->
-<!--            </ion-card-header>-->
-<!--            <ion-card-content>-->
-<!--              <ion-icon name="search-circle-outline"></ion-icon>-->
-<!--            </ion-card-content>-->
-<!--          </ion-card>-->
-<!--        </ion-col>-->
   <ion-button (click)="lobbyManager()">Lobby Manager <ion-icon name="settings"></ion-icon></ion-button>
-<!--        <ion-col>-->
-<!--          <ion-card align="right">-->
-<!--            <ion-card-header>-->
-<!--              <ion-card-title>-->
-<!--                Browse Lobbies-->
-<!--              </ion-card-title>-->
-<!--            </ion-card-header>-->
-<!--            <ion-card-content>-->
-<!--              <ion-icon name="eye-outline"></ion-icon>-->
-<!--            </ion-card-content>-->
-<!--          </ion-card>-->
-<!--        </ion-col>-->
-<!--      </ion-row>-->
-
-<!--    </ion-grid>-->
     <ion-slides [options]="sliderConfig" #ionSlides>
       <ion-slide *ngFor="let item of loadedLobbies">
       <ion-card color="secondary">
@@ -81,44 +40,4 @@
       </ion-card>
       </ion-slide>
     </ion-slides>
-<!--     <ion-card lines="inset" button [routerLink]="['/join-lobby', item.id]">-->
-<!--    <ion-card-header class="font">-->
-<!--      {{item.name}}-->
-<!--    </ion-card-header>-->
-<!--       <ion-card-content>-->
-<!--         <p class="fontSecond">{{item.description}}</p>-->
-<!--       </ion-card-content>-->
-<!--        <ion-note slot="start" class="fontSecond">{{item.allowedUsers}}</ion-note>-->
-<!--     </ion-card>-->
-<!--      <ion-item-options>-->
-<!--        <ion-item-option color="primary">-->
-<!--          <ion-icon slot="bottom" name="more"></ion-icon>-->
-<!--          Join-->
-<!--        </ion-item-option>-->
-<!--        <ion-item-option color="secondary">-->
-<!--          <ion-icon slot="bottom" name="archive" (click)="removeLobby(item.id)"></ion-icon>-->
-<!--          Delete-->
-<!--        </ion-item-option>-->
-<!--      </ion-item-options>-->
-
-
-<!--  <ion-grid>-->
-
-<!--    <ion-row>-->
-<!--      <ion-col>-->
-<!--        <ion-card *ngFor="let lobby of loadedLobbies">-->
-<!--          <ion-card-header>-->
-<!--            <ion-card-title>{{ lobby.name}}</ion-card-title>-->
-<!--            <ion-card-subtitle>{{ lobby.allowedUsers}}</ion-card-subtitle>-->
-<!--          </ion-card-header>-->
-<!--          <ion-card-content><p>{{ lobby.description }}</p></ion-card-content>-->
-<!--          <ion-button fill="solid" name ="View Lobby" [routerLink]="['/', 'post-log', 'tabs', 'viewLobby', lobby.id]">View Lobby</ion-button>-->
-<!--          <ion-button fill="solid" name ="Quick Join">Join Lobby</ion-button>-->
-<!--        </ion-card>-->
-<!--      </ion-col>-->
-<!--    </ion-row>-->
-
-
-<!--  </ion-grid>-->
-
 </ion-content>

@@ -1,3 +1,7 @@
+/*
+Author: David Lynch
+Description: This class function is used to manage a users lobbies
+ */
 import {Component, Input, OnInit} from '@angular/core';
 import {LobbyUserModel} from '../lobbyUserModel';
 import {LobbyModel} from '../../lobby.model';
@@ -15,10 +19,6 @@ export class LobbyManagerComponent implements OnInit {
   constructor(private modalCtrl: ModalController) { }
 
   ngOnInit() {}
-
-  goToLobby() {
-
-  }
 
   onCancel() {
     this.modalCtrl.dismiss();

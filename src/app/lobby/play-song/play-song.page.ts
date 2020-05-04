@@ -1,9 +1,13 @@
+/*
+Author: David Lynch
+Description: This class function is used to search for a Video Using the YouTube Data API V3
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
 import {SongModel} from '../song.model';
 import {NgForm} from '@angular/forms';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
-import {SpotifyAuth} from '@ionic-native/spotify-auth/ngx';
 import {YtServiceService} from '../../yt-service.service';
 import { LoadingService } from '../../loading.service';
 import {AlertController, LoadingController, ModalController, NavController, Platform, ToastController} from '@ionic/angular';
@@ -100,63 +104,12 @@ export class PlaySongPage implements OnInit {
           this.allPlaylists = res;
         }
     );
-    // const navigationExtras: NavigationExtras = {
-    //       queryParams: {
-    //           songName: this.tempSong.name,
-    //           songId: this.tempSong.id,
-    //       }, };
-    // this.navCtrl.navigateForward(['/songs-adding'], navigationExtras);
-
     this.modalCtrl.create({
       // tslint:disable-next-line:max-line-length
       component: SongToPlaylistComponent, componentProps: {songID: this.tempSong.id, songName: this.tempSong.name, allPlaylists: this.allPlaylists}
     }).then(modalEl => {
       modalEl.present();
     });
-
-    // this.songs.push(new SongModel('song1', id));
-    // if (this.allPlaylists.find(x => x.userId === this.currentUser.getValue().id) != null) {
-    //   this.playlist = this.allPlaylists.find(x => x.userId === this.currentUser.getValue().id);
-    //   this.tempSong.name = name;
-    //   this.tempSong.id = id;
-    //
-    //   this.playlist.songs.push(this.tempSong);
-    //   this.firebaseService.updatePlaylist(this.playlist, this.playlist.id);
-    //   this.toastController.create({
-    //     message: 'Song Added',
-    //     duration: 3000,
-    //     showCloseButton: true,
-    //     closeButtonText: 'OK',
-    //     animated: true
-    //   }).then((obj) => {
-    //     obj.present();
-    //   });
-    // } else {
-    //   // If this is a new User
-    //   this.tempSong.name = name;
-    //   this.tempSong.id = id;
-    //   this.playlist.userId = this.authService.user.getValue().id;
-    //   this.newSongArray.push(this.tempSong);
-    //
-    //   this.playlist.songs = this.newSongArray;
-    //   this.firebaseService.addPlaylist(this.playlist);
-    //   this.firebaseService.getPlaylists().subscribe(temp => {
-    //     this.allPlaylists = temp;
-    //   });
-    //   if (this.allPlaylists.find(x => x.userId === this.currentUser.getValue().id) != null) {
-    //     this.updatePlaylist = this.allPlaylists.find(x => x.userId === this.authService.user.getValue().id);
-    //     this.firebaseService.updatePlaylist(this.updatePlaylist, this.updatePlaylist.id).then(console.log);
-    //   }
-    //   this.toastController.create({
-    //     message: 'Song Added to New Playlist',
-    //     duration: 3000,
-    //     showCloseButton: true,
-    //     closeButtonText: 'OK',
-    //     animated: true
-    //   }).then((obj) => {
-    //     obj.present();
-    //   });
-    // }
 
   }
 
@@ -168,7 +121,6 @@ export class PlaySongPage implements OnInit {
   /////////////////////////////////////////////////////////
   // opens selected video for viewing
   viewVideo(vid) {
-    // if we are on a device where cordova is available we user the youtube video player
     if (this.plt.is('cordova')) {
       this.youtube.openVideo(vid.id.username); // opens video with username
     } else {
@@ -178,14 +130,12 @@ export class PlaySongPage implements OnInit {
   }
 // this function presents videos based on category selected by user
   filter(value) {
-    this.loading.show(); // shows loading circle
-    this.videos = []; // defines this.videos as an empty array
-    const temp = this.ytProvider.getVideos(value); // defines temp as our http call in yt provider
-    // we subscrive to videos of category value here
+    this.loading.show();
+    this.videos = [];
+    const temp = this.ytProvider.getVideos(value);
     temp.subscribe(data => {
       // tslint:disable-next-line:forin
       for (const i in data) {
-        // if video is not present in videos array, we push it into the array
         if (this.videos.indexOf(i) === -1) {
           this.videos.push(i);
         }
@@ -202,7 +152,6 @@ export class PlaySongPage implements OnInit {
   }
 
   getSongBySearch() {
-   // this.commons.requestCount++;
     this.ytProvider.SearchVideo(this.searchKey).subscribe(
         res => this.response = res,
         error => {
@@ -211,7 +160,6 @@ export class PlaySongPage implements OnInit {
           this.response = null;
         },
         () =>  {
-          // this.commons.requestCount--;
           console.log(this.response);
         }
     );
@@ -231,14 +179,11 @@ export class PlaySongPage implements OnInit {
 
   // this function retrieves a list of the categories available on YouTube
   getCategory() {
-    // this.loading.show(); // shows loading circle
-    this.categoryArray = []; // defines out variable categoryArray as an empty array.
-    const temp = this.ytProvider.getCategories(); // sets temp equal to our http call in yt provider
-    // we subscribe to categories here
+    this.categoryArray = [];
+    const temp = this.ytProvider.getCategories();
     temp.subscribe(data => {
       // tslint:disable-next-line:forin
       for (const i in data) {
-        // if category is not already a member of our array, we push the categort into our array
         if (this.categoryArray.indexOf(i) === -1) {
           this.categoryArray.push(i);
         }
@@ -255,7 +200,6 @@ export class PlaySongPage implements OnInit {
           }
         });
       }
-     // this.loading.hide();
     }, err => {
 
       const alert = this.alertCtrl.create({

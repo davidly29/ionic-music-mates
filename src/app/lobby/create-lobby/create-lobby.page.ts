@@ -1,3 +1,8 @@
+/*
+Author: David Lynch
+Description: This class function is used to create a lobby
+ */
+
 import { Component, OnInit } from '@angular/core';
 import {FirebaseServiceService} from '../../firebase-service.service';
 import {LobbyModel} from '../lobby.model';

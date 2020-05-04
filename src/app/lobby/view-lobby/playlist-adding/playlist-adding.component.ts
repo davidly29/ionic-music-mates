@@ -1,3 +1,7 @@
+/*
+Author: David Lynch
+Description: This class function is to add a playlist to a lobby
+ */
 import {Component, Input, OnInit} from '@angular/core';
 import {AuthService} from '../../../auth/auth.service';
 import {FirebaseServiceService} from '../../../firebase-service.service';

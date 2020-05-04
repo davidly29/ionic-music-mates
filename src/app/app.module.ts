@@ -16,7 +16,6 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { YtServiceService } from './yt-service.service';
 import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player/ngx';
 import {ModalPlayComponent} from './lobby/play-song/modal-play/modal-play.component';
-import {UserSongsModalComponent} from './lobby/view-lobby/user-songs-modal/user-songs-modal.component';
 import {UserAddSongsComponent} from './lobby/view-lobby/user-add-songs/user-add-songs.component';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
 import { BLE } from '@ionic-native/ble/ngx';
@@ -25,8 +24,8 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import {FormsModule} from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent, ModalPlayComponent, UserSongsModalComponent, UserAddSongsComponent, PasswordCheckComponent],
-  entryComponents: [ModalPlayComponent, UserSongsModalComponent, UserAddSongsComponent, PasswordCheckComponent],
+  declarations: [AppComponent, ModalPlayComponent, UserAddSongsComponent, PasswordCheckComponent],
+  entryComponents: [ModalPlayComponent, UserAddSongsComponent, PasswordCheckComponent],
   // tslint:disable-next-line:max-line-length
   imports: [BrowserModule, HttpClientModule, AngularFireModule.initializeApp(environment.firebase), AngularFirestoreModule,
     IonicModule.forRoot(), AppRoutingModule, FormsModule,

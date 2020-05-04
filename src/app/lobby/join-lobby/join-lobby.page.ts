@@ -1,5 +1,8 @@
+/*
+Author: David Lynch
+Description: This class function is used to allow the user to view lobbies that they can join
+ */
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ServicePage} from '../service/service.page';
 import {LobbyModel} from '../lobby.model';
 import {FirebaseServiceService} from '../../firebase-service.service';
 import {AuthService} from '../../auth/auth.service';
@@ -56,7 +59,7 @@ export class JoinLobbyPage implements OnInit {
   allPlaylist: PlaylistModel[] = [];
   lobbyName = '';
   goToIndex = 0;
-  constructor(private lobbyService: ServicePage, private firebaseService: FirebaseServiceService, private authService: AuthService,
+  constructor(private firebaseService: FirebaseServiceService, private authService: AuthService,
               // tslint:disable-next-line:max-line-length
               private alert: AlertController, private route: Router, private modalCtrl: ModalController,
               private toastCtrl: ToastController, public platform: Platform) {}
@@ -75,21 +78,8 @@ export class JoinLobbyPage implements OnInit {
       this.allPlaylist = res;
     });
   }
-  clearList() {
-    for (let i = 0; this.allPlaylist.length; i++) {
-      if (this.allPlaylist[i].userId === 'test') {
-        this.firebaseService.deletePlaylist(this.allPlaylist[i].id);
-      }
-    }
-  }
   ionViewDidEnter() {
     this.checkMyAccount();
-    // this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
-    // // if (this.currentUser.email !== '') {
-    //   this.firebaseService.getLobby(this.currentUser.lobbyId).subscribe(lobby => {
-    //     this.usersLobby = lobby;
-    //   });
-    // }
 
   }
   lobbySearch() {
@@ -99,9 +89,6 @@ export class JoinLobbyPage implements OnInit {
          this.slider.slideTo(i, 500);
       }
     }
-  }
-  goToSlide() {
-    this.slider.slideTo(2, 500);
   }
   lobbyManager() {
       this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
@@ -130,43 +117,44 @@ export class JoinLobbyPage implements OnInit {
     return this.currentUser;
   }
 
-
-  checkLobby(slide) {
-    this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
-    this.firebaseService.getLobby(this.currentUser.lobbyId).subscribe(lobby => {
-      this.usersLobby = lobby;
-    });
-    if (this.usersLobby.id.length > 4) {
-      this.currentlyInLobby = true;
-    }
-    this.lobbyIndex = this.loadedLobbies.findIndex(x => x === this.usersLobby);
-    this.lobbyIndex = 2;
-    slide.slider.slideTo(2, 2000);
-  }
   joinLobby(lobby: LobbyModel) {
-    // if (lobby.joinedUsers.length >= lobby.allowedUsers) {
-    //   this.toastCtrl.create({
-    //     message: 'There is no songs yet',
-    //     duration: 3000,
-    //     showCloseButton: true,
-    //     closeButtonText: 'OK',
-    //     animated: true
-    //   }).then((obj) => {
-    //     obj.present();
-    //   });
-    // }
-    this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
-    this.currentUser.lobbyId = lobby.id;
-    this.firebaseService.updateUser(this.currentUser, this.currentUser.id);
+    const aName = lobby.joinedUsers.find(x => x === this.authService.user.getValue().email);
 
-    lobby.joinedUsers.push(this.authService.user.getValue().email);
-    this.firebaseService.updateLobby(lobby, lobby.id);
+    if (lobby.joinedUsers.length >= lobby.allowedUsers && aName == null) {
+      this.toastCtrl.create({
+        message: 'This Lobby is Full',
+        duration: 3000,
+        showCloseButton: true,
+        closeButtonText: 'OK',
+        animated: true
+      }).then((obj) => {
+        obj.present();
+      });
+    } else {
+      this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
+      this.currentUser.lobbyId = lobby.id;
+      this.firebaseService.updateUser(this.currentUser, this.currentUser.id);
 
-    if (lobby.isPassword) {
-      this.modalCtrl.create({component: PasswordCheckComponent, componentProps:
-            {password: lobby.password, lobbyId: lobby.id, lobbyToJoin: lobby}}).then(modalEl => {
-        modalEl.present();
-    });
+      const name = lobby.joinedUsers.find(x => x === this.authService.user.getValue().email);
+      if (name != null) {
+        if (lobby.isPassword) {
+          this.modalCtrl.create({
+            component: PasswordCheckComponent, componentProps:
+                {password: lobby.password, lobbyId: lobby.id, lobbyToJoin: lobby}
+          }).then(modalEl => {
+            modalEl.present();
+          });
+        }
+      } else {
+        if (lobby.isPassword) {
+          this.modalCtrl.create({
+            component: PasswordCheckComponent, componentProps:
+                {password: lobby.password, lobbyId: lobby.id, lobbyToJoin: lobby}
+          }).then(modalEl => {
+            modalEl.present();
+          });
+        }
+      }
     }
   }
 

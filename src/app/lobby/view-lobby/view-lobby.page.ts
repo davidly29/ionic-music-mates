@@ -1,6 +1,5 @@
 import {Component, Input, OnInit, ViewChild, NgZone, Pipe} from '@angular/core';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
-import {ServicePageModule} from '../service/service.module';
 import {LobbyModel} from '../lobby.model';
 import {FirebaseServiceService} from '../../firebase-service.service';
 import {BehaviorSubject, Observable} from 'rxjs';
@@ -9,20 +8,14 @@ import {AlertController, IonContent, ModalController, ToastController} from '@io
 import {User} from '../../auth/user.model';
 import {AuthService} from '../../auth/auth.service';
 import {LobbyUserModel} from '../join-lobby/lobbyUserModel';
-import {checkAvailability} from '@ionic-native/core';
-import { AutosizeModule} from 'ngx-autosize';
 import {MessageModel} from './messageModel';
-import {isBoolean} from 'util';
 import {ViewUserModalComponent} from './view-user-modal/view-user-modal.component';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {SongModel} from '../song.model';
-import {UserSongsModalComponent} from './user-songs-modal/user-songs-modal.component';
 import {UserAddSongsComponent} from './user-add-songs/user-add-songs.component';
-import index from '@ionic/angular-toolkit/schematics/page';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
 import { BLE } from '@ionic-native/ble/ngx';
 import {AddPlaylistLobbyComponent} from './add-playlist-lobby/add-playlist-lobby.component';
-import {AddSongsPageModule} from './add-songs/add-songs.module';
 import {YoutubeVideoPlayer} from '@ionic-native/youtube-video-player/ngx';
 import {BleDeviceScanComponent} from './ble-device-scan/ble-device-scan.component';
 import {ShowLobbySongsModalComponent} from './show-lobby-songs-modal/show-lobby-songs-modal.component';
@@ -200,15 +193,6 @@ export class ViewLobbyPage implements OnInit {
     this.currentId = this.currentUser.getValue().id;
     this.checkUserJoined();
     this.songs = this.playlist.songs;
-    if (this.tempLobby.songs.length < 1) {
-      // this.toastCtrl.create({
-      //   message: 'No Playlist Set :(',
-      //   duration: 3000
-      // }).then(toast => toast.present());
-    }
-    this.currentVideoId = 'MjBzElQrm4E';
-    // this.tempLobby.songs = this.tempSong;
-    // tslint:disable-next-line:no-conditional-assignment
   }
   ionViewDidEnter() {
     this.toastCtrl.create({
@@ -231,11 +215,6 @@ export class ViewLobbyPage implements OnInit {
       this.sanitizeVidId(this.tempLobby.currentSong);
     }
     this.checkUserJoined();
-  }
-
-  saveTimeStamp(time) {
-    this.tempLobby.videoTime = time;
-    this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id).then(console.log);
   }
 
 
@@ -383,31 +362,11 @@ export class ViewLobbyPage implements OnInit {
       this.isJoined = true;
     }
   }
-  testAndroid() {
-    const options: StreamingVideoOptions = {
-      successCallback: () => { console.log('Video played'); },
-      errorCallback: (e) => { console.log('Error streaming'); },
-      orientation: 'landscape',
-      shouldAutoClose: true,
-      controls: false
-    };
-    this.streamingMedia.playVideo('https://www.youtube.com/watch?v=-jWh1lK3ruE', options);
-  }
-  playUserSongs(songId) {
-    this.modalCtrl.create({
-      component: UserSongsModalComponent, componentProps: {song: songId}
-    }).then(modalEl => {
-      modalEl.present();
-    });
-  }
-  getSongId() {
-    this.tempSong = this.tempLobby.songs[this.currentSongIndex];
-    return this.tempSong;
-  }
   sanitizeVidId(id) {
     this.playUrl = '?autoplay=1';
     if (this.everyoneReady) {
       this.secondUrl = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id + '?playsinline=1' + 'enablejsapi=1');
+      // tslint:disable-next-line:max-line-length
       this.url = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id + '?autoplay=1' + '?playsinline=1' + 'enablejsapi=1');
     } else {
       this.secondUrl = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id + '?playsinline=1' + 'enablejsapi=1');
@@ -424,20 +383,6 @@ export class ViewLobbyPage implements OnInit {
     });
   }
 
-  authWithSpotify() {
-    const config = {
-      clientId: '4671fcc7c9564f94b408922a06f54835',
-      redirectUrl: 'ionicfyp://callback',
-      scopes: ['streaming', 'playlist-read-private', 'user-read-email', 'user-read-private'],
-      tokenExchangeUrl: 'https://ionicfypserver.herokuapp.com/exchange',
-      tokenRefreshUrl: 'https://ionicfypserver.herokuapp.com/refresh',
-    };
-
-    cordova.plugins.spotifyAuth.authorize(config)
-        .then(({ accessToken, encryptedRefreshToken, expiresAt }) => {
-          this.result = { access_token: accessToken, expires_in: expiresAt, ref: encryptedRefreshToken };
-        });
-  }
   getLobbySongs() {
     if (this.tempLobby.songs === null ) {
       this.toastController.create({
@@ -488,32 +433,7 @@ export class ViewLobbyPage implements OnInit {
       modalEl.present();
     });
   }
-  //
-  // async showPlaylistAlert() {
-  //   const alert = await this.alertCtrl.create({
-  //     header: 'Playlist Already Loaded',
-  //     subHeader: 'There is already a loaded playlist',
-  //     message: 'would you like to remove this playlist and load your own ?',
-  //     buttons: [
-  //       {
-  //       text: 'Cancel',
-  //       handler: data => {
-  //       console.log('Cancel clicked');
-  //       this.alertCtrl.dismiss();
-  //       }
-  //       },
-  //       {
-  //         text: 'Override Playlist',
-  //         handler: data => {
-  //           this.viewSongs();
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   await alert.present();
-  //   const result = await alert.onDidDismiss();
-  //   console.log(result);
-  // }
+
   loadSongs() {
     this.modalCtrl.create({
       component: PlaylistAddingComponent

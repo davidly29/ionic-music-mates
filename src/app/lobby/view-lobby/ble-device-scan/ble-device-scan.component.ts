@@ -1,3 +1,7 @@
+/*
+Author: David Lynch
+Description: This class function is used to enable a connection to BLE device
+ */
 import {Component, Input, NgZone, OnInit} from '@angular/core';
 import {ModalController, ToastController} from '@ionic/angular';
 import {NavigationExtras, Router} from '@angular/router';

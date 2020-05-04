@@ -14,16 +14,11 @@ const routes: Routes = [
   { path: 'create-lobby', loadChildren: './lobby/create-lobby/create-lobby.module#CreateLobbyPageModule', canLoad: [GuardGuard]},
   { path: 'join-lobby', loadChildren: './lobby/join-lobby/join-lobby.module#JoinLobbyPageModule', canLoad: [GuardGuard]},
   { path: 'join-lobby/:id', loadChildren: './lobby/view-lobby/view-lobby.module#ViewLobbyPageModule', canLoad: [GuardGuard]},
-  { path: 'edit-lobby', loadChildren: './lobby/edit-lobby/edit-lobby.module#EditLobbyPageModule', canLoad: [GuardGuard]},
-  { path: 'service', loadChildren: './lobby/service/service.module#ServicePageModule' },
-  { path: 'view-lobby', loadChildren: './lobby/view-lobby/view-lobby.module#ViewLobbyPageModule', canLoad: [GuardGuard]},
+{ path: 'view-lobby', loadChildren: './lobby/view-lobby/view-lobby.module#ViewLobbyPageModule', canLoad: [GuardGuard]},
   { path: 'play-song', loadChildren: './lobby/play-song/play-song.module#PlaySongPageModule', canLoad: [GuardGuard]},
-  { path: 'lobby-joined', loadChildren: './lobby/lobby-joined/lobby-joined.module#LobbyJoinedPageModule' },
-  { path: 'playlist', loadChildren: './playlist/playlist.module#PlaylistPageModule' },
+ { path: 'playlist', loadChildren: './playlist/playlist.module#PlaylistPageModule' },
   { path: 'add-songs', loadChildren: './lobby/view-lobby/add-songs/add-songs.module#AddSongsPageModule' },
   { path: 'device-details', loadChildren: './lobby/view-lobby/device-details/device-details.module#DeviceDetailsPageModule' },
-  { path: 'songs-adding', loadChildren: './lobby/songs-adding/songs-adding.module#SongsAddingPageModule' },
-
 
 
   // { path: 'add-songs', loadChildren: './lobby/view-lobby/add-songs/add-songs.module#AddSongsPageModule' },

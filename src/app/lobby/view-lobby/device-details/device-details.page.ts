@@ -1,3 +1,7 @@
+/*
+Author: David Lynch
+Description: This class function is used for BLE connection
+ */
 import {Component, NgZone, OnInit} from '@angular/core';
 import {ToastController} from '@ionic/angular';
 import {BLE} from '@ionic-native/ble/ngx';
@@ -90,13 +94,11 @@ export class DeviceDetailsPage implements OnInit {
 
   onDataChange(buffer: ArrayBuffer) {
     const data = new Uint8Array(buffer);
-    // You will get the notification data here
     console.log(data);
   }
 
   onReadData(buffer: ArrayBuffer) {
     const data = new Uint8Array(buffer);
-    // You will get the read data here
     console.log(data);
 
   }
@@ -110,11 +112,6 @@ export class DeviceDetailsPage implements OnInit {
     toast.present();
   }
 
-  // Disconnect peripheral when leaving the page
-  // ionViewWillLeave() {
-  //   console.log('ionViewWillLeave disconnecting Bluetooth');
-  //   this.BleDisconnect();
-  // }
 
   setStatus(message) {
     console.log(message);

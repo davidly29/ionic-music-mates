@@ -1,3 +1,8 @@
+/*
+Author: David Lynch
+Description: This class function is used to allow the user to manage their lobby
+ */
+
 import { Component, OnInit } from '@angular/core';
 
 import {ModalController, ToastController} from '@ionic/angular';
