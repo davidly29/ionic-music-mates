@@ -60,19 +60,19 @@
 </ion-content>
 <ion-footer>
   <ion-toolbar>
-    <ion-row align-items-left no-padding>
+    <ion-row align-items-left padding-end="25px">
       <ion-col size="11">
-        <textarea autosize maxRows="3" [(ngModel)]="newMsg" class="message-input" (keyup.enter)="sendMessage()" (keydown.enter)="sendMessage()"></textarea>
+        <textarea autosize maxRows="3" [(ngModel)]="newMsg" class="message-input" (keydown.enter)="sendMessage()"></textarea>
       </ion-col>
-      <ion-col size="1">
-        <div class="ion-text-end">
-<!--          <ion-buttons>-->
-<!--            <ion-button expand="block"  fill="clear" color="primary" [disabled]="newMsg === ''" class="msg-btn" (click)="sendMessage()">-->
-<!--              <ion-icon name="send" slot="icon-only" align="right"></ion-icon>-->
-<!--            </ion-button>-->
-<!--          </ion-buttons>-->
-        </div>
-      </ion-col>
+<!--      <ion-col size="1">-->
+<!--        <div class="ion-text-end">-->
+<!--&lt;!&ndash;          <ion-buttons>&ndash;&gt;-->
+<!--&lt;!&ndash;            <ion-button expand="block"  fill="clear" color="primary" [disabled]="newMsg === ''" class="msg-btn" (click)="sendMessage()">&ndash;&gt;-->
+<!--&lt;!&ndash;              <ion-icon name="send" slot="icon-only" align="right"></ion-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;            </ion-button>&ndash;&gt;-->
+<!--&lt;!&ndash;          </ion-buttons>&ndash;&gt;-->
+<!--        </div>-->
+<!--      </ion-col>-->
     </ion-row>
     <ion-button color="secondary" padding-end="20%" slot="end" (click)="loadSongs()">
       <div><ion-icon name="download"></ion-icon></div>
