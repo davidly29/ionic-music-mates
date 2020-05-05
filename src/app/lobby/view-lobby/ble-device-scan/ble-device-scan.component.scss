@@ -3,7 +3,7 @@ ion-list {
 }
 .text {
   color: #fff7f4;
-  background: transparent;
+  --ion-background-color: rgba(0, 0, 0, 0.85);
 }
 ion-item {
   background: transparent;

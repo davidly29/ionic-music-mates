@@ -12,7 +12,7 @@
 <ion-content color="primary">
 <ion-item color="dark">
   <ion-label class="text" align="center">
-    Current Lobby: {{this.usersLobby.name}}
+    Current Lobby: {{this.usersLobby?.name}}
   </ion-label>
   <ion-button class="button-clear" style="float: right"><ion-icon name="arrow-forward"></ion-icon>
   </ion-button>
@@ -21,9 +21,9 @@
     <ion-row *ngFor="let lobby of userLobbies">
       <ion-item color="dark" style="width: 100%">
       <ion-label class="text">
-        {{lobby?.name}}
+        {{lobby.name}}
       </ion-label>
-        <ion-button class="button-clear" style="float: right" [routerLink]="'/join-lobby/' + lobby.id"><ion-icon name="arrow-forward"></ion-icon>
+        <ion-button class="button-clear" style="float: right" (click)="onCancel()" [routerLink]="'/join-lobby/' + lobby.id"><ion-icon name="arrow-forward"></ion-icon>
         </ion-button>
       </ion-item>
     </ion-row>

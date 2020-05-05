@@ -25,10 +25,9 @@
   </ion-list>
   <ion-list lines="full">
   <ion-label (click)="switchAdd()" color="primary" class="text">Create Playlist <ion-icon name="add-circle-outline"></ion-icon></ion-label>
-    <ion-item *ngIf="isCreate">
-      <ion-input required type="text" placeholder="New Playlist Name" [(ngModel)]="newUserPlaylist.name"></ion-input>
+    <ion-item *ngIf="isCreate" class="text">
+      <ion-input required type="text" class="text" placeholder="New Playlist Name" [(ngModel)]="newUserPlaylist.name"></ion-input>
     </ion-item>
     <ion-button *ngIf="isCreate" (click)="getUserPlaylist()">Save</ion-button>
   </ion-list>
-  <ion-button (click)="getUserPlaylist()">Test</ion-button>
 </ion-content>

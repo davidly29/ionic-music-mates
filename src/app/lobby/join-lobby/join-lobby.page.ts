@@ -91,6 +91,7 @@ export class JoinLobbyPage implements OnInit {
     }
   }
   lobbyManager() {
+      this.usersLobbies = [];
       this.currentUser = this.allRegisteredUsers.find(x => x.email === this.authService.user.getValue().email);
       this.firebaseService.getLobby(this.currentUser.lobbyId).subscribe(lobby => {
           this.usersLobby = lobby;

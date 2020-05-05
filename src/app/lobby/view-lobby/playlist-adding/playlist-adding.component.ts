@@ -38,6 +38,9 @@ export class PlaylistAddingComponent implements OnInit {
       }
     }
   }
+  onCancel() {
+    this.modalCtrl.dismiss();
+  }
   async showPlaylistAlert(item: PlaylistModel) {
     const alert = await this.alertCtrl.create({
       header: 'Playlist Already Loaded',

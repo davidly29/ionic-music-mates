@@ -6,11 +6,12 @@ ion-list {
 }
 ion-item {
   padding: 8px;
+  background: transparent;
 }
 ion-item-sliding {
   padding: 8px;
 }
 .text {
-  color: rgba(0, 0, 0, 0.85);
-  --ion-background-color: rgba(0, 0, 0, 0.85);
+    color: #fff7f4;
+  background: transparent;
 }
