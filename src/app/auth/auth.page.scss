@@ -8,6 +8,9 @@ ion-toolbar{
 ion-list{
   background-color: transparent;
 }
+.pic-align {
+  text-align: right;
+}
 ion-row {
   //color: var(--ion-color-primary);
   width: 100%;
@@ -17,13 +20,20 @@ ion-row {
   opacity: 0.7;
 }
 ion-header{
+  --background: #9DC0BC;
   --ion-background-color: #cbbaff
 }
 ion-button{
   --ion-background-color: #EC14BE;
 }
-ion-label{
+ion-label {
   color: #f4f5f8;
+}
+.img {
+  position: center;
+  alignment: top;
+  align-items: center;
+  align-content: center;
 }
 .text {
   color: #fff7f4;
