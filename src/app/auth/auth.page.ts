@@ -17,12 +17,6 @@ export class AuthPage implements OnInit {
   tabBarElement: any;
   isLoading = false;
   isLogin = false;
-  newUser: LobbyUserModel = {
-      email: '',
-      name: '',
-      users: '',
-      lobbyId: '',
-  };
   constructor(private authService: AuthService, private loadingCtrl: LoadingController, private router: Router,
               private alert: AlertController, private firebaseService: FirebaseServiceService) {
       // this.tabBarElement = document.querySelector('.tabbar');
@@ -57,9 +51,6 @@ export class AuthPage implements OnInit {
             authOb = this.authService.login(email, password);
           } else {
             authOb = this.authService.signUp(email, password);
-            this.newUser.name = email;
-            this.newUser.email = email;
-            this.firebaseService.addUser(this.newUser);
           }
           authOb.subscribe(resData => {
             console.log(resData);

@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-      <ion-title align="center" padding="8px">{{tempLobby?.name}}</ion-title>
+      <ion-title text-left>{{tempLobby?.name}}</ion-title>
     <ion-buttons slot="end">
     <ion-button (click)="this.lobbyStatus()">{{isJoined ? 'Leave Lobby' : 'Join Lobby'}}</ion-button>
     <ion-button (click)="this.viewLobbyUsers()">View Users<ion-icon name="people"></ion-icon></ion-button>
@@ -20,13 +20,11 @@
             <ion-col style="width: 25%">
                 <ion-button align="right" color="secondary" style="width: 100%" (click)="goToPrevVideo()">
                     Prev
-                    <ion-icon slot="icon-only" name="play-skip-back"></ion-icon>
                 </ion-button>
             </ion-col>
             <ion-col style="width: 25%;">
                 <ion-button align="right" color="secondary" style="width: 100%;" (click)="goToNextVideo()">
                     Next
-                    <ion-icon slot="icon-only" name="play-skip-forward"></ion-icon>
                 </ion-button>
             </ion-col>
             <ion-col style="width: 25%">
@@ -42,6 +40,7 @@
         </ion-row>
     </ion-grid>
 <!--    <ion-button (click)="makeReady()">Start</ion-button>-->
+    <div style="height: 6%"></div>
 <ion-grid align="bottom">
     <ion-row *ngFor="let message of allMessages">
       <ion-col size="9" *ngIf="currentUser.getValue().email !== message.sentBy && this.activatedRoute.snapshot.paramMap.get('id') === message.lobbyId" text-wrap class="message other-user">
@@ -63,15 +62,15 @@
   <ion-toolbar>
     <ion-row align-items-left no-padding>
       <ion-col size="11">
-        <textarea autosize maxRows="3" [(ngModel)]="newMsg" class="message-input"></textarea>
+        <textarea autosize maxRows="3" [(ngModel)]="newMsg" class="message-input" (keyup.enter)="sendMessage()" (keydown.enter)="sendMessage()"></textarea>
       </ion-col>
       <ion-col size="1">
         <div class="ion-text-end">
-          <ion-buttons>
-            <ion-button expand="block"  fill="clear" color="primary" [disabled]="newMsg === ''" class="msg-btn" (click)="sendMessage()">
-              <ion-icon name="send" slot="icon-only" align="right"></ion-icon>
-            </ion-button>
-          </ion-buttons>
+<!--          <ion-buttons>-->
+<!--            <ion-button expand="block"  fill="clear" color="primary" [disabled]="newMsg === ''" class="msg-btn" (click)="sendMessage()">-->
+<!--              <ion-icon name="send" slot="icon-only" align="right"></ion-icon>-->
+<!--            </ion-button>-->
+<!--          </ion-buttons>-->
         </div>
       </ion-col>
     </ion-row>

@@ -3,6 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs';
 import {User} from './user.model';
 import {map, tap} from 'rxjs/operators';
+import {LobbyUserModel} from '../lobby/join-lobby/lobbyUserModel';
+import {FirebaseServiceService} from '../firebase-service.service';
 
 export interface AuthResponseData {
   kind: string;
@@ -17,6 +19,12 @@ export interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
+    newUser: LobbyUserModel = {
+        email: '',
+        name: '',
+        users: '',
+        lobbyId: '',
+    };
  public user = new BehaviorSubject<User>(null );
 
   get userIsAuthenticated() { // dynamic for accessing user auth
@@ -45,7 +53,7 @@ export class AuthService {
       }
     }));
   }
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,  private firebaseService: FirebaseServiceService) { }
 
   login(email: string, password: string) {
     // tslint:disable-next-line:max-line-length
@@ -55,8 +63,11 @@ export class AuthService {
   }
 
   signUp(email: string, password: string) {
-    // tslint:disable-next-line:max-line-length
-    return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBBe1vnj1PW_p-1f8kMUk10TlsHZL_L38k`,
+      this.newUser.name = email;
+      this.newUser.email = email;
+      this.firebaseService.addUser(this.newUser);
+      // tslint:disable-next-line:max-line-length
+      return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBBe1vnj1PW_p-1f8kMUk10TlsHZL_L38k`,
         {email, password, returnSecureToken: true}).pipe(tap(this.setUserData.bind(this)
     ));
   }

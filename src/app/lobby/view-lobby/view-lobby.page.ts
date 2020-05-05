@@ -195,13 +195,6 @@ export class ViewLobbyPage implements OnInit {
     this.songs = this.playlist.songs;
   }
   ionViewDidEnter() {
-    this.toastCtrl.create({
-      message: 'Active Page',
-      position: 'bottom',
-      duration: 5000
-    }).then((obj) => {
-      obj.present();
-    });
     const lobbyID = this.activatedRoute.snapshot.paramMap.get('id');
     this.firebaseService.getLobby(lobbyID).subscribe(temp => {
       this.tempLobby = temp;
