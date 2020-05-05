@@ -293,14 +293,14 @@ export class ViewLobbyPage implements OnInit {
 
   goToNextVideo() {
       if (this.currentSongIndex >= this.tempLobby.songs.length) {
-        return;
+        this.currentSongIndex = this.tempLobby.songs.length;
+        return this.currentSongIndex;
       } else {
         this.currentSongIndex = this.currentSongIndex + 1;
         this.tempLobby.currentSong = this.tempLobby.songs[this.currentSongIndex].id;
-        this.sanitizeVidId(this.tempLobby.currentSong);
-        this.tempLobby.readyUrl = this.url;
-        this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id);
+        this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id).then(console.log);
         return this.tempLobby;
+        this.sanitizeVidId(this.tempLobby.currentSong);
       }
   }
 
@@ -311,9 +311,9 @@ export class ViewLobbyPage implements OnInit {
       } else {
         this.currentSongIndex = this.currentSongIndex - 1;
         this.tempLobby.currentSong = this.tempLobby.songs[this.currentSongIndex].id;
-        this.sanitizeVidId(this.tempLobby.currentSong);
         this.firebaseService.updateLobby(this.tempLobby, this.tempLobby.id).then(console.log);
         return this.tempLobby;
+        this.sanitizeVidId(this.tempLobby.currentSong);
       }
   }
 
@@ -358,12 +358,12 @@ export class ViewLobbyPage implements OnInit {
   sanitizeVidId(id) {
     this.playUrl = '?autoplay=1';
     if (this.everyoneReady) {
-      this.secondUrl = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id + '?playsinline=1' + 'enablejsapi=1');
+      this.secondUrl = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id );
       // tslint:disable-next-line:max-line-length
-      this.url = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id + '?autoplay=1' + '?playsinline=1' + 'enablejsapi=1');
+      this.url = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id + '?autoplay=1');
     } else {
-      this.secondUrl = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id + '?playsinline=1' + 'enablejsapi=1');
-      this.url = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id + '?playsinline=1' + 'enablejsapi=1');
+      this.secondUrl = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id );
+      this.url = this.dom.bypassSecurityTrustResourceUrl('http://www.youtube.com/embed/' + id);
     }
     return this.url;
   }
