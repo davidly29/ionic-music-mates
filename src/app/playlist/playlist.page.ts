@@ -156,7 +156,18 @@ export class PlaylistPage implements OnInit {
         duration: 2000
       }).then(toast => toast.present());
     }
-
+    removePlaylist(item: PlaylistModel) {
+    this.firebaseService.deletePlaylist(item.id);
+    this.toastController.create({
+        message: 'Playlist Removed',
+        duration: 3000,
+        showCloseButton: true,
+        closeButtonText: 'OK',
+        animated: true
+      }).then((obj) => {
+        obj.present();
+      });
+    }
   addToLobby(song) {
     this.firebaseService.getLobby(this.currentUser.lobbyId).subscribe(lobby => {
       this.usersLobby = lobby;
