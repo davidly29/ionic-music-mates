@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'post-log', pathMatch: 'full' },
   { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
   { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
-  { path: 'post-log', loadChildren: './lobby/post-log/post-log.module#PostLogPageModule', canLoad: [GuardGuard]},
+  { path: 'post-log', loadChildren: './lobby/post-log/post-log.module#PostLogPageModule' },
   { path: 'lobby', loadChildren: './lobby/lobby.module#LobbyPageModule' },
   { path: 'create-lobby', loadChildren: './lobby/create-lobby/create-lobby.module#CreateLobbyPageModule', canLoad: [GuardGuard]},
   { path: 'join-lobby', loadChildren: './lobby/join-lobby/join-lobby.module#JoinLobbyPageModule', canLoad: [GuardGuard]},
